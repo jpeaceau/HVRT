@@ -25,16 +25,14 @@ Usage:
 
 import numpy as np
 import warnings
-from typing import Optional, List, Tuple, Union, Callable
+from typing import Union, Callable, Optional, List, Tuple
 from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.preprocessing import PolynomialFeatures, LabelEncoder, StandardScaler
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.preprocessing import PolynomialFeatures
-from sklearn.preprocessing import StandardScaler, LabelEncoder
 
 from .selection_strategies import (
     SelectionStrategy,
-    get_strategy,
-    BUILTIN_STRATEGIES
+    get_strategy
 )
 
 
@@ -51,7 +49,7 @@ class HVRTSampleReducer(BaseEstimator, TransformerMixin):
         Proportion of samples to keep (e.g., 0.2 = keep 20%)
 
     max_leaf_nodes : int, optional
-        Maximum leaf nodes in H-VRT tree. If None, auto-tuned.
+        Maximum leaf nodes in HVRT tree. If None, auto-tuned.
 
     min_samples_leaf : int, optional
         Minimum samples per leaf. If None, uses 1% rule.
@@ -177,7 +175,7 @@ class HVRTSampleReducer(BaseEstimator, TransformerMixin):
 
     def _compute_synthetic_y(self, X_normalized: np.ndarray) -> np.ndarray:
         """
-        Compute synthetic target using pairwise feature interactions (Paper Algorithm 1).
+        Compute synthetic target using pairwise feature interactions
 
         VECTORIZED IMPLEMENTATION for production scalability.
 
@@ -193,11 +191,6 @@ class HVRTSampleReducer(BaseEstimator, TransformerMixin):
         - Pairwise interactions reveal structural relationships
         - Z-score normalization ensures scale-invariance (all features contribute equally)
         - Sum aggregation maximizes predictive signal across all interaction patterns
-
-        Complexity: O(d² · n) but vectorized with sklearn (5-10x faster than Python loops)
-        Scales to 100k+ samples in seconds
-
-        References: Paper Section 3.2.1, Algorithm 1 (lines 295-310)
         """
         n_samples, n_features = X_normalized.shape
 

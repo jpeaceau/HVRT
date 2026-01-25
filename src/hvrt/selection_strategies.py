@@ -6,23 +6,17 @@ Type definitions and built-in strategies for within-partition sample selection.
 
 import numpy as np
 from typing import Protocol, runtime_checkable
+
 from scipy.spatial.distance import cdist
 
 
 @runtime_checkable
 class SelectionStrategy(Protocol):
     """
-    Protocol defining the contract for selection strategies.
+    Protocol for selection strategies.
 
-    A selection strategy must be a callable that takes:
-    - X_partition: Feature matrix for samples in a partition
-    - n_select: Number of samples to select from partition
-    - random_state: Random seed (for strategies that need it)
-
-    Returns:
-    - selected_indices: Array of selected sample indices (local to partition)
-
-    Must be deterministic: same inputs → same outputs
+    A selection strategy is a callable that selects samples from a partition.
+    Implementations should be deterministic for reproducibility.
     """
 
     def __call__(
@@ -32,7 +26,7 @@ class SelectionStrategy(Protocol):
         random_state: int = 42
     ) -> np.ndarray:
         """
-        Select n_select samples from X_partition.
+        Select samples from a partition.
 
         Parameters
         ----------
@@ -41,13 +35,12 @@ class SelectionStrategy(Protocol):
         n_select : int
             Number of samples to select
         random_state : int, default=42
-            Random seed for reproducibility (used by stochastic strategies)
+            Random seed for reproducibility
 
         Returns
         -------
         selected_indices : ndarray of shape (n_select,)
             Indices of selected samples (local to partition)
-            Must be deterministic for given inputs
         """
         ...
 
@@ -60,24 +53,8 @@ def centroid_fps(
     """
     Centroid-seeded Furthest Point Sampling (Default Strategy).
 
-    Deterministic diversity-based selection that:
-    1. Seeds at partition centroid (deterministic starting point)
-    2. Iteratively selects points farthest from selected set
-    3. Maximizes spatial coverage while filtering high-density noise
-
-    **Mechanism:**
-    - Centroid = density center (high-probability region)
-    - Starting there and moving outward filters noise
-    - FPS ensures boundary representation
-
-    **When it excels:**
-    - High noise-to-signal ratio (filters density)
-    - Structural discovery (exposes variance skeleton)
-    - Heterogeneous partitions (captures full range)
-
-    **Computational complexity:** O(n_select * n_partition * d)
-
-    **Determinism:** ✅ 100% - Same X → same selection
+    Deterministically selects diverse samples by iteratively choosing points
+    farthest from the current selection, seeded at the partition centroid.
 
     Parameters
     ----------
@@ -92,10 +69,6 @@ def centroid_fps(
     -------
     selected_indices : ndarray of shape (n_select,)
         Indices of selected samples
-
-    References
-    ----------
-    Paper Section 3.2.2: Diversity-Based Selection
     """
     n_points, n_features = X_partition.shape
 
@@ -139,19 +112,8 @@ def medoid_fps(
     """
     Medoid-seeded Furthest Point Sampling.
 
-    Similar to centroid FPS but seeds at partition medoid:
-    - Medoid = actual sample minimizing sum of distances to all others
-    - More robust to outliers than centroid
-    - Rest of FPS algorithm identical to centroid version
-
-    **When it excels:**
-    - Partitions with outliers (centroid might be in wrong location)
-    - Want first selected sample to be "typical" actual sample
-    - Robustness to extreme values
-
-    **Tradeoff:** O(n_partition²) to compute medoid vs O(n_partition * d) for centroid
-
-    **Determinism:** ✅ 100%
+    Similar to centroid FPS but seeds at the partition medoid (the actual
+    sample minimizing sum of distances to all others). More robust to outliers.
 
     Parameters
     ----------
@@ -202,26 +164,8 @@ def variance_ordered(
     """
     Variance-Ordered Selection.
 
-    Deterministically selects samples with highest local variance:
-    1. Computes local variance for each sample (using k-NN distances)
-    2. Selects top-n by variance (descending order)
-    3. Uses stable sort for tie-breaking consistency
-
-    **Mechanism:**
-    - High local variance = boundary/transition regions
-    - Prioritizes information-rich samples
-    - Ignores spatial distribution (no diversity guarantee)
-
-    **When it excels:**
-    - Boundary preservation is critical
-    - Heteroscedastic data (variance changes across space)
-    - Anomaly-rich datasets
-
-    **Limitations:**
-    - May over-sample noise if high-variance = noise
-    - No spatial diversity guarantee (all samples could be clustered)
-
-    **Determinism:** ✅ 100% (stable sort ensures consistency)
+    Selects samples with the highest local variance based on k-NN distances.
+    Prioritizes boundary and transition regions.
 
     Parameters
     ----------
@@ -267,21 +211,10 @@ def stratified(
     random_state: int = 42
 ) -> np.ndarray:
     """
-    Stratified Random Sampling (Baseline Comparison).
+    Stratified Random Sampling.
 
-    Simple random sampling within partition.
-
-    **Why include:**
-    - Baseline for comparison
-    - Shows "novel synthesis": Even random within diverse partitions works
-    - Preserves partition distribution (unbiased)
-
-    **BUT NOT THE FOCUS:**
-    - Loses auditability ("we randomly sampled" isn't defensible)
-    - Not deterministic across environments (seed-dependent)
-    - Only pseudo-random reproducibility
-
-    **Determinism:** ⚠️ Pseudo-random (reproducible with same seed)
+    Random sampling within partition. Provides a baseline for comparison
+    with deterministic strategies.
 
     Parameters
     ----------

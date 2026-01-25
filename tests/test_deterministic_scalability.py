@@ -5,7 +5,6 @@ Verifies that centroid-based seed selection doesn't degrade performance.
 """
 
 import numpy as np
-import sys
 import time
 
 from src.hvrt import HVRTSampleReducer
