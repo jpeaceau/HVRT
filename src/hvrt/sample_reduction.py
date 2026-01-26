@@ -60,8 +60,8 @@ class HVRTSampleReducer(BaseEstimator, TransformerMixin):
     auto_tune : bool, default=True
         Automatically tune hyperparameters based on data size
 
-    maintain_ratio : bool, default=True
-        Maintain 40:1 sample:feature ratio after reduction
+    maintain_ratio : bool, default=False
+        Enforce 40:1 sample:feature ratio after reduction (not recommended)
 
     y_weight : float, default=0.0
         Weight for y-extremeness in hybrid synthetic target (0.0-1.0).
@@ -118,7 +118,7 @@ class HVRTSampleReducer(BaseEstimator, TransformerMixin):
         max_depth: Optional[int] = None,
         min_samples_per_partition: int = 5,
         auto_tune: bool = True,
-        maintain_ratio: bool = True,
+        maintain_ratio: bool = False,
         y_weight: float = 0.0,
         selection_strategy: Union[str, Callable[[np.ndarray, int, int], np.ndarray]] = 'centroid_fps',
         random_state: int = 42
