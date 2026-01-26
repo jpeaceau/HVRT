@@ -16,16 +16,7 @@ import numpy as np
 from typing import Optional, Dict, List, Any, Union, Callable
 from sklearn.model_selection import cross_val_score, cross_validate
 from sklearn.metrics import (
-    get_scorer,
-    make_scorer,
-    mean_absolute_error,
-    mean_squared_error,
-    r2_score,
-    accuracy_score,
-    f1_score,
-    precision_score,
-    recall_score,
-    roc_auc_score
+    make_scorer
 )
 import warnings
 
