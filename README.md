@@ -1,14 +1,14 @@
-# H-VRT: Hierarchical Variance Reduction Tree
+# HVRT: Hierarchical Variance Reduction Tree
 
 [![PyPI version](https://img.shields.io/pypi/v/hvrt.svg)](https://pypi.org/project/hvrt/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**H-VRT** is a deterministic, variance-based sample reduction method that intelligently selects training subsets while preserving predictive accuracy.
+**HVRT** is a deterministic, variance-based sample reduction method that intelligently selects training subsets while preserving predictive accuracy.
 
-## Why H-VRT?
+## Why HVRT?
 
-Unlike random sampling which treats all samples equally, H-VRT optimizes for **explained variance preservation** through:
+Unlike random sampling which treats all samples equally, HVRT optimizes for **explained variance preservation** through:
 
 - **Hierarchical partitioning** based on pairwise feature interactions
 - **Diversity-based selection** via Furthest-Point Sampling (FPS)
@@ -52,9 +52,9 @@ model.fit(X_train_reduced, y_train_reduced)
 predictions = model.predict(X_test)
 ```
 
-## When to Use H-VRT
+## When to Use HVRT
 
-### ✅ H-VRT Excels When
+### ✅ HVRT Excels When
 
 - **Regulatory/audit requirements** - 100% reproducible sample selection
 - **Heavy-tailed distributions** - Financial data, extreme events, rare outliers
@@ -68,7 +68,7 @@ predictions = model.predict(X_test)
 - **Modest reduction** (≥50% retention)
 - No interpretability or determinism requirements
 
-### ❌ Avoid H-VRT For
+### ❌ Avoid HVRT For
 
 - **Distance-based clustering tasks** (K-Means, DBSCAN)
 - Very small datasets (n < 1000)
@@ -111,13 +111,13 @@ X_reduced, y_reduced = reducer.fit_transform(X, y)
 from sklearn.svm import SVR
 import time
 
-# Without H-VRT: 30 minutes at 50k samples
+# Without HVRT: 30 minutes at 50k samples
 start = time.time()
 svm = SVR()
 svm.fit(X_train, y_train)  # 50k samples
 print(f"Training time: {time.time() - start:.1f}s")  # ~1800s
 
-# With H-VRT: 47 seconds (38x faster!)
+# With HVRT: 47 seconds (38x faster!)
 reducer = HVRTSampleReducer(reduction_ratio=0.2)
 X_reduced, y_reduced = reducer.fit_transform(X_train, y_train)  # 10k samples
 
@@ -306,18 +306,18 @@ grid.fit(X_reduced, y_reduced)
 
 Results from validation experiments with SVM feasibility testing on 10k samples:
 
-| Scenario | Retention | H-VRT Accuracy | Random Accuracy | Speedup | SNR Retention |
+| Scenario | Retention | HVRT Accuracy | Random Accuracy | Speedup | SNR Retention |
 |----------|-----------|---------------|-----------------|---------|---------------|
 | Well-behaved | 20% | 93.9% | 95.3% | 23.5x | **126.2%** |
 | Heavy-tailed | 20% | **106.6%** | 85.3% | 24.0x | **130.1%** |
 
 **Key Findings:**
 - **Well-behaved data:** Both methods work (CLT holds), random slightly better on accuracy
-- **Heavy-tailed data:** H-VRT achieves +21pp accuracy advantage via intelligent noise filtering
-- **SNR (Signal-to-Noise Ratio):** H-VRT improves data quality by 26-30% vs baseline
+- **Heavy-tailed data:** HVRT achieves +21pp accuracy advantage via intelligent noise filtering
+- **SNR (Signal-to-Noise Ratio):** HVRT improves data quality by 26-30% vs baseline
 - **SVM Speedup:** 24-38x training time reduction at scale (50k samples)
 
-**Why >100% accuracy?** H-VRT acts as an intelligent denoiser, removing low-signal samples and improving SNR by 30%, which leads to better generalization.
+**Why >100% accuracy?** HVRT acts as an intelligent denoiser, removing low-signal samples and improving SNR by 30%, which leads to better generalization.
 
 ### Experimental Data
 
@@ -355,12 +355,12 @@ pytest --cov=hvrt --cov-report=term-missing
 
 ## Citation
 
-If you use H-VRT in your research, please cite:
+If you use HVRT in your research, please cite:
 
 ```bibtex
 @software{hvrt2025,
   author = {Peace, Jake},
-  title = {H-VRT: Hierarchical Variance Reduction Tree Sample Reduction},
+  title = {HVRT: Hierarchical Variance Reduction Tree Sample Reduction},
   year = {2025},
   url = {https://github.com/hotprotato/hvrt}
 }
@@ -379,4 +379,4 @@ Development assisted by Claude (Anthropic) for rapid prototyping and conceptual 
 - **Random Sampling**: Simple but fails on heavy-tailed data
 - **CoreSet Methods**: Require distance metrics (not suitable for all data)
 - **Active Learning**: Requires iterative labeling (different use case)
-- **H-VRT**: Deterministic, variance-based, works without distance metrics
+- **HVRT**: Deterministic, variance-based, works without distance metrics
