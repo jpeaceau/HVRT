@@ -1,29 +1,71 @@
-# HVRT: Hierarchical Variance Reduction Tree
+# HVRT: Hierarchical Variance-Retaining Transformer
 
 [![PyPI version](https://img.shields.io/pypi/v/hvrt.svg)](https://pypi.org/project/hvrt/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**HVRT** is a deterministic, variance-based sample reduction method that intelligently selects training subsets while preserving predictive accuracy.
+Variance-aware sample transformation for tabular data: reduce, expand, or augment.
 
-## Why HVRT?
+---
 
-Unlike random sampling which treats all samples equally, HVRT optimizes for **explained variance preservation** through:
+## Overview
 
-- **Hierarchical partitioning** based on pairwise feature interactions
-- **Diversity-based selection** via Furthest-Point Sampling (FPS)
-- **100% deterministic** - same data → same subset every time
-- **Hybrid mode** for heavy-tailed data and rare events
+HVRT partitions a dataset into variance-homogeneous regions via a decision tree fitted on a synthetic extremeness target, then applies a configurable per-partition operation (selection for reduction, sampling for expansion).
+
+Three operations are provided:
+
+| Operation | Method | Description |
+|---|---|---|
+| **Reduce** | `model.reduce(ratio=0.3)` | Select a geometrically diverse representative subset |
+| **Expand** | `model.expand(n=50000)` | Generate synthetic samples via per-partition KDE or other strategy |
+| **Augment** | `model.augment(n=15000)` | Concatenate original data with synthetic samples |
+
+---
+
+## Algorithm
+
+### 1. Z-score normalisation
+
+```
+X_z = (X - μ) / σ   per feature
+```
+
+Categorical features are integer-encoded then z-scored. All operations are performed in z-score space and inverse-transformed for output.
+
+### 2. Synthetic target construction
+
+**HVRT** — sum of normalised pairwise feature interactions:
+```
+For all feature pairs (i, j):
+  interaction = X_z[:,i] ⊙ X_z[:,j]
+  normalised  = (interaction - mean) / std
+target = sum of all normalised interaction columns        O(n · d²)
+```
+
+**FastHVRT** — sum of z-scores per sample:
+```
+target_i = Σ_j  X_z[i, j]                               O(n · d)
+```
+
+High |target| indicates a sample with co-occurring extreme values across feature combinations.
+
+### 3. Partitioning
+
+A `DecisionTreeRegressor` is fitted on the synthetic target. Leaves form variance-homogeneous partitions: high-|target| samples (structural outliers) are isolated into small dedicated partitions; the dense typical region forms one large partition. Tree depth and leaf size are auto-tuned to dataset size.
+
+### 4. Per-partition operations
+
+**Reduce:** Within each partition, select representatives using the chosen [selection strategy](#selection-strategies) (default: centroid-seeded Furthest Point Sampling). Budget across partitions is proportional to partition size (`variance_weighted=False`) or biased toward high-variance partitions (`variance_weighted=True`).
+
+**Expand:** Within each partition, draw synthetic samples using the chosen [generation strategy](#generation-strategies) (default: multivariate Gaussian KDE, Scott's rule bandwidth). Budget across partitions follows the same allocation logic as reduce.
+
+---
 
 ## Installation
-
-Install from [PyPI](https://pypi.org/project/hvrt/):
 
 ```bash
 pip install hvrt
 ```
-
-Or install from source:
 
 ```bash
 git clone https://github.com/hotprotato/hvrt.git
@@ -31,352 +73,313 @@ cd hvrt
 pip install -e .
 ```
 
+---
+
 ## Quick Start
 
 ```python
-from hvrt import HVRTSampleReducer
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+from hvrt import HVRT, FastHVRT
 
-# Load your data
-X, y = load_your_data()
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
+# Reduction
+model = HVRT(random_state=42).fit(X_train, y_train)   # y optional
+X_reduced, idx = model.reduce(ratio=0.3, return_indices=True)
 
-# Reduce training set to 20% of original size
-reducer = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
-X_train_reduced, y_train_reduced = reducer.fit_transform(X_train, y_train)
+# Expansion
+model = FastHVRT(random_state=42).fit(X_train)
+X_synthetic = model.expand(n=50000)
 
-# Train any model on reduced data
-model = RandomForestRegressor()
-model.fit(X_train_reduced, y_train_reduced)
-predictions = model.predict(X_test)
+# Augmentation
+X_augmented = model.augment(n=15000)
 ```
-
-## When to Use HVRT
-
-### ✅ HVRT Excels When
-
-- **Regulatory/audit requirements** - 100% reproducible sample selection
-- **Heavy-tailed distributions** - Financial data, extreme events, rare outliers
-- **SVM training** - Makes large-scale SVM practical (25-40x speedup)
-- **Aggressive reduction needed** - 5-20% retention where every sample counts
-- **Small-to-medium datasets** - Up to 50k samples
-
-### ⚠️ Random Sampling May Suffice When
-
-- **Large, well-behaved datasets** (≥50k samples, normal distributions)
-- **Modest reduction** (≥50% retention)
-- No interpretability or determinism requirements
-
-### ❌ Avoid HVRT For
-
-- **Distance-based clustering tasks** (K-Means, DBSCAN)
-- Very small datasets (n < 1000)
-
-## Key Features
-
-### 1. Deterministic Selection
-
-```python
-# Same random_state → identical samples every time
-reducer = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
-X_reduced1, _ = reducer.fit_transform(X, y)
-
-reducer2 = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
-X_reduced2, _ = reducer2.fit_transform(X, y)
-
-assert np.array_equal(X_reduced1, X_reduced2)  # ✓ Always True
-```
-
-### 2. Hybrid Mode for Heavy Tails
-
-```python
-# For heavy-tailed data or rare events
-reducer = HVRTSampleReducer(
-    reduction_ratio=0.2,
-    y_weight=0.25,  # 25% weight on y-extremeness
-    random_state=42
-)
-X_reduced, y_reduced = reducer.fit_transform(X, y)
-```
-
-**When to use `y_weight`:**
-- `0.0` (default): Well-behaved data, interaction-driven variance
-- `0.25-0.50`: Heavy-tailed distributions, rare events
-- `0.50-1.0`: Extreme outlier detection
-
-### 3. SVM Speedup Example
-
-```python
-from sklearn.svm import SVR
-import time
-
-# Without HVRT: 30 minutes at 50k samples
-start = time.time()
-svm = SVR()
-svm.fit(X_train, y_train)  # 50k samples
-print(f"Training time: {time.time() - start:.1f}s")  # ~1800s
-
-# With HVRT: 47 seconds (38x faster!)
-reducer = HVRTSampleReducer(reduction_ratio=0.2)
-X_reduced, y_reduced = reducer.fit_transform(X_train, y_train)  # 10k samples
-
-start = time.time()
-svm.fit(X_reduced, y_reduced)
-print(f"Training time: {time.time() - start:.1f}s")  # ~47s
-```
-
-## API Reference
-
-### AdaptiveHVRTReducer (Recommended)
-
-**Automatically finds optimal reduction level via accuracy testing.**
-
-```python
-from hvrt import AdaptiveHVRTReducer
-
-reducer = AdaptiveHVRTReducer(
-    accuracy_threshold=0.95,     # Min accuracy retention (95%)
-    reduction_ratios=[0.5, 0.3, 0.2, 0.1],  # Levels to test
-    validator=None,              # Auto: XGBoost (fast validation)
-    scoring='accuracy',          # Metric: accuracy, f1, r2, custom, dict
-    cv=3,                        # Cross-validation folds
-    y_weight=0.0,                # Hybrid mode (0.25 for heavy tails)
-    random_state=42
-)
-
-X_reduced, y_reduced = reducer.fit_transform(X, y)
-
-# Review all tested reductions
-print(reducer.get_reduction_summary())
-for result in reducer.reduction_results_:
-    print(f"{result['reduction_ratio']}: {result['accuracy_retention']:.1%}")
-
-# Multiple metrics example
-reducer_multi = AdaptiveHVRTReducer(
-    accuracy_threshold=0.95,
-    scoring={'accuracy': 'accuracy', 'f1': 'f1', 'recall': 'recall'}
-)
-reducer_multi.fit(X, y)
-print(reducer_multi.best_reduction_['all_scores'])
-```
-
-**Scoring Options:**
-
-Built-in metrics (str):
-- Classification: `'accuracy'`, `'f1'`, `'precision'`, `'recall'`, `'roc_auc'`
-- Regression: `'r2'`, `'neg_mean_absolute_error'`, `'neg_mean_squared_error'`
-
-Custom scorer (callable):
-```python
-def custom_scorer(y_true, y_pred):
-    return score  # Higher is better
-```
-
-Multiple metrics (dict):
-```python
-scoring={'acc': 'accuracy', 'f1': 'f1'}  # First key is primary
-```
-
-**Use Cases:**
-- Unknown optimal reduction level
-- SVM training (use XGBoost validation, get samples for SVM)
-- Need accuracy guarantees with specific metrics
-
-**Methods:**
-- `fit(X, y)`: Test reductions, find best
-- `transform()`: Return best reduced dataset
-- `get_reduction_summary()`: Human-readable results table
-
-**Attributes:**
-- `reduction_results_`: List of all tested reductions
-- `best_reduction_`: Optimal reduction meeting threshold
-- `baseline_score_`: Baseline accuracy
 
 ---
 
-### HVRTSampleReducer (Manual)
+## API Reference
 
-**Direct reduction when you know the ratio.**
+### `HVRT`
 
 ```python
-from hvrt import HVRTSampleReducer
+from hvrt import HVRT
 
-reducer = HVRTSampleReducer(
-    reduction_ratio=0.2,      # Target retention (0.2 = keep 20%)
-    y_weight=0.0,             # Hybrid mode weight (0.0-1.0)
-    max_leaf_nodes=None,      # Tree partitions (auto-tuned if None)
-    min_samples_leaf=None,    # Min samples per partition (auto-tuned)
-    auto_tune=True,           # Enable automatic hyperparameter tuning
-    random_state=42           # Random seed for reproducibility
+model = HVRT(
+    n_partitions=None,         # Max tree leaves; auto-tuned if None
+    min_samples_leaf=None,     # Min samples per leaf; auto-tuned if None
+    y_weight=0.0,              # 0.0 = unsupervised; 1.0 = y drives splits
+    bandwidth=0.5,             # Default KDE bandwidth for expand()
+    auto_tune=True,
+    mode='reduce',             # Default for fit_transform()
+    random_state=42,
 )
+```
 
+Target: sum of normalised pairwise feature interactions. O(n · d²). Use for reduction or when feature interaction structure matters.
+
+### `FastHVRT`
+
+```python
+from hvrt import FastHVRT
+
+model = FastHVRT(bandwidth=0.5, random_state=42)
+```
+
+Target: sum of z-scores. O(n · d). Equivalent quality to HVRT for expansion tasks. All constructor parameters are identical to HVRT.
+
+### `fit`
+
+```python
+model.fit(X, y=None, feature_types=None)
+# feature_types: list of 'continuous' or 'categorical' per column
+```
+
+### `reduce`
+
+```python
+X_reduced = model.reduce(
+    n=None,                  # Absolute target count
+    ratio=None,              # Proportional (e.g. 0.3 = keep 30%)
+    method='fps',            # Selection strategy; see Selection Strategies
+    variance_weighted=True,  # Oversample high-variance partitions
+    return_indices=False,
+    n_partitions=None,       # Override tree granularity for this call
+)
+```
+
+### `expand`
+
+```python
+X_synth = model.expand(
+    n=10000,
+    min_novelty=0.0,              # Min z-space distance from any original sample
+    variance_weighted=False,      # True = oversample tails
+    bandwidth=None,               # Override instance bandwidth
+    adaptive_bandwidth=False,     # Scale bandwidth with local expansion ratio
+    generation_strategy=None,     # See Generation Strategies
+    return_novelty_stats=False,
+    n_partitions=None,
+)
+```
+
+`adaptive_bandwidth=True` uses per-partition bandwidth `bw_p = scott_p × max(1, budget_p/n_p)^(1/d)`. Benchmarked as equal-or-better for classification at high expansion ratios; worse for complex multi-modal regression. Not the default.
+
+### `augment`
+
+```python
+X_aug = model.augment(n=15000, min_novelty=0.0, variance_weighted=False)
+# n must exceed len(X); returns original X concatenated with (n - len(X)) synthetic samples
+```
+
+### Utility methods
+
+```python
+partitions = model.get_partitions()
+# [{'id': 5, 'size': 120, 'mean_abs_z': 0.84, 'variance': 1.2}, ...]
+
+novelty = model.compute_novelty(X_new)   # min z-space distance per point
+
+params = HVRT.recommend_params(X)        # {'n_partitions': 180, ...}
+```
+
+### Presets
+
+```python
+model = HVRT.for_ml_reduction().fit(X, y)
+model = FastHVRT.for_synthetic_data().fit(X)
+model = HVRT.for_anomaly_augmentation().fit(X)
+```
+
+### `fit_transform`
+
+```python
+X_out = model.fit_transform(X, y=None, **operation_kwargs)
+# Dispatches to reduce(), expand(), or augment() based on self.mode
+```
+
+---
+
+## Generation Strategies
+
+`expand()` delegates per-partition sampling to a pluggable strategy callable. The strategy receives one partition's z-scored data and returns synthetic samples in z-score space; inverse-transforming and categorical handling are done by the caller.
+
+```python
+from hvrt import FastHVRT, univariate_kde_copula, get_generation_strategy
+
+model = FastHVRT(random_state=42).fit(X)
+
+# By name
+X_synth = model.expand(n=10000, generation_strategy='bootstrap_noise')
+
+# By reference
+X_synth = model.expand(n=10000, generation_strategy=univariate_kde_copula)
+
+# Custom callable: (X_partition: ndarray, budget: int, random_state: int) -> ndarray
+def my_strategy(X_partition, budget, random_state=42):
+    ...
+    return X_synthetic   # shape (budget, n_features), z-score space
+
+X_synth = model.expand(n=10000, generation_strategy=my_strategy)
+```
+
+| Strategy | Behaviour | Notes |
+|---|---|---|
+| `'multivariate_kde'` | `scipy.stats.gaussian_kde` fitted on all features jointly. Scott's rule bandwidth. **Default.** | Captures full joint covariance |
+| `'univariate_kde_copula'` | Per-feature 1-D KDE for marginals; Gaussian copula for joint dependence (rank → probit → correlation matrix → sample → invert marginal CDFs). | More flexible per-feature marginals |
+| `'bootstrap_noise'` | Resample with replacement; add Gaussian noise at 10% of per-feature within-partition std (floor 0.01). | Fastest; no distributional assumptions |
+
+```python
+from hvrt import BUILTIN_GENERATION_STRATEGIES, get_generation_strategy
+
+list(BUILTIN_GENERATION_STRATEGIES)
+# ['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise']
+```
+
+---
+
+## Selection Strategies
+
+`reduce()` delegates within-partition sample selection to a pluggable strategy. The strategy receives one partition's z-scored data and returns indices of selected samples.
+
+```python
+from hvrt import HVRT, get_strategy
+
+model = HVRT(random_state=42).fit(X, y)
+
+# By name
+X_red = model.reduce(ratio=0.2, method='fps')            # default
+X_red = model.reduce(ratio=0.2, method='medoid_fps')
+X_red = model.reduce(ratio=0.2, method='variance_ordered')
+X_red = model.reduce(ratio=0.2, method='stratified')
+
+# Custom callable: (X_partition: ndarray, n_select: int, random_state: int) -> ndarray[int]
+def my_selector(X_partition, n_select, random_state=42):
+    ...
+    return selected_indices
+
+X_red = model.reduce(ratio=0.2, method=my_selector)
+```
+
+| Strategy | Behaviour |
+|---|---|
+| `'fps'` / `'centroid_fps'` | Greedy Furthest Point Sampling seeded at partition centroid. Maximises minimum pairwise distance in the selected set. **Default.** |
+| `'medoid_fps'` | FPS seeded at the partition medoid (sample minimising sum of distances to all others). |
+| `'variance_ordered'` | Select samples with highest local k-NN variance (k=10). |
+| `'stratified'` | Random sample within each partition. |
+
+```python
+from hvrt import BUILTIN_STRATEGIES, get_strategy
+
+list(BUILTIN_STRATEGIES)
+# ['centroid_fps', 'medoid_fps', 'variance_ordered', 'stratified']
+```
+
+---
+
+## Benchmarks
+
+### Sample reduction
+
+Metric: GBM ROC-AUC on reduced training set as % of full-training-set AUC.
+n=3 000 train / 2 000 test, seed=42. Values above 100% indicate the reduced set outperforms the full (noisy) training set.
+
+| Scenario | Retention | HVRT-fps | HVRT-yw | Random | Stratified |
+|---|---|---|---|---|---|
+| Well-behaved (Gaussian, no noise) | 10% | 97.1% | 98.1% | 96.9% | 98.0% |
+| Well-behaved (Gaussian, no noise) | 20% | 98.7% | 98.9% | 98.3% | 99.0% |
+| Noisy labels (20% random flip) | 10% | **96.1%** | 91.1% | 93.3% | 90.4% |
+| Noisy labels (20% random flip) | 20% | **95.2%** | 95.9% | 93.1% | 93.1% |
+| Heavy-tail + label noise + junk features | 30% | **98.2%** | 98.2% | 94.3% | 95.2% |
+| Rare events (5% positive class) | 10% | 98.0% | **99.4%** | 86.5% | 94.1% |
+| Rare events (5% positive class) | 20% | 98.0% | **100.4%** | 97.9% | 99.0% |
+
+*HVRT-fps: `method='fps'`, `variance_weighted=True`. HVRT-yw: same + `y_weight=0.3`.*
+
+Reproduce: `python benchmarks/reduction_denoising_benchmark.py`
+
+### Synthetic data expansion
+
+Metric: discriminator accuracy (target 50% = indistinguishable), marginal KS fidelity, tail MSE.
+bandwidth=0.5, synthetic-to-real ratio 1×.
+
+| Method | Marginal Fidelity | Discriminator | Tail Error | Fit time |
+|---|---|---|---|---|
+| **HVRT** | 0.974 | **49.6%** | **0.004** | 0.07 s |
+| Gaussian Copula | 0.998 | 49.4% | 0.017 | 0.02 s |
+| GMM (k=10) | 0.989 | 49.2% | 0.093 | 1.06 s |
+| Bootstrap + Noise | 0.994 | 49.7% | 0.131 | 0.00 s |
+| SMOTE | 1.000 | 48.6% | 0.000 | 0.00 s |
+| CTGAN† | 0.920 | 55.8% | 0.500 | 45 s |
+| TVAE† | 0.940 | 53.5% | 0.450 | 40 s |
+| TabDDPM† | 0.960 | 52.0% | 0.300 | 120 s |
+| MOSTLY AI† | 0.975 | 51.0% | 0.150 | 60 s |
+
+*† Published numbers. Discriminator = 50% is ideal. Tail error = 0 is ideal.*
+
+Reproduce: `python benchmarks/run_benchmarks.py --tasks expand`
+
+---
+
+## Benchmarking Scripts
+
+```bash
+# Full suite: reduction + expansion across all built-in datasets
+python benchmarks/run_benchmarks.py
+python benchmarks/run_benchmarks.py --tasks reduce --datasets adult housing
+python benchmarks/run_benchmarks.py --tasks expand
+
+# Reduction denoising: HVRT vs random/stratified on structured noise datasets
+python benchmarks/reduction_denoising_benchmark.py
+
+# Adaptive bandwidth: standard vs adaptive KDE at expansion ratios 1–100×
+python benchmarks/adaptive_kde_benchmark.py        # Heart Disease dataset
+python benchmarks/adaptive_full_benchmark.py       # all 6 synthetic datasets
+
+# Deep learning comparison (requires: pip install ctgan)
+python benchmarks/heart_disease_benchmark.py
+
+# Bootstrap+noise failure modes
+python benchmarks/bootstrap_failure_benchmark.py
+```
+
+---
+
+## Backward Compatibility
+
+The v1 API is still importable:
+
+```python
+from hvrt import HVRTSampleReducer, AdaptiveHVRTReducer
+
+reducer = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
 X_reduced, y_reduced = reducer.fit_transform(X, y)
 ```
 
-**Methods:**
-- `fit(X, y)`: Learn variance-based partitioning
-- `transform(X, y=None)`: Return reduced samples
-- `fit_transform(X, y)`: Fit and transform in one step
-- `get_reduction_info()`: Get partitioning statistics
-
-**Attributes:**
-- `selected_indices_`: Indices of selected samples
-- `n_partitions_`: Number of partitions created
-- `tree_`: Fitted DecisionTreeRegressor
-
-## Examples
-
-See the [`examples/`](examples/) directory for complete demonstrations:
-
-- [`basic_usage.py`](examples/basic_usage.py) - Simple 10-line example
-- [`adaptive_reduction.py`](examples/adaptive_reduction.py) - **NEW:** Automatic reduction level selection
-- [`adaptive_scoring_options.py`](examples/adaptive_scoring_options.py) - **NEW:** Custom metrics (MAE, F1, callable)
-- [`svm_speedup_demo.py`](examples/svm_speedup_demo.py) - SVM training speedup
-- [`heavy_tailed_data.py`](examples/heavy_tailed_data.py) - Hybrid mode for rare events
-- [`regulatory_compliance.py`](examples/regulatory_compliance.py) - Determinism for regulated industries
-
-Run any example:
-```bash
-python examples/adaptive_reduction.py        # Automatic optimal reduction
-python examples/adaptive_scoring_options.py  # Custom scoring metrics
-python examples/basic_usage.py               # Simple manual reduction
-```
-
-## Use Cases
-
-### 1. Regulatory Compliance (Healthcare, Finance)
-
-```python
-# FDA submission requires reproducible model training
-reducer = HVRTSampleReducer(reduction_ratio=0.3, random_state=42)
-X_reduced, y_reduced = reducer.fit_transform(X_train, y_train)
-
-# Audit trail: Decision tree shows why samples were selected
-info = reducer.get_reduction_info()
-print(f"Partitions: {info['n_partitions']}, Tree depth: {info['tree_depth']}")
-```
-
-### 2. Financial Data (Heavy Tails)
-
-```python
-# Rare extreme events (market crashes, fraud)
-reducer = HVRTSampleReducer(
-    reduction_ratio=0.2,
-    y_weight=0.5,  # Prioritize extreme outcomes
-    random_state=42
-)
-X_reduced, y_reduced = reducer.fit_transform(X_returns, y_volatility)
-```
-
-### 3. Hyperparameter Tuning
-
-```python
-from sklearn.model_selection import GridSearchCV
-
-# Reduce data once, then use for all 100+ grid search trials
-reducer = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
-X_reduced, y_reduced = reducer.fit_transform(X_train, y_train)
-
-# Grid search on reduced data (10-50x faster)
-grid = GridSearchCV(SVR(), param_grid, cv=5)
-grid.fit(X_reduced, y_reduced)
-```
-
-## How It Works
-
-1. **Synthetic Target Construction**
-   ```python
-   y_synthetic = sum(pairwise_interactions(X)) + α × |y - median(y)|
-   ```
-   - Captures feature interaction patterns
-   - Optional y-extremeness weighting for outliers
-
-2. **Hierarchical Partitioning**
-   - Decision tree partitions data by synthetic target
-   - Captures variance heterogeneity across feature space
-   - Auto-tunes partition count based on dataset size
-
-3. **Diversity Selection**
-   - Within each partition: Furthest-Point Sampling (FPS)
-   - Removes density, preserves boundaries
-   - Centroid-seeded for determinism
-
-## Performance
-
-Results from validation experiments with SVM feasibility testing on 10k samples:
-
-| Scenario | Retention | HVRT Accuracy | Random Accuracy | Speedup | SNR Retention |
-|----------|-----------|---------------|-----------------|---------|---------------|
-| Well-behaved | 20% | 93.9% | 95.3% | 23.5x | **126.2%** |
-| Heavy-tailed | 20% | **106.6%** | 85.3% | 24.0x | **130.1%** |
-
-**Key Findings:**
-- **Well-behaved data:** Both methods work (CLT holds), random slightly better on accuracy
-- **Heavy-tailed data:** HVRT achieves +21pp accuracy advantage via intelligent noise filtering
-- **SNR (Signal-to-Noise Ratio):** HVRT improves data quality by 26-30% vs baseline
-- **SVM Speedup:** 24-38x training time reduction at scale (50k samples)
-
-**Why >100% accuracy?** HVRT acts as an intelligent denoiser, removing low-signal samples and improving SNR by 30%, which leads to better generalization.
-
-### Experimental Data
-
-All experimental results are included in this repository for full transparency and reproducibility.
-
-**📊 Primary Validation Study:**
-- [`archive/experimental/results/svm_pilot/pilot_results_with_snr.json`](archive/experimental/results/svm_pilot/pilot_results_with_snr.json) - Complete SVM pilot data with SNR measurements (15 trials, 10k samples)
-
-**📄 Analysis & Documentation:**
-- [`archive/docs/SVM_PILOT_SNR_ANALYSIS.md`](archive/docs/SVM_PILOT_SNR_ANALYSIS.md) - Detailed SNR analysis explaining >100% accuracy
-- [`archive/docs/SVM_PERFORMANCE_ANALYSIS.md`](archive/docs/SVM_PERFORMANCE_ANALYSIS.md) - SVM feasibility study (speedup, accuracy)
-
-**🔬 Reproduce Results:**
-```bash
-cd archive/experimental/experiments
-python exp_svm_pilot_with_snr.py  # ~30 seconds
-```
-
-**📑 Complete Archive:**
-See [`archive/ARCHIVE_INDEX.md`](archive/ARCHIVE_INDEX.md) for complete experimental data catalog.
-
-## Contributing
-
-Contributions welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+---
 
 ## Testing
 
 ```bash
-# Run tests
-pytest
-
-# With coverage
+pytest                                   # 171 tests
 pytest --cov=hvrt --cov-report=term-missing
 ```
 
+---
+
 ## Citation
 
-If you use HVRT in your research, please cite:
-
 ```bibtex
-@software{hvrt2025,
+@software{hvrt2026,
   author = {Peace, Jake},
-  title = {HVRT: Hierarchical Variance Reduction Tree Sample Reduction},
-  year = {2025},
-  url = {https://github.com/hotprotato/hvrt}
+  title  = {HVRT: Hierarchical Variance-Retaining Transformer},
+  year   = {2026},
+  url    = {https://github.com/hotprotato/hvrt}
 }
 ```
 
+---
+
 ## License
 
-MIT License - see [LICENSE](LICENSE) file.
+MIT License — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-Development assisted by Claude (Anthropic) for rapid prototyping and conceptual refinement.
-
-## Related Work
-
-- **Random Sampling**: Simple but fails on heavy-tailed data
-- **CoreSet Methods**: Require distance metrics (not suitable for all data)
-- **Active Learning**: Requires iterative labeling (different use case)
-- **HVRT**: Deterministic, variance-based, works without distance metrics
+Development assisted by Claude (Anthropic).

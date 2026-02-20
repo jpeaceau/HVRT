@@ -1,15 +1,14 @@
 """
-Adaptive Pipeline Sample Reducer
+Adaptive Pipeline Sample Reducer  [DEPRECATED — v1 API]
 
-Automatically finds the optimal reduction level by testing progressively
-aggressive reductions until accuracy drops below threshold.
+.. deprecated:: 2.0.0
+    This module is retained for backward compatibility only.
+    Use the v2 API instead::
 
-Key Features:
-- Progressive reduction with accuracy tracking
-- XGBoost validation by default (fast, accurate)
-- Custom pipeline support for specific use cases
-- Stores all reduction results for user decision-making
-- Returns best reduction that meets accuracy threshold
+        from hvrt import HVRT
+
+        model = HVRT(random_state=42).fit(X, y)
+        X_reduced, idx = model.reduce(ratio=0.2, return_indices=True)
 """
 
 import numpy as np
@@ -34,10 +33,14 @@ class AdaptiveHVRTReducer:
     """
     Adaptive sample reducer that finds optimal reduction via accuracy testing.
 
-    Use Cases:
-    1. SVM training: Use XGBoost to validate, get reduced samples for SVM
-    2. Faster inference: Reduce to minimum samples maintaining accuracy
-    3. Unknown optimal reduction: Let the tool find it automatically
+    .. deprecated:: 2.0.0
+        ``AdaptiveHVRTReducer`` is the v1 API and will be removed in a future
+        release.  Use ``HVRT`` from the v2 API instead::
+
+            from hvrt import HVRT
+
+            model = HVRT(random_state=42).fit(X, y)
+            X_reduced, idx = model.reduce(ratio=0.2, return_indices=True)
 
     Parameters
     ----------
@@ -143,6 +146,13 @@ class AdaptiveHVRTReducer:
         random_state: int = 42,
         verbose: bool = True
     ):
+        warnings.warn(
+            "AdaptiveHVRTReducer is deprecated and will be removed in a future release. "
+            "Use the v2 API instead: from hvrt import HVRT; model = HVRT().fit(X, y); "
+            "X_reduced, idx = model.reduce(ratio=0.2, return_indices=True)",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.accuracy_threshold = accuracy_threshold
         self.reduction_ratios = reduction_ratios or [0.5, 0.3, 0.2, 0.15, 0.1, 0.05]
         self.validator = validator

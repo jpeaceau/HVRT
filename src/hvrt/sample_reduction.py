@@ -1,26 +1,14 @@
 """
-H-VRT Sample Reduction - Sklearn-Compatible
+H-VRT Sample Reduction - Sklearn-Compatible  [DEPRECATED — v1 API]
 
-Intelligent sample reduction using H-VRT (Heterogeneous Variance Reduction Tree)
-partitioning with diversity-based selection.
+.. deprecated:: 2.0.0
+    This module is retained for backward compatibility only.
+    Use the v2 API instead::
 
-Key Features:
-- Sklearn BaseEstimator interface (fit/transform)
-- Partition-based stratified sampling
-- Diversity preservation via furthest-point sampling
-- Adaptive reduction ratio to maintain sample:feature ratio
-- Handles continuous and categorical features
-- Vectorized operations for efficiency
+        from hvrt import HVRT
 
-Usage:
-    from src.sample_reduction import HVRTSampleReducer
-
-    reducer = HVRTSampleReducer(reduction_ratio=0.2, auto_tune=True)
-    X_reduced, y_reduced = reducer.fit_transform(X, y)
-
-    # Or get indices
-    reducer.fit(X, y)
-    indices = reducer.selected_indices_
+        model = HVRT(random_state=42).fit(X, y)
+        X_reduced, idx = model.reduce(ratio=0.2, return_indices=True)
 """
 
 import numpy as np
@@ -38,10 +26,16 @@ from .selection_strategies import (
 
 class HVRTSampleReducer(BaseEstimator, TransformerMixin):
     """
-    H-VRT Sample Reducer
+    H-VRT Sample Reducer.
 
-    Reduces samples while preserving data diversity using H-VRT partitioning
-    and diversity-based selection within each partition.
+    .. deprecated:: 2.0.0
+        ``HVRTSampleReducer`` is the v1 API and will be removed in a future
+        release.  Use ``HVRT`` from the v2 API instead::
+
+            from hvrt import HVRT
+
+            model = HVRT(random_state=42).fit(X, y)
+            X_reduced, idx = model.reduce(ratio=0.2, return_indices=True)
 
     Parameters
     ----------
@@ -123,6 +117,13 @@ class HVRTSampleReducer(BaseEstimator, TransformerMixin):
         selection_strategy: Union[str, Callable[[np.ndarray, int, int], np.ndarray]] = 'centroid_fps',
         random_state: int = 42
     ):
+        warnings.warn(
+            "HVRTSampleReducer is deprecated and will be removed in a future release. "
+            "Use the v2 API instead: from hvrt import HVRT; model = HVRT().fit(X, y); "
+            "X_reduced, idx = model.reduce(ratio=0.2, return_indices=True)",
+            DeprecationWarning,
+            stacklevel=2,
+        )
         self.reduction_ratio = reduction_ratio
         self.max_leaf_nodes = max_leaf_nodes
         self.min_samples_leaf = min_samples_leaf
