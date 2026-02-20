@@ -7,7 +7,7 @@ all four HVRT-family expand combinations, and augment semantics.
 
 import pytest
 import numpy as np
-from hvrt import HVRT, FastHVRT
+from hvrt import HVRT, FastHVRT, HVRTDeprecationWarning
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +79,8 @@ class TestMinNovelty:
         X = correlated_data
         model = HVRT(random_state=0).fit(X)
         threshold = 0.5
-        X_synth = model.expand(n=100, min_novelty=threshold)
+        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
+            X_synth = model.expand(n=100, min_novelty=threshold)
         # Check a sample of points
         from scipy.spatial.distance import cdist
         # Normalize to z-score space for comparison (model stores X_z_)
@@ -91,7 +92,8 @@ class TestMinNovelty:
     def test_high_novelty_still_returns_n(self, simple_data):
         """Should return the requested number even if novelty is hard to meet."""
         model = HVRT(random_state=0).fit(simple_data)
-        X_synth = model.expand(n=50, min_novelty=0.5)
+        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
+            X_synth = model.expand(n=50, min_novelty=0.5)
         assert X_synth.shape[0] == 50
 
 
@@ -148,7 +150,8 @@ class TestAugment:
 
     def test_augment_with_min_novelty(self, simple_data):
         model = HVRT(random_state=0).fit(simple_data)
-        X_aug = model.augment(n=500, min_novelty=0.1)
+        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
+            X_aug = model.augment(n=500, min_novelty=0.1)
         assert X_aug.shape[0] == 500
 
 
@@ -191,3 +194,50 @@ class TestBandwidth:
         model = HVRT(random_state=0).fit(simple_data)
         model.expand(n=50, bandwidth=1.0)
         model.expand(n=50, bandwidth=0.1)  # should refine KDEs, not crash
+
+
+# ---------------------------------------------------------------------------
+# External X for expand
+# ---------------------------------------------------------------------------
+
+class TestExpandWithExternalData:
+    def test_shape_external_X(self, simple_data):
+        """expand(X=X_test) should return n rows with the correct feature count."""
+        rng = np.random.RandomState(99)
+        X_train = simple_data
+        X_test = rng.randn(80, X_train.shape[1])
+        model = HVRT(random_state=0).fit(X_train)
+        X_synth = model.expand(n=200, X=X_test)
+        assert X_synth.shape == (200, X_train.shape[1])
+
+    def test_finite_values_external_X(self, simple_data):
+        """All generated values should be finite when using external X."""
+        rng = np.random.RandomState(77)
+        X_train = simple_data
+        X_test = rng.randn(100, X_train.shape[1])
+        model = FastHVRT(random_state=0).fit(X_train)
+        X_synth = model.expand(n=150, X=X_test)
+        assert np.all(np.isfinite(X_synth))
+
+    def test_external_X_uses_source_distribution(self, simple_data):
+        """Synthetic data should reflect the distribution of the external X, not X_train."""
+        rng = np.random.RandomState(55)
+        X_train = simple_data
+        # Shift X_test far from X_train
+        X_test = rng.randn(200, X_train.shape[1]) + 10.0
+        model = HVRT(random_state=0).fit(X_train)
+        X_synth = model.expand(n=300, X=X_test)
+        # Synthetic data mean should be close to X_test mean, not X_train mean
+        assert abs(X_synth.mean() - X_test.mean()) < abs(X_synth.mean() - X_train.mean()), (
+            "Synthetic data mean should be closer to X_test than X_train"
+        )
+
+    def test_external_X_n_partitions_compatible(self, simple_data):
+        """n_partitions override should work together with external X."""
+        rng = np.random.RandomState(33)
+        X_train = simple_data
+        X_test = rng.randn(120, X_train.shape[1])
+        model = HVRT(random_state=0).fit(X_train)
+        X_synth = model.expand(n=100, X=X_test, n_partitions=5)
+        assert X_synth.shape == (100, X_train.shape[1])
+        assert np.all(np.isfinite(X_synth))

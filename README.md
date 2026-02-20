@@ -10,9 +10,7 @@ Variance-aware sample transformation for tabular data: reduce, expand, or augmen
 
 ## Overview
 
-HVRT partitions a dataset into variance-homogeneous regions via a decision tree fitted on a synthetic extremeness target, then applies a configurable per-partition operation (selection for reduction, sampling for expansion).
-
-Three operations are provided:
+HVRT partitions a dataset into variance-homogeneous regions via a decision tree fitted on a synthetic extremeness target, then applies a configurable per-partition operation (selection for reduction, sampling for expansion). The tree is fitted once; `reduce()`, `expand()`, and `augment()` all draw from the same fitted model.
 
 | Operation | Method | Description |
 |---|---|---|
@@ -30,7 +28,7 @@ Three operations are provided:
 X_z = (X - μ) / σ   per feature
 ```
 
-Categorical features are integer-encoded then z-scored. All operations are performed in z-score space and inverse-transformed for output.
+Categorical features are integer-encoded then z-scored.
 
 ### 2. Synthetic target construction
 
@@ -47,17 +45,15 @@ target = sum of all normalised interaction columns        O(n · d²)
 target_i = Σ_j  X_z[i, j]                               O(n · d)
 ```
 
-High |target| indicates a sample with co-occurring extreme values across feature combinations.
-
 ### 3. Partitioning
 
-A `DecisionTreeRegressor` is fitted on the synthetic target. Leaves form variance-homogeneous partitions: high-|target| samples (structural outliers) are isolated into small dedicated partitions; the dense typical region forms one large partition. Tree depth and leaf size are auto-tuned to dataset size.
+A `DecisionTreeRegressor` is fitted on the synthetic target. Leaves form variance-homogeneous partitions. Tree depth and leaf size are auto-tuned to dataset size.
 
 ### 4. Per-partition operations
 
-**Reduce:** Within each partition, select representatives using the chosen [selection strategy](#selection-strategies) (default: centroid-seeded Furthest Point Sampling). Budget across partitions is proportional to partition size (`variance_weighted=False`) or biased toward high-variance partitions (`variance_weighted=True`).
+**Reduce:** Select representatives within each partition using the chosen [selection strategy](#selection-strategies). Budget is proportional to partition size (`variance_weighted=False`) or biased toward high-variance partitions (`variance_weighted=True`).
 
-**Expand:** Within each partition, draw synthetic samples using the chosen [generation strategy](#generation-strategies) (default: multivariate Gaussian KDE, Scott's rule bandwidth). Budget across partitions follows the same allocation logic as reduce.
+**Expand:** Draw synthetic samples within each partition using the chosen [generation strategy](#generation-strategies). Budget allocation follows the same logic.
 
 ---
 
@@ -80,16 +76,15 @@ pip install -e .
 ```python
 from hvrt import HVRT, FastHVRT
 
-# Reduction
+# Fit once — reduce and expand from the same model
 model = HVRT(random_state=42).fit(X_train, y_train)   # y optional
 X_reduced, idx = model.reduce(ratio=0.3, return_indices=True)
+X_synthetic    = model.expand(n=50000)
+X_augmented    = model.augment(n=15000)
 
-# Expansion
+# FastHVRT — O(n·d) target; preferred for expansion
 model = FastHVRT(random_state=42).fit(X_train)
 X_synthetic = model.expand(n=50000)
-
-# Augmentation
-X_augmented = model.augment(n=15000)
 ```
 
 ---
@@ -102,17 +97,20 @@ X_augmented = model.augment(n=15000)
 from hvrt import HVRT
 
 model = HVRT(
-    n_partitions=None,         # Max tree leaves; auto-tuned if None
-    min_samples_leaf=None,     # Min samples per leaf; auto-tuned if None
-    y_weight=0.0,              # 0.0 = unsupervised; 1.0 = y drives splits
-    bandwidth=0.5,             # Default KDE bandwidth for expand()
+    n_partitions=None,           # Max tree leaves; auto-tuned if None
+    min_samples_leaf=None,       # Min samples per leaf; auto-tuned if None
+    y_weight=0.0,                # 0.0 = unsupervised; 1.0 = y drives splits
+    bandwidth=0.5,               # Default KDE bandwidth for expand()
     auto_tune=True,
-    mode='reduce',             # Default for fit_transform()
     random_state=42,
+    # Pipeline params (see Pipeline section)
+    reduce_params=None,
+    expand_params=None,
+    augment_params=None,
 )
 ```
 
-Target: sum of normalised pairwise feature interactions. O(n · d²). Use for reduction or when feature interaction structure matters.
+Target: sum of normalised pairwise feature interactions. O(n · d²). Preferred for reduction.
 
 ### `FastHVRT`
 
@@ -122,7 +120,7 @@ from hvrt import FastHVRT
 model = FastHVRT(bandwidth=0.5, random_state=42)
 ```
 
-Target: sum of z-scores. O(n · d). Equivalent quality to HVRT for expansion tasks. All constructor parameters are identical to HVRT.
+Target: sum of z-scores. O(n · d). Equivalent quality to HVRT for expansion. All constructor parameters identical to HVRT.
 
 ### `fit`
 
@@ -140,7 +138,7 @@ X_reduced = model.reduce(
     method='fps',            # Selection strategy; see Selection Strategies
     variance_weighted=True,  # Oversample high-variance partitions
     return_indices=False,
-    n_partitions=None,       # Override tree granularity for this call
+    n_partitions=None,       # Override tree granularity for this call only
 )
 ```
 
@@ -149,7 +147,6 @@ X_reduced = model.reduce(
 ```python
 X_synth = model.expand(
     n=10000,
-    min_novelty=0.0,              # Min z-space distance from any original sample
     variance_weighted=False,      # True = oversample tails
     bandwidth=None,               # Override instance bandwidth
     adaptive_bandwidth=False,     # Scale bandwidth with local expansion ratio
@@ -159,12 +156,12 @@ X_synth = model.expand(
 )
 ```
 
-`adaptive_bandwidth=True` uses per-partition bandwidth `bw_p = scott_p × max(1, budget_p/n_p)^(1/d)`. Benchmarked as equal-or-better for classification at high expansion ratios; worse for complex multi-modal regression. Not the default.
+`adaptive_bandwidth=True` uses per-partition bandwidth `bw_p = scott_p × max(1, budget_p/n_p)^(1/d)`.
 
 ### `augment`
 
 ```python
-X_aug = model.augment(n=15000, min_novelty=0.0, variance_weighted=False)
+X_aug = model.augment(n=15000, variance_weighted=False)
 # n must exceed len(X); returns original X concatenated with (n - len(X)) synthetic samples
 ```
 
@@ -179,29 +176,78 @@ novelty = model.compute_novelty(X_new)   # min z-space distance per point
 params = HVRT.recommend_params(X)        # {'n_partitions': 180, ...}
 ```
 
-### Presets
+---
+
+## sklearn Pipeline
+
+Operation parameters are declared at construction time via `ReduceParams`, `ExpandParams`, or `AugmentParams`. The tree is fitted once during `fit()`; `transform()` calls the corresponding operation.
 
 ```python
-model = HVRT.for_ml_reduction().fit(X, y)
-model = FastHVRT.for_synthetic_data().fit(X)
-model = HVRT.for_anomaly_augmentation().fit(X)
+from hvrt import HVRT, FastHVRT, ReduceParams, ExpandParams, AugmentParams
+from sklearn.pipeline import Pipeline
+
+# Reduce
+pipe = Pipeline([('hvrt', HVRT(reduce_params=ReduceParams(ratio=0.3)))])
+X_red = pipe.fit_transform(X, y)
+
+# Expand
+pipe = Pipeline([('hvrt', FastHVRT(expand_params=ExpandParams(n=50000)))])
+X_synth = pipe.fit_transform(X)
+
+# Augment
+pipe = Pipeline([('hvrt', HVRT(augment_params=AugmentParams(n=15000)))])
+X_aug = pipe.fit_transform(X)
 ```
 
-### `fit_transform`
+Alternatively, import from `hvrt.pipeline` to make the intent explicit:
 
 ```python
-X_out = model.fit_transform(X, y=None, **operation_kwargs)
-# Dispatches to reduce(), expand(), or augment() based on self.mode
+from hvrt.pipeline import HVRT, ReduceParams
+```
+
+### ReduceParams
+
+```python
+ReduceParams(
+    n=None,
+    ratio=None,              # e.g. 0.3
+    method='fps',
+    variance_weighted=True,
+    return_indices=False,
+    n_partitions=None,
+)
+```
+
+### ExpandParams
+
+```python
+ExpandParams(
+    n=50000,                 # required
+    variance_weighted=False,
+    bandwidth=None,
+    adaptive_bandwidth=False,
+    generation_strategy=None,
+    return_novelty_stats=False,
+    n_partitions=None,
+)
+```
+
+### AugmentParams
+
+```python
+AugmentParams(
+    n=15000,                 # required; must exceed len(X)
+    variance_weighted=False,
+    n_partitions=None,
+)
 ```
 
 ---
 
 ## Generation Strategies
 
-`expand()` delegates per-partition sampling to a pluggable strategy callable. The strategy receives one partition's z-scored data and returns synthetic samples in z-score space; inverse-transforming and categorical handling are done by the caller.
-
 ```python
-from hvrt import FastHVRT, univariate_kde_copula, get_generation_strategy
+from hvrt import FastHVRT, univariate_kde_copula
 
 model = FastHVRT(random_state=42).fit(X)
 
@@ -211,23 +257,22 @@ X_synth = model.expand(n=10000, generation_strategy='bootstrap_noise')
 # By reference
 X_synth = model.expand(n=10000, generation_strategy=univariate_kde_copula)
 
-# Custom callable: (X_partition: ndarray, budget: int, random_state: int) -> ndarray
-def my_strategy(X_partition, budget, random_state=42):
+# Custom callable
+def my_strategy(X_z, partition_ids, unique_partitions, budgets, random_state):
     ...
-    return X_synthetic   # shape (budget, n_features), z-score space
+    return X_synthetic   # shape (sum(budgets), n_features), z-score space
 
 X_synth = model.expand(n=10000, generation_strategy=my_strategy)
 ```
 
 | Strategy | Behaviour | Notes |
 |---|---|---|
-| `'multivariate_kde'` | `scipy.stats.gaussian_kde` fitted on all features jointly. Scott's rule bandwidth. **Default.** | Captures full joint covariance |
-| `'univariate_kde_copula'` | Per-feature 1-D KDE for marginals; Gaussian copula for joint dependence (rank → probit → correlation matrix → sample → invert marginal CDFs). | More flexible per-feature marginals |
-| `'bootstrap_noise'` | Resample with replacement; add Gaussian noise at 10% of per-feature within-partition std (floor 0.01). | Fastest; no distributional assumptions |
+| `'multivariate_kde'` | `scipy.stats.gaussian_kde` on all features jointly. Scott's rule. **Default.** | Captures full joint covariance |
+| `'univariate_kde_copula'` | Per-feature 1-D KDE marginals + Gaussian copula. | More flexible per-feature marginals |
+| `'bootstrap_noise'` | Resample with replacement + Gaussian noise at 10% of per-feature std. | Fastest; no distributional assumptions |
 
 ```python
-from hvrt import BUILTIN_GENERATION_STRATEGIES, get_generation_strategy
-
+from hvrt import BUILTIN_GENERATION_STRATEGIES
 list(BUILTIN_GENERATION_STRATEGIES)
 # ['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise']
 ```
@@ -236,40 +281,30 @@ list(BUILTIN_GENERATION_STRATEGIES)
 
 ## Selection Strategies
 
-`reduce()` delegates within-partition sample selection to a pluggable strategy. The strategy receives one partition's z-scored data and returns indices of selected samples.
-
 ```python
-from hvrt import HVRT, get_strategy
+from hvrt import HVRT
 
 model = HVRT(random_state=42).fit(X, y)
 
-# By name
-X_red = model.reduce(ratio=0.2, method='fps')            # default
+X_red = model.reduce(ratio=0.2, method='fps')             # default
 X_red = model.reduce(ratio=0.2, method='medoid_fps')
 X_red = model.reduce(ratio=0.2, method='variance_ordered')
 X_red = model.reduce(ratio=0.2, method='stratified')
 
-# Custom callable: (X_partition: ndarray, n_select: int, random_state: int) -> ndarray[int]
-def my_selector(X_partition, n_select, random_state=42):
+# Custom callable
+def my_selector(X_z, partition_ids, unique_partitions, budgets, random_state):
     ...
-    return selected_indices
+    return selected_indices   # global indices into X
 
 X_red = model.reduce(ratio=0.2, method=my_selector)
 ```
 
 | Strategy | Behaviour |
 |---|---|
-| `'fps'` / `'centroid_fps'` | Greedy Furthest Point Sampling seeded at partition centroid. Maximises minimum pairwise distance in the selected set. **Default.** |
-| `'medoid_fps'` | FPS seeded at the partition medoid (sample minimising sum of distances to all others). |
+| `'fps'` / `'centroid_fps'` | Greedy Furthest Point Sampling seeded at partition centroid. **Default.** |
+| `'medoid_fps'` | FPS seeded at the partition medoid. |
 | `'variance_ordered'` | Select samples with highest local k-NN variance (k=10). |
 | `'stratified'` | Random sample within each partition. |
-
-```python
-from hvrt import BUILTIN_STRATEGIES, get_strategy
-
-list(BUILTIN_STRATEGIES)
-# ['centroid_fps', 'medoid_fps', 'variance_ordered', 'stratified']
-```
 
 ---
 
@@ -278,7 +313,7 @@ list(BUILTIN_STRATEGIES)
 ### Sample reduction
 
 Metric: GBM ROC-AUC on reduced training set as % of full-training-set AUC.
-n=3 000 train / 2 000 test, seed=42. Values above 100% indicate the reduced set outperforms the full (noisy) training set.
+n=3 000 train / 2 000 test, seed=42.
 
 | Scenario | Retention | HVRT-fps | HVRT-yw | Random | Stratified |
 |---|---|---|---|---|---|
@@ -320,22 +355,13 @@ Reproduce: `python benchmarks/run_benchmarks.py --tasks expand`
 ## Benchmarking Scripts
 
 ```bash
-# Full suite: reduction + expansion across all built-in datasets
 python benchmarks/run_benchmarks.py
 python benchmarks/run_benchmarks.py --tasks reduce --datasets adult housing
 python benchmarks/run_benchmarks.py --tasks expand
-
-# Reduction denoising: HVRT vs random/stratified on structured noise datasets
 python benchmarks/reduction_denoising_benchmark.py
-
-# Adaptive bandwidth: standard vs adaptive KDE at expansion ratios 1–100×
-python benchmarks/adaptive_kde_benchmark.py        # Heart Disease dataset
-python benchmarks/adaptive_full_benchmark.py       # all 6 synthetic datasets
-
-# Deep learning comparison (requires: pip install ctgan)
-python benchmarks/heart_disease_benchmark.py
-
-# Bootstrap+noise failure modes
+python benchmarks/adaptive_kde_benchmark.py
+python benchmarks/adaptive_full_benchmark.py
+python benchmarks/heart_disease_benchmark.py      # requires: pip install ctgan
 python benchmarks/bootstrap_failure_benchmark.py
 ```
 
@@ -352,12 +378,22 @@ reducer = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
 X_reduced, y_reduced = reducer.fit_transform(X, y)
 ```
 
+The `mode` constructor parameter is deprecated. Replace with params objects:
+
+```python
+# Deprecated
+HVRT(mode='reduce')
+
+# Replacement
+HVRT(reduce_params=ReduceParams(ratio=0.3))
+```
+
 ---
 
 ## Testing
 
 ```bash
-pytest                                   # 171 tests
+pytest
 pytest --cov=hvrt --cov-report=term-missing
 ```
 

@@ -1,7 +1,11 @@
 """
-Selection Strategies for H-VRT Sample Reduction
+Selection Strategies for H-VRT Sample Reduction  [LEGACY — per-partition signature]
 
-Type definitions and built-in strategies for within-partition sample selection.
+This module is the original per-partition API, kept here so that
+``HVRTSampleReducer`` in ``legacy/sample_reduction.py`` continues to work
+without modification.
+
+The current (v2) partition-aware API lives in ``src/hvrt/selection_strategies.py``.
 """
 
 import numpy as np

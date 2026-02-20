@@ -1,13 +1,13 @@
 """
 Tests for HVRT and FastHVRT core classes.
 
-Covers: fit, reduce, expand, augment, fit_transform (all modes),
-        utility methods, presets, unsupervised/supervised modes.
+Covers: fit, reduce, expand, augment, fit_transform (params-based and legacy
+mode), utility methods, presets, unsupervised/supervised modes.
 """
 
 import pytest
 import numpy as np
-from hvrt import HVRT, FastHVRT
+from hvrt import HVRT, FastHVRT, HVRTDeprecationWarning, ReduceParams, ExpandParams, AugmentParams
 
 
 # ---------------------------------------------------------------------------
@@ -80,7 +80,7 @@ class TestReduce:
         model = ModelCls(random_state=0).fit(small_X)
         X_red = model.reduce(ratio=0.3)
         assert X_red.shape[1] == small_X.shape[1]
-        assert len(X_red) <= int(len(small_X) * 0.35)  # allow rounding
+        assert len(X_red) <= int(len(small_X) * 0.35)
 
     def test_reduce_n_shape(self, ModelCls, small_X):
         model = ModelCls(random_state=0).fit(small_X)
@@ -150,7 +150,8 @@ class TestExpand:
 
     def test_expand_min_novelty(self, ModelCls, small_X):
         model = ModelCls(random_state=0).fit(small_X)
-        X_synth = model.expand(n=100, min_novelty=0.1)
+        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
+            X_synth = model.expand(n=100, min_novelty=0.1)
         assert X_synth.shape[0] == 100
 
     def test_expand_novelty_stats(self, ModelCls, small_X):
@@ -165,12 +166,10 @@ class TestExpand:
             model.expand(n=10)
 
     def test_expand_output_scale_consistent(self, ModelCls, small_X):
-        # Synthetic samples should have roughly similar scale to originals
         model = ModelCls(random_state=0).fit(small_X)
         X_synth = model.expand(n=500)
         orig_std = small_X.std(axis=0)
         synth_std = X_synth.std(axis=0)
-        # Ratio of stds should be in [0.2, 5] for each feature
         ratio = synth_std / (orig_std + 1e-10)
         assert np.all(ratio > 0.1) and np.all(ratio < 10)
 
@@ -188,13 +187,12 @@ class TestAugment:
     def test_augment_contains_originals(self, ModelCls, small_X):
         model = ModelCls(random_state=0).fit(small_X)
         X_aug = model.augment(n=500)
-        # First len(small_X) rows should be the originals
         np.testing.assert_array_equal(X_aug[:len(small_X)], small_X)
 
     def test_augment_requires_n_gt_original(self, ModelCls, small_X):
         model = ModelCls(random_state=0).fit(small_X)
         with pytest.raises(ValueError):
-            model.augment(n=100)  # 100 < 300 = len(small_X)
+            model.augment(n=100)
 
     def test_augment_requires_fit(self, ModelCls):
         model = ModelCls()
@@ -203,31 +201,69 @@ class TestAugment:
 
 
 # ---------------------------------------------------------------------------
-# fit_transform (sklearn pipeline mode)
+# fit_transform — params-based pipeline API
 # ---------------------------------------------------------------------------
 
 class TestFitTransform:
     def test_fit_transform_reduce(self, ModelCls, small_X):
-        model = ModelCls(mode='reduce', random_state=0)
-        X_red = model.fit_transform(small_X, ratio=0.3)
+        model = ModelCls(reduce_params=ReduceParams(ratio=0.3), random_state=0)
+        X_red = model.fit_transform(small_X)
         assert X_red.shape[1] == small_X.shape[1]
         assert len(X_red) < len(small_X)
 
     def test_fit_transform_expand(self, ModelCls, small_X):
-        model = ModelCls(mode='expand', random_state=0)
-        X_synth = model.fit_transform(small_X, n=200)
+        model = ModelCls(expand_params=ExpandParams(n=200), random_state=0)
+        X_synth = model.fit_transform(small_X)
         assert X_synth.shape == (200, small_X.shape[1])
 
     def test_fit_transform_augment(self, ModelCls, small_X):
-        model = ModelCls(mode='augment', random_state=0)
-        X_aug = model.fit_transform(small_X, n=500)
+        model = ModelCls(augment_params=AugmentParams(n=500), random_state=0)
+        X_aug = model.fit_transform(small_X)
         assert X_aug.shape == (500, small_X.shape[1])
 
-    def test_fit_transform_bad_mode(self, ModelCls, small_X):
-        model = ModelCls(mode='invalid', random_state=0)
-        model.fit(small_X)
+    def test_fit_transform_kwargs_override_params(self, ModelCls, small_X):
+        """kwargs passed to fit_transform() override the params object fields."""
+        model = ModelCls(reduce_params=ReduceParams(ratio=0.3), random_state=0)
+        X_red = model.fit_transform(small_X, n=40, ratio=None)
+        assert len(X_red) == 40
+
+    def test_fit_transform_no_params_raises(self, ModelCls, small_X):
+        """fit_transform() with no params and no mode should raise ValueError."""
+        model = ModelCls(random_state=0).fit(small_X)
         with pytest.raises(ValueError):
             model.fit_transform(small_X)
+
+
+# ---------------------------------------------------------------------------
+# fit_transform — deprecated mode API
+# ---------------------------------------------------------------------------
+
+class TestFitTransformLegacyMode:
+    def test_mode_reduce_warns(self, ModelCls, small_X):
+        model = ModelCls(mode='reduce', random_state=0)
+        with pytest.warns(HVRTDeprecationWarning, match="mode.*deprecated"):
+            X_red = model.fit_transform(small_X, ratio=0.3)
+        assert X_red.shape[1] == small_X.shape[1]
+        assert len(X_red) < len(small_X)
+
+    def test_mode_expand_warns(self, ModelCls, small_X):
+        model = ModelCls(mode='expand', random_state=0)
+        with pytest.warns(HVRTDeprecationWarning, match="mode.*deprecated"):
+            X_synth = model.fit_transform(small_X, n=200)
+        assert X_synth.shape == (200, small_X.shape[1])
+
+    def test_mode_augment_warns(self, ModelCls, small_X):
+        model = ModelCls(mode='augment', random_state=0)
+        with pytest.warns(HVRTDeprecationWarning, match="mode.*deprecated"):
+            X_aug = model.fit_transform(small_X, n=500)
+        assert X_aug.shape == (500, small_X.shape[1])
+
+    def test_mode_invalid_raises(self, ModelCls, small_X):
+        model = ModelCls(mode='invalid', random_state=0)
+        model.fit(small_X)
+        with pytest.warns(HVRTDeprecationWarning):
+            with pytest.raises(ValueError):
+                model.fit_transform(small_X)
 
 
 # ---------------------------------------------------------------------------
@@ -256,34 +292,30 @@ class TestUtilities:
         assert 'n_partitions' in params
         assert 'min_samples_leaf' in params
 
-    def test_presets_return_instance(self, ModelCls):
-        assert isinstance(ModelCls.for_ml_reduction(), ModelCls)
-        assert isinstance(ModelCls.for_synthetic_data(), ModelCls)
-        assert isinstance(ModelCls.for_anomaly_augmentation(), ModelCls)
-
-    def test_preset_modes(self, ModelCls):
-        assert ModelCls.for_ml_reduction().mode == 'reduce'
-        assert ModelCls.for_synthetic_data().mode == 'expand'
-        assert ModelCls.for_anomaly_augmentation().mode == 'augment'
-
     def test_n_partitions_override_reduce(self, ModelCls, small_X):
-        """reduce() with n_partitions override re-fits tree to that granularity."""
         model = ModelCls(random_state=0).fit(small_X)
         default_parts = model.n_partitions_
         X_red = model.reduce(n=50, n_partitions=5)
         assert X_red.shape == (50, small_X.shape[1])
-        # Tree should have been re-fitted; resulting partitions <= 5
         assert model.n_partitions_ <= 5
-        # Requesting more partitions should diverge from coarse setting
         model.reduce(n=50, n_partitions=default_parts)
         assert model.n_partitions_ >= 1
 
     def test_n_partitions_override_expand(self, ModelCls, small_X):
-        """expand() with n_partitions override re-fits tree and KDEs."""
         model = ModelCls(random_state=0).fit(small_X)
         X_synth = model.expand(n=100, n_partitions=4)
         assert X_synth.shape == (100, small_X.shape[1])
         assert model.n_partitions_ <= 4
+
+    def test_fit_once_reduce_and_expand(self, ModelCls, small_X):
+        """Tree is fitted once; reduce and expand can both be called without refitting."""
+        model = ModelCls(random_state=0).fit(small_X)
+        tree_id = id(model.tree_)
+        X_red = model.reduce(ratio=0.3)
+        X_synth = model.expand(n=100)
+        assert id(model.tree_) == tree_id, "Tree should not be replaced by reduce/expand calls"
+        assert X_red.shape[1] == small_X.shape[1]
+        assert X_synth.shape == (100, small_X.shape[1])
 
 
 # ---------------------------------------------------------------------------
@@ -292,7 +324,6 @@ class TestUtilities:
 
 class TestHVRTvsFastHVRT:
     def test_different_partition_counts(self):
-        """Not guaranteed to differ, but both should be valid."""
         rng = np.random.RandomState(0)
         X = rng.randn(500, 8)
         m1 = HVRT(random_state=0).fit(X)
@@ -313,3 +344,30 @@ class TestHVRTvsFastHVRT:
         for Cls in (HVRT, FastHVRT):
             X_synth = Cls(random_state=0).fit(X).expand(n=300)
             assert X_synth.shape == (300, 5)
+
+
+# ---------------------------------------------------------------------------
+# Pipeline package
+# ---------------------------------------------------------------------------
+
+class TestPipelinePackage:
+    def test_pipeline_imports(self):
+        from hvrt.pipeline import HVRT as PHVRT, FastHVRT as PFastHVRT
+        from hvrt.pipeline import ReduceParams, ExpandParams, AugmentParams
+        assert PHVRT is HVRT
+        assert PFastHVRT is FastHVRT
+
+    def test_sklearn_pipeline_reduce(self, small_X):
+        from sklearn.pipeline import Pipeline
+        from hvrt.pipeline import HVRT as PHVRT, ReduceParams
+        pipe = Pipeline([('hvrt', PHVRT(reduce_params=ReduceParams(ratio=0.3), random_state=0))])
+        X_red = pipe.fit_transform(small_X)
+        assert X_red.shape[1] == small_X.shape[1]
+        assert len(X_red) < len(small_X)
+
+    def test_sklearn_pipeline_expand(self, small_X):
+        from sklearn.pipeline import Pipeline
+        from hvrt.pipeline import FastHVRT as PFastHVRT, ExpandParams
+        pipe = Pipeline([('hvrt', PFastHVRT(expand_params=ExpandParams(n=200), random_state=0))])
+        X_synth = pipe.fit_transform(small_X)
+        assert X_synth.shape == (200, small_X.shape[1])

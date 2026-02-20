@@ -1,0 +1,5684 @@
+[
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9381632396339682,
+      "correlation_fidelity": 0.9757915240774896,
+      "tail_preservation": 1.220699456715229,
+      "ml_utility_retention": 0.6747493428397086,
+      "train_time_seconds": 0.0526,
+      "operation_time_seconds": 0.0689
+    },
+    "timestamp": "2026-02-20T00:19:05.908395+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9205145634719768,
+      "correlation_fidelity": 0.9540491351423607,
+      "tail_preservation": 1.4588244078263943,
+      "ml_utility_retention": 0.6744590492618736,
+      "train_time_seconds": 0.0523,
+      "operation_time_seconds": 0.071
+    },
+    "timestamp": "2026-02-20T00:19:07.077283+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.939903880860374,
+      "correlation_fidelity": 0.9851367120717747,
+      "tail_preservation": 1.3797996295609032,
+      "ml_utility_retention": 0.6724034398825539,
+      "train_time_seconds": 0.0353,
+      "operation_time_seconds": 0.0657
+    },
+    "timestamp": "2026-02-20T00:19:08.191170+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9216807581727373,
+      "correlation_fidelity": 0.9619964532285874,
+      "tail_preservation": 1.4053823656048257,
+      "ml_utility_retention": 0.6714838196063042,
+      "train_time_seconds": 0.0334,
+      "operation_time_seconds": 0.0651
+    },
+    "timestamp": "2026-02-20T00:19:09.305938+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9405489581214904,
+      "correlation_fidelity": 0.9604412643987518,
+      "tail_preservation": 2.005700403300219,
+      "ml_utility_retention": 0.6594249288475676,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.1667
+    },
+    "timestamp": "2026-02-20T00:19:10.833939+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9922754839891451,
+      "correlation_fidelity": 0.9844935578246077,
+      "tail_preservation": 1.0054400461950748,
+      "ml_utility_retention": 0.6742391630591631,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0056
+    },
+    "timestamp": "2026-02-20T00:19:11.874816+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9903890886668156,
+      "correlation_fidelity": 0.9794381979854215,
+      "tail_preservation": 0.9580953533582827,
+      "ml_utility_retention": 0.6618001392702705,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:19:12.900074+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9906884273554869,
+      "correlation_fidelity": 0.9778736151230961,
+      "tail_preservation": 0.27115685396968486,
+      "ml_utility_retention": 0.6679949781477579,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:19:13.936100+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8982730590641368,
+      "correlation_fidelity": 0.9619791666077112,
+      "tail_preservation": 1.3417087791622135,
+      "ml_utility_retention": 0.6746920539989731,
+      "train_time_seconds": 0.0504,
+      "operation_time_seconds": 0.0413
+    },
+    "timestamp": "2026-02-20T00:19:14.643665+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8787198137232588,
+      "correlation_fidelity": 0.945703191753477,
+      "tail_preservation": 1.5555475672803045,
+      "ml_utility_retention": 0.6727080768784114,
+      "train_time_seconds": 0.0519,
+      "operation_time_seconds": 0.0434
+    },
+    "timestamp": "2026-02-20T00:19:15.392810+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8964131068645194,
+      "correlation_fidelity": 0.9781893520101304,
+      "tail_preservation": 1.7506032640630522,
+      "ml_utility_retention": 0.6689538541248758,
+      "train_time_seconds": 0.0331,
+      "operation_time_seconds": 0.0386
+    },
+    "timestamp": "2026-02-20T00:19:16.082350+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8762158653130036,
+      "correlation_fidelity": 0.9640949325380798,
+      "tail_preservation": 1.7872847996845578,
+      "ml_utility_retention": 0.6636690364311688,
+      "train_time_seconds": 0.034,
+      "operation_time_seconds": 0.0401
+    },
+    "timestamp": "2026-02-20T00:19:16.781086+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8969144564285025,
+      "correlation_fidelity": 0.928608015134006,
+      "tail_preservation": 2.6365252991522077,
+      "ml_utility_retention": 0.659758966241179,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.1413
+    },
+    "timestamp": "2026-02-20T00:19:18.155360+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9843829147421255,
+      "correlation_fidelity": 0.973906089497287,
+      "tail_preservation": 1.0235244234945275,
+      "ml_utility_retention": 0.6776204221090734,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0044
+    },
+    "timestamp": "2026-02-20T00:19:18.789727+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9867000775393712,
+      "correlation_fidelity": 0.9674873308367754,
+      "tail_preservation": 1.0067731733029857,
+      "ml_utility_retention": 0.6647995606784589,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:19:19.408022+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9851992220925996,
+      "correlation_fidelity": 0.9666232646930168,
+      "tail_preservation": 0.9043581260669019,
+      "ml_utility_retention": 0.6649576976099689,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:19:20.052074+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8659842673691865,
+      "correlation_fidelity": 0.9505319084945629,
+      "tail_preservation": 1.422247437622838,
+      "ml_utility_retention": 0.6678965224604737,
+      "train_time_seconds": 0.0539,
+      "operation_time_seconds": 0.0297
+    },
+    "timestamp": "2026-02-20T00:19:20.571542+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8429665274199845,
+      "correlation_fidelity": 0.9427494604287662,
+      "tail_preservation": 1.63199523151659,
+      "ml_utility_retention": 0.6669357994743931,
+      "train_time_seconds": 0.0528,
+      "operation_time_seconds": 0.0311
+    },
+    "timestamp": "2026-02-20T00:19:21.081714+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8611892495154418,
+      "correlation_fidelity": 0.971295965687592,
+      "tail_preservation": 1.9974585740848638,
+      "ml_utility_retention": 0.6690331479024192,
+      "train_time_seconds": 0.0333,
+      "operation_time_seconds": 0.0279
+    },
+    "timestamp": "2026-02-20T00:19:21.578203+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8400598404389602,
+      "correlation_fidelity": 0.9562928993328197,
+      "tail_preservation": 2.0244309444732016,
+      "ml_utility_retention": 0.6664492712860203,
+      "train_time_seconds": 0.0335,
+      "operation_time_seconds": 0.0296
+    },
+    "timestamp": "2026-02-20T00:19:22.070967+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8705424712283047,
+      "correlation_fidelity": 0.9024059778498678,
+      "tail_preservation": 3.2004882336145064,
+      "ml_utility_retention": 0.6510945413523707,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.078
+    },
+    "timestamp": "2026-02-20T00:19:23.366303+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.979909591605533,
+      "correlation_fidelity": 0.9591711947633057,
+      "tail_preservation": 0.9429228490284107,
+      "ml_utility_retention": 0.6763490852747842,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0037
+    },
+    "timestamp": "2026-02-20T00:19:23.799304+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9822893685912475,
+      "correlation_fidelity": 0.9616876871001271,
+      "tail_preservation": 0.9778677173982013,
+      "ml_utility_retention": 0.6708894372294373,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:19:24.321174+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.979637362838178,
+      "correlation_fidelity": 0.9554868162428973,
+      "tail_preservation": 1.0170950898485374,
+      "ml_utility_retention": 0.671335787209363,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005
+    },
+    "timestamp": "2026-02-20T00:19:24.862004+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8084595081434174,
+      "correlation_fidelity": 0.9394122135923089,
+      "tail_preservation": 1.4368140085502499,
+      "ml_utility_retention": 0.6788267026674112,
+      "train_time_seconds": 0.0513,
+      "operation_time_seconds": 0.0169
+    },
+    "timestamp": "2026-02-20T00:19:25.160197+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7851185123173094,
+      "correlation_fidelity": 0.9239610956531848,
+      "tail_preservation": 1.7723433308747256,
+      "ml_utility_retention": 0.6776484800615672,
+      "train_time_seconds": 0.0492,
+      "operation_time_seconds": 0.018
+    },
+    "timestamp": "2026-02-20T00:19:25.457079+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7929966786192041,
+      "correlation_fidelity": 0.9555640504386759,
+      "tail_preservation": 2.984729901017703,
+      "ml_utility_retention": 0.6619654170345771,
+      "train_time_seconds": 0.0329,
+      "operation_time_seconds": 0.0156
+    },
+    "timestamp": "2026-02-20T00:19:25.736120+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7709105532855516,
+      "correlation_fidelity": 0.9474226095952937,
+      "tail_preservation": 2.9422608853811334,
+      "ml_utility_retention": 0.6660652745076885,
+      "train_time_seconds": 0.0344,
+      "operation_time_seconds": 0.0183
+    },
+    "timestamp": "2026-02-20T00:19:26.019760+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8091375498426001,
+      "correlation_fidelity": 0.8663315756503105,
+      "tail_preservation": 4.02518132042344,
+      "ml_utility_retention": 0.6531096817671493,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.0195
+    },
+    "timestamp": "2026-02-20T00:19:27.149471+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9627649432255065,
+      "correlation_fidelity": 0.9469386938665804,
+      "tail_preservation": 0.29333691544781726,
+      "ml_utility_retention": 0.6700593458575483,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0034
+    },
+    "timestamp": "2026-02-20T00:19:27.385422+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9729587703968389,
+      "correlation_fidelity": 0.9463214993928095,
+      "tail_preservation": 1.0463005053263024,
+      "ml_utility_retention": 0.6669357994743931,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:19:27.622993+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "adult",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9703935273375446,
+      "correlation_fidelity": 0.9362474777961336,
+      "tail_preservation": 0.27308270200079016,
+      "ml_utility_retention": 0.6622356096452525,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004
+    },
+    "timestamp": "2026-02-20T00:19:27.855835+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9429424675762373,
+      "correlation_fidelity": 0.8529406673062269,
+      "tail_preservation": 1.0474290435834401,
+      "ml_utility_retention": 0.9994978120316255,
+      "train_time_seconds": 0.2813,
+      "operation_time_seconds": 0.1068
+    },
+    "timestamp": "2026-02-20T00:19:31.502634+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.856013163365033,
+      "correlation_fidelity": 0.7485200136769408,
+      "tail_preservation": 1.2137814672640672,
+      "ml_utility_retention": 0.9997494555349193,
+      "train_time_seconds": 0.2872,
+      "operation_time_seconds": 0.0943
+    },
+    "timestamp": "2026-02-20T00:19:34.942335+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9255974028911212,
+      "correlation_fidelity": 0.9453814306902529,
+      "tail_preservation": 1.1058351572602507,
+      "ml_utility_retention": 0.9997494555349193,
+      "train_time_seconds": 0.0893,
+      "operation_time_seconds": 0.1178
+    },
+    "timestamp": "2026-02-20T00:19:38.431067+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9147788892058037,
+      "correlation_fidelity": 0.9583398089034278,
+      "tail_preservation": 1.1125222505365364,
+      "ml_utility_retention": 0.9997494555349193,
+      "train_time_seconds": 0.0878,
+      "operation_time_seconds": 0.116
+    },
+    "timestamp": "2026-02-20T00:19:41.905886+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9038075094093744,
+      "correlation_fidelity": 0.9508095934395354,
+      "tail_preservation": 1.1183380103222433,
+      "ml_utility_retention": 0.9979639907121922,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.9026
+    },
+    "timestamp": "2026-02-20T00:19:44.837025+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9888712537271649,
+      "correlation_fidelity": 0.9616298830041915,
+      "tail_preservation": 1.0077147077052793,
+      "ml_utility_retention": 0.9982225611651532,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0078
+    },
+    "timestamp": "2026-02-20T00:19:48.166080+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9882477342506442,
+      "correlation_fidelity": 0.9806667526177542,
+      "tail_preservation": 0.999488809353686,
+      "ml_utility_retention": 0.9992450541223935,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:19:51.549247+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9898312970917947,
+      "correlation_fidelity": 0.9685015658095716,
+      "tail_preservation": 0.9986095816805564,
+      "ml_utility_retention": 0.9997494555349193,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:19:54.986027+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9118309583760605,
+      "correlation_fidelity": 0.7871293876422719,
+      "tail_preservation": 1.0788062656599018,
+      "ml_utility_retention": 0.9984799360556824,
+      "train_time_seconds": 0.2881,
+      "operation_time_seconds": 0.0667
+    },
+    "timestamp": "2026-02-20T00:19:57.405576+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7799429620294963,
+      "correlation_fidelity": 0.6289877286951456,
+      "tail_preservation": 1.3968867383845687,
+      "ml_utility_retention": 0.9997494555349193,
+      "train_time_seconds": 0.3039,
+      "operation_time_seconds": 0.0649
+    },
+    "timestamp": "2026-02-20T00:19:59.810994+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8849833406291435,
+      "correlation_fidelity": 0.9131215426914769,
+      "tail_preservation": 1.1655471712328735,
+      "ml_utility_retention": 0.9992450541223935,
+      "train_time_seconds": 0.0954,
+      "operation_time_seconds": 0.0761
+    },
+    "timestamp": "2026-02-20T00:20:02.048723+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8753201559083889,
+      "correlation_fidelity": 0.919230093764557,
+      "tail_preservation": 1.1720067627974242,
+      "ml_utility_retention": 0.9992450541223935,
+      "train_time_seconds": 0.0947,
+      "operation_time_seconds": 0.0828
+    },
+    "timestamp": "2026-02-20T00:20:04.293509+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8587941575305366,
+      "correlation_fidelity": 0.9345308602392013,
+      "tail_preservation": 1.1832207428148998,
+      "ml_utility_retention": 0.9977042075547788,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.9046
+    },
+    "timestamp": "2026-02-20T00:20:06.857741+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9804876205279203,
+      "correlation_fidelity": 0.954618522719719,
+      "tail_preservation": 1.010247208965696,
+      "ml_utility_retention": 0.9992450541223935,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.006
+    },
+    "timestamp": "2026-02-20T00:20:08.910756+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9855227456023038,
+      "correlation_fidelity": 0.9694367057155531,
+      "tail_preservation": 0.9987369291570098,
+      "ml_utility_retention": 0.9971809329501257,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:20:10.960830+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9861971379787436,
+      "correlation_fidelity": 0.9775968146262414,
+      "tail_preservation": 0.9999889734934443,
+      "ml_utility_retention": 0.9984799360556824,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:20:13.036895+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8899814962291677,
+      "correlation_fidelity": 0.7556804662150982,
+      "tail_preservation": 1.105024892585993,
+      "ml_utility_retention": 0.9977042075547788,
+      "train_time_seconds": 0.304,
+      "operation_time_seconds": 0.0601
+    },
+    "timestamp": "2026-02-20T00:20:14.789263+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7536914309007978,
+      "correlation_fidelity": 0.6414326928993155,
+      "tail_preservation": 1.421944619922287,
+      "ml_utility_retention": 0.9994978120316255,
+      "train_time_seconds": 0.3123,
+      "operation_time_seconds": 0.049
+    },
+    "timestamp": "2026-02-20T00:20:16.525595+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8552105665875572,
+      "correlation_fidelity": 0.8863216151198132,
+      "tail_preservation": 1.2143359857876892,
+      "ml_utility_retention": 0.9992450541223935,
+      "train_time_seconds": 0.0943,
+      "operation_time_seconds": 0.0508
+    },
+    "timestamp": "2026-02-20T00:20:18.044508+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8460965235295888,
+      "correlation_fidelity": 0.8940300897340592,
+      "tail_preservation": 1.2188668854298246,
+      "ml_utility_retention": 0.9994978120316255,
+      "train_time_seconds": 0.0928,
+      "operation_time_seconds": 0.0515
+    },
+    "timestamp": "2026-02-20T00:20:19.570095+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8199213492797894,
+      "correlation_fidelity": 0.9127921979742223,
+      "tail_preservation": 1.2342245227858066,
+      "ml_utility_retention": 0.9984799360556824,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.825
+    },
+    "timestamp": "2026-02-20T00:20:21.854329+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9785305752696979,
+      "correlation_fidelity": 0.94881917899184,
+      "tail_preservation": 1.0111324561007953,
+      "ml_utility_retention": 0.9966525936747594,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0066
+    },
+    "timestamp": "2026-02-20T00:20:23.235989+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.980237446054132,
+      "correlation_fidelity": 0.941873687830566,
+      "tail_preservation": 0.999454460001364,
+      "ml_utility_retention": 0.9975,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:20:24.611270+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9811736945047285,
+      "correlation_fidelity": 0.9616368657506218,
+      "tail_preservation": 1.0006084661989028,
+      "ml_utility_retention": 0.9989911661603178,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:20:25.984036+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8532237800923657,
+      "correlation_fidelity": 0.7224727125745056,
+      "tail_preservation": 1.145943148948458,
+      "ml_utility_retention": 0.9956833628296576,
+      "train_time_seconds": 0.3113,
+      "operation_time_seconds": 0.0253
+    },
+    "timestamp": "2026-02-20T00:20:27.013207+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7569941467831895,
+      "correlation_fidelity": 0.7941711001737588,
+      "tail_preservation": 1.33298875573757,
+      "ml_utility_retention": 0.9989911661603178,
+      "train_time_seconds": 0.3019,
+      "operation_time_seconds": 0.0257
+    },
+    "timestamp": "2026-02-20T00:20:28.041801+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8154415017590784,
+      "correlation_fidelity": 0.8601779426727411,
+      "tail_preservation": 1.2759348717164694,
+      "ml_utility_retention": 0.9974431942307184,
+      "train_time_seconds": 0.0947,
+      "operation_time_seconds": 0.0312
+    },
+    "timestamp": "2026-02-20T00:20:28.879872+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8044838554374866,
+      "correlation_fidelity": 0.8757170928862447,
+      "tail_preservation": 1.2830172842138288,
+      "ml_utility_retention": 0.9974431942307184,
+      "train_time_seconds": 0.0939,
+      "operation_time_seconds": 0.0288
+    },
+    "timestamp": "2026-02-20T00:20:29.684857+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7678019802870701,
+      "correlation_fidelity": 0.8359002053124427,
+      "tail_preservation": 1.2890544875694228,
+      "ml_utility_retention": 0.9931552086216573,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.7389
+    },
+    "timestamp": "2026-02-20T00:20:31.611187+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9617364130943475,
+      "correlation_fidelity": 0.8271770411571101,
+      "tail_preservation": 1.008757855811973,
+      "ml_utility_retention": 0.9949331201856082,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0062
+    },
+    "timestamp": "2026-02-20T00:20:32.295813+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9676637336984378,
+      "correlation_fidelity": 0.9008389645718505,
+      "tail_preservation": 0.999742871188865,
+      "ml_utility_retention": 0.9977042075547788,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:20:32.792179+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "fraud",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9679886504991057,
+      "correlation_fidelity": 0.8595170980372935,
+      "tail_preservation": 0.9823820393487808,
+      "ml_utility_retention": 0.9937447924841364,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005
+    },
+    "timestamp": "2026-02-20T00:20:33.282721+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9233360365107244,
+      "correlation_fidelity": 0.9572125288019401,
+      "tail_preservation": 1.0744596265465967,
+      "ml_utility_retention": 0.635464704950318,
+      "train_time_seconds": 0.0871,
+      "operation_time_seconds": 0.0623
+    },
+    "timestamp": "2026-02-20T00:20:34.838476+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.861744426109688,
+      "correlation_fidelity": 0.9619090370416506,
+      "tail_preservation": 1.177588963457063,
+      "ml_utility_retention": 0.6366678864474051,
+      "train_time_seconds": 0.0865,
+      "operation_time_seconds": 0.0599
+    },
+    "timestamp": "2026-02-20T00:20:36.369080+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9225065110991036,
+      "correlation_fidelity": 0.9784557642557751,
+      "tail_preservation": 1.121090007480051,
+      "ml_utility_retention": 0.6419089140104994,
+      "train_time_seconds": 0.0579,
+      "operation_time_seconds": 0.0595
+    },
+    "timestamp": "2026-02-20T00:20:37.874416+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.851287316749356,
+      "correlation_fidelity": 0.9444857313836489,
+      "tail_preservation": 1.199248700419833,
+      "ml_utility_retention": 0.6389938062433496,
+      "train_time_seconds": 0.0573,
+      "operation_time_seconds": 0.0614
+    },
+    "timestamp": "2026-02-20T00:20:39.392243+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8693629620586535,
+      "correlation_fidelity": 0.9409393166606118,
+      "tail_preservation": 1.1238686471080443,
+      "ml_utility_retention": 0.619676028739198,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.0386
+    },
+    "timestamp": "2026-02-20T00:20:40.873165+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9902996152187689,
+      "correlation_fidelity": 0.9818434402780382,
+      "tail_preservation": 1.0014637936217592,
+      "ml_utility_retention": 0.6318594159373381,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.004
+    },
+    "timestamp": "2026-02-20T00:20:42.272631+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9911417227221869,
+      "correlation_fidelity": 0.9803923680002793,
+      "tail_preservation": 0.9967050779295055,
+      "ml_utility_retention": 0.632127744287651,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0023
+    },
+    "timestamp": "2026-02-20T00:20:43.664988+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9908225665716305,
+      "correlation_fidelity": 0.9829862699797776,
+      "tail_preservation": 0.9889137377292353,
+      "ml_utility_retention": 0.6392886666661655,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:20:45.055555+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.877906803200404,
+      "correlation_fidelity": 0.9339726723489916,
+      "tail_preservation": 1.1218866304621455,
+      "ml_utility_retention": 0.636604686057141,
+      "train_time_seconds": 0.0868,
+      "operation_time_seconds": 0.037
+    },
+    "timestamp": "2026-02-20T00:20:46.003019+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8072873137890085,
+      "correlation_fidelity": 0.9627828629425682,
+      "tail_preservation": 1.2287496741744577,
+      "ml_utility_retention": 0.6345797320560279,
+      "train_time_seconds": 0.0877,
+      "operation_time_seconds": 0.0403
+    },
+    "timestamp": "2026-02-20T00:20:46.967216+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.874997602960695,
+      "correlation_fidelity": 0.967917266175687,
+      "tail_preservation": 1.193933659363021,
+      "ml_utility_retention": 0.6344517127654818,
+      "train_time_seconds": 0.0576,
+      "operation_time_seconds": 0.0394
+    },
+    "timestamp": "2026-02-20T00:20:47.917252+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7931063280451376,
+      "correlation_fidelity": 0.9499980189784605,
+      "tail_preservation": 1.2943978048596354,
+      "ml_utility_retention": 0.635366206084918,
+      "train_time_seconds": 0.0596,
+      "operation_time_seconds": 0.0417
+    },
+    "timestamp": "2026-02-20T00:20:48.873543+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7808663905923946,
+      "correlation_fidelity": 0.9082055444994679,
+      "tail_preservation": 1.1980734280376462,
+      "ml_utility_retention": 0.6113977281238636,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.9818
+    },
+    "timestamp": "2026-02-20T00:20:50.141611+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9837686886755106,
+      "correlation_fidelity": 0.9703906081313771,
+      "tail_preservation": 1.012782505138924,
+      "ml_utility_retention": 0.6235198307940149,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0029
+    },
+    "timestamp": "2026-02-20T00:20:51.012703+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9857621681951612,
+      "correlation_fidelity": 0.9735639569985508,
+      "tail_preservation": 0.9955017152866479,
+      "ml_utility_retention": 0.6195920340424641,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0021
+    },
+    "timestamp": "2026-02-20T00:20:51.858792+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9820837571294716,
+      "correlation_fidelity": 0.9725821523561997,
+      "tail_preservation": 0.9898479722678649,
+      "ml_utility_retention": 0.630749840840926,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:20:52.717447+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8478383409279553,
+      "correlation_fidelity": 0.9159302509356002,
+      "tail_preservation": 1.1562845216522954,
+      "ml_utility_retention": 0.6276217161284798,
+      "train_time_seconds": 0.1012,
+      "operation_time_seconds": 0.0275
+    },
+    "timestamp": "2026-02-20T00:20:53.430524+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7695661385575457,
+      "correlation_fidelity": 0.9561923305973604,
+      "tail_preservation": 1.2674229779120356,
+      "ml_utility_retention": 0.6343667656148138,
+      "train_time_seconds": 0.0893,
+      "operation_time_seconds": 0.0286
+    },
+    "timestamp": "2026-02-20T00:20:54.120223+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8353088419216491,
+      "correlation_fidelity": 0.9570374180578112,
+      "tail_preservation": 1.2716127335944023,
+      "ml_utility_retention": 0.6322641183011166,
+      "train_time_seconds": 0.0624,
+      "operation_time_seconds": 0.0265
+    },
+    "timestamp": "2026-02-20T00:20:54.765170+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7505998620338588,
+      "correlation_fidelity": 0.9512136694527066,
+      "tail_preservation": 1.3641503141980378,
+      "ml_utility_retention": 0.6326370043000932,
+      "train_time_seconds": 0.058,
+      "operation_time_seconds": 0.029
+    },
+    "timestamp": "2026-02-20T00:20:55.405294+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7053005503816068,
+      "correlation_fidelity": 0.8839543522071589,
+      "tail_preservation": 1.2596650848971742,
+      "ml_utility_retention": 0.5975571515962634,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.9254
+    },
+    "timestamp": "2026-02-20T00:20:56.530552+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9764598317392306,
+      "correlation_fidelity": 0.9597639410972945,
+      "tail_preservation": 1.0201144011861354,
+      "ml_utility_retention": 0.6145416778580031,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0028
+    },
+    "timestamp": "2026-02-20T00:20:57.103501+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9834228224307826,
+      "correlation_fidelity": 0.9653180013027556,
+      "tail_preservation": 1.00568448063233,
+      "ml_utility_retention": 0.6133039821277433,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002
+    },
+    "timestamp": "2026-02-20T00:20:57.667990+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9764599301054334,
+      "correlation_fidelity": 0.9663309079032372,
+      "tail_preservation": 0.996940099902274,
+      "ml_utility_retention": 0.6274808024715752,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005
+    },
+    "timestamp": "2026-02-20T00:20:58.231835+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7881294323354828,
+      "correlation_fidelity": 0.9026744970055653,
+      "tail_preservation": 1.2163384918640008,
+      "ml_utility_retention": 0.6158491705927117,
+      "train_time_seconds": 0.0867,
+      "operation_time_seconds": 0.0151
+    },
+    "timestamp": "2026-02-20T00:20:58.621854+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7089030091150945,
+      "correlation_fidelity": 0.9303590957183147,
+      "tail_preservation": 1.3201090905390724,
+      "ml_utility_retention": 0.6177185300440154,
+      "train_time_seconds": 0.0901,
+      "operation_time_seconds": 0.0177
+    },
+    "timestamp": "2026-02-20T00:20:59.020868+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7691356568943555,
+      "correlation_fidelity": 0.9527024459430865,
+      "tail_preservation": 1.4106084977446696,
+      "ml_utility_retention": 0.6216616413520977,
+      "train_time_seconds": 0.0588,
+      "operation_time_seconds": 0.0165
+    },
+    "timestamp": "2026-02-20T00:20:59.382616+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6743714808012293,
+      "correlation_fidelity": 0.9396786905007494,
+      "tail_preservation": 1.5052766337723866,
+      "ml_utility_retention": 0.6218292956160385,
+      "train_time_seconds": 0.0574,
+      "operation_time_seconds": 0.0178
+    },
+    "timestamp": "2026-02-20T00:20:59.744607+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5885721910880266,
+      "correlation_fidelity": 0.8480969107534105,
+      "tail_preservation": 1.3751592608643788,
+      "ml_utility_retention": 0.5518790804083107,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.8884
+    },
+    "timestamp": "2026-02-20T00:21:00.743195+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9696934773073621,
+      "correlation_fidelity": 0.9489784764385378,
+      "tail_preservation": 1.014664588958251,
+      "ml_utility_retention": 0.6055868226335552,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.003
+    },
+    "timestamp": "2026-02-20T00:21:01.031590+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.971109746154957,
+      "correlation_fidelity": 0.9585162164782095,
+      "tail_preservation": 1.0050614382066214,
+      "ml_utility_retention": 0.6029820422975445,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019
+    },
+    "timestamp": "2026-02-20T00:21:01.318323+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9645059732334377,
+      "correlation_fidelity": 0.9461963120756129,
+      "tail_preservation": 0.996443555438374,
+      "ml_utility_retention": 0.5829445100779831,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004
+    },
+    "timestamp": "2026-02-20T00:21:01.606675+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9279362721710286,
+      "correlation_fidelity": 0.9693221369143858,
+      "tail_preservation": 1.0771194030599873,
+      "ml_utility_retention": 0.9789224507038221,
+      "train_time_seconds": 0.0855,
+      "operation_time_seconds": 0.085
+    },
+    "timestamp": "2026-02-20T00:21:04.044944+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8824923355153554,
+      "correlation_fidelity": 0.934897540876845,
+      "tail_preservation": 1.0896799162128383,
+      "ml_utility_retention": 0.9783265173470677,
+      "train_time_seconds": 0.0871,
+      "operation_time_seconds": 0.0818
+    },
+    "timestamp": "2026-02-20T00:21:06.473892+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8717844563058521,
+      "correlation_fidelity": 0.9242633370939894,
+      "tail_preservation": 1.0956015033742403,
+      "ml_utility_retention": 0.9786076388368625,
+      "train_time_seconds": 0.0728,
+      "operation_time_seconds": 0.0889
+    },
+    "timestamp": "2026-02-20T00:21:08.883468+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8725442658320527,
+      "correlation_fidelity": 0.92396887956932,
+      "tail_preservation": 1.094613875246439,
+      "ml_utility_retention": 0.9782425259273566,
+      "train_time_seconds": 0.0708,
+      "operation_time_seconds": 0.085
+    },
+    "timestamp": "2026-02-20T00:21:11.286639+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8116157421463299,
+      "correlation_fidelity": 0.8473409753046484,
+      "tail_preservation": 1.099247601968498,
+      "ml_utility_retention": 0.9768089350277183,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.4683
+    },
+    "timestamp": "2026-02-20T00:21:13.465868+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9901909210662401,
+      "correlation_fidelity": 0.9839484445349258,
+      "tail_preservation": 0.9985138665980786,
+      "ml_utility_retention": 0.9758821277162418,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.006
+    },
+    "timestamp": "2026-02-20T00:21:15.725851+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9923335369902446,
+      "correlation_fidelity": 0.9819688006411207,
+      "tail_preservation": 0.9987773760608782,
+      "ml_utility_retention": 0.97659148054698,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0023
+    },
+    "timestamp": "2026-02-20T00:21:17.988155+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9892566430176416,
+      "correlation_fidelity": 0.9819798857688923,
+      "tail_preservation": 1.0028307152006395,
+      "ml_utility_retention": 0.9772582453407671,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:21:20.243738+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.883269435371821,
+      "correlation_fidelity": 0.950922756886051,
+      "tail_preservation": 1.1223595792594196,
+      "ml_utility_retention": 0.9785839968576456,
+      "train_time_seconds": 0.09,
+      "operation_time_seconds": 0.0509
+    },
+    "timestamp": "2026-02-20T00:21:21.725273+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8394853500022617,
+      "correlation_fidelity": 0.9278756939277469,
+      "tail_preservation": 1.1377539370583183,
+      "ml_utility_retention": 0.978274195086071,
+      "train_time_seconds": 0.09,
+      "operation_time_seconds": 0.0523
+    },
+    "timestamp": "2026-02-20T00:21:23.202156+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.816786656939824,
+      "correlation_fidelity": 0.9041726843894572,
+      "tail_preservation": 1.1479679104582168,
+      "ml_utility_retention": 0.9777842356240812,
+      "train_time_seconds": 0.0772,
+      "operation_time_seconds": 0.0542
+    },
+    "timestamp": "2026-02-20T00:21:24.679867+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8113650323172032,
+      "correlation_fidelity": 0.897882653533177,
+      "tail_preservation": 1.1472644868549304,
+      "ml_utility_retention": 0.9773852480064275,
+      "train_time_seconds": 0.0785,
+      "operation_time_seconds": 0.0544
+    },
+    "timestamp": "2026-02-20T00:21:26.181747+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.722522033580785,
+      "correlation_fidelity": 0.7986636305381929,
+      "tail_preservation": 1.1477769408426324,
+      "ml_utility_retention": 0.9749003335450107,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.3657
+    },
+    "timestamp": "2026-02-20T00:21:27.976182+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9871837076341858,
+      "correlation_fidelity": 0.9744751219962282,
+      "tail_preservation": 0.9989195277930499,
+      "ml_utility_retention": 0.9751570746242405,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0045
+    },
+    "timestamp": "2026-02-20T00:21:29.335712+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9886684577242214,
+      "correlation_fidelity": 0.969729035241375,
+      "tail_preservation": 0.9973394416714945,
+      "ml_utility_retention": 0.9757400024905762,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002
+    },
+    "timestamp": "2026-02-20T00:21:30.692567+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.983002591215168,
+      "correlation_fidelity": 0.972259525928637,
+      "tail_preservation": 1.000862692069526,
+      "ml_utility_retention": 0.9765272269924435,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:21:32.033870+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.851480000560316,
+      "correlation_fidelity": 0.9391797329084899,
+      "tail_preservation": 1.1566291389143561,
+      "ml_utility_retention": 0.9781952852638152,
+      "train_time_seconds": 0.0872,
+      "operation_time_seconds": 0.0349
+    },
+    "timestamp": "2026-02-20T00:21:33.039623+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8064114403941501,
+      "correlation_fidelity": 0.9165864701906309,
+      "tail_preservation": 1.1726730071812757,
+      "ml_utility_retention": 0.9778302708651175,
+      "train_time_seconds": 0.0868,
+      "operation_time_seconds": 0.0364
+    },
+    "timestamp": "2026-02-20T00:21:34.048773+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7753679403216692,
+      "correlation_fidelity": 0.8894177757343905,
+      "tail_preservation": 1.1859662027553104,
+      "ml_utility_retention": 0.9781910672423909,
+      "train_time_seconds": 0.0716,
+      "operation_time_seconds": 0.0364
+    },
+    "timestamp": "2026-02-20T00:21:35.035478+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7732486439549938,
+      "correlation_fidelity": 0.8858161087357443,
+      "tail_preservation": 1.1869149242386148,
+      "ml_utility_retention": 0.9777096487690964,
+      "train_time_seconds": 0.073,
+      "operation_time_seconds": 0.0436
+    },
+    "timestamp": "2026-02-20T00:21:36.029670+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6654104021976153,
+      "correlation_fidelity": 0.774644957168046,
+      "tail_preservation": 1.177755980058023,
+      "ml_utility_retention": 0.9721054987486597,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.2964
+    },
+    "timestamp": "2026-02-20T00:21:37.616527+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9802277464718419,
+      "correlation_fidelity": 0.9613295309062416,
+      "tail_preservation": 1.0055794934362146,
+      "ml_utility_retention": 0.9748572979267313,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0064
+    },
+    "timestamp": "2026-02-20T00:21:38.524181+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9844368378715429,
+      "correlation_fidelity": 0.9651772958765079,
+      "tail_preservation": 0.9942942539218389,
+      "ml_utility_retention": 0.975229565480643,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002
+    },
+    "timestamp": "2026-02-20T00:21:39.427682+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9796245978179834,
+      "correlation_fidelity": 0.9637808774511277,
+      "tail_preservation": 1.003101763350207,
+      "ml_utility_retention": 0.9758890469217136,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005
+    },
+    "timestamp": "2026-02-20T00:21:40.275577+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7928230550526357,
+      "correlation_fidelity": 0.921448538604134,
+      "tail_preservation": 1.2110495505893448,
+      "ml_utility_retention": 0.9749858350243127,
+      "train_time_seconds": 0.0867,
+      "operation_time_seconds": 0.018
+    },
+    "timestamp": "2026-02-20T00:21:40.801611+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7528489786444011,
+      "correlation_fidelity": 0.9068164463010984,
+      "tail_preservation": 1.2270500108047246,
+      "ml_utility_retention": 0.9760954629909581,
+      "train_time_seconds": 0.0863,
+      "operation_time_seconds": 0.0196
+    },
+    "timestamp": "2026-02-20T00:21:41.327738+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7167253024446014,
+      "correlation_fidelity": 0.8810648718004164,
+      "tail_preservation": 1.246375126398384,
+      "ml_utility_retention": 0.9758081001119369,
+      "train_time_seconds": 0.0675,
+      "operation_time_seconds": 0.0188
+    },
+    "timestamp": "2026-02-20T00:21:41.845630+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7100536266001599,
+      "correlation_fidelity": 0.8736219136371091,
+      "tail_preservation": 1.2452385787332947,
+      "ml_utility_retention": 0.9741797230364447,
+      "train_time_seconds": 0.0673,
+      "operation_time_seconds": 0.0192
+    },
+    "timestamp": "2026-02-20T00:21:42.349148+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5908854950179182,
+      "correlation_fidelity": 0.7556222158599599,
+      "tail_preservation": 1.2414514616147252,
+      "ml_utility_retention": 0.9719802271983357,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.2215
+    },
+    "timestamp": "2026-02-20T00:21:43.740109+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9632406898305201,
+      "correlation_fidelity": 0.9471843281148788,
+      "tail_preservation": 1.0072878731798478,
+      "ml_utility_retention": 0.9729448750529481,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0074
+    },
+    "timestamp": "2026-02-20T00:21:44.184701+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9724097207876323,
+      "correlation_fidelity": 0.9405295384944812,
+      "tail_preservation": 0.9903534057842796,
+      "ml_utility_retention": 0.9734803983776571,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0018
+    },
+    "timestamp": "2026-02-20T00:21:44.636251+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9711529546220699,
+      "correlation_fidelity": 0.9473493702075398,
+      "tail_preservation": 1.0048815916793175,
+      "ml_utility_retention": 0.9731011972442538,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005
+    },
+    "timestamp": "2026-02-20T00:21:45.108523+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9128267030268105,
+      "correlation_fidelity": 0.9753858163502829,
+      "tail_preservation": 1.110844237547208,
+      "ml_utility_retention": 0.9136875234742549,
+      "emergence_score": 0.542875,
+      "train_time_seconds": 0.0324,
+      "operation_time_seconds": 0.0316
+    },
+    "timestamp": "2026-02-20T00:21:45.786167+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8914068618501834,
+      "correlation_fidelity": 0.9678634102362931,
+      "tail_preservation": 1.1174105553137097,
+      "ml_utility_retention": 0.9142605414303997,
+      "emergence_score": 0.555625,
+      "train_time_seconds": 0.0251,
+      "operation_time_seconds": 0.0283
+    },
+    "timestamp": "2026-02-20T00:21:46.440451+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9057376713416612,
+      "correlation_fidelity": 0.9878721332259445,
+      "tail_preservation": 1.1325128601442924,
+      "ml_utility_retention": 0.9128831534596615,
+      "emergence_score": 0.526,
+      "train_time_seconds": 0.0168,
+      "operation_time_seconds": 0.0252
+    },
+    "timestamp": "2026-02-20T00:21:47.095562+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.892145675960098,
+      "correlation_fidelity": 0.9767037210917054,
+      "tail_preservation": 1.1335399060981395,
+      "ml_utility_retention": 0.9116476827823812,
+      "emergence_score": 0.536625,
+      "train_time_seconds": 0.0171,
+      "operation_time_seconds": 0.0271
+    },
+    "timestamp": "2026-02-20T00:21:47.732691+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8737639778918297,
+      "correlation_fidelity": 0.9794245189126605,
+      "tail_preservation": 1.1304033702423186,
+      "ml_utility_retention": 0.9180507361570466,
+      "emergence_score": 0.594,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.9403
+    },
+    "timestamp": "2026-02-20T00:21:49.084265+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.988079862778915,
+      "correlation_fidelity": 0.9719914319899104,
+      "tail_preservation": 1.003692633056453,
+      "ml_utility_retention": 0.9077851604607765,
+      "emergence_score": 0.744125,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0043
+    },
+    "timestamp": "2026-02-20T00:21:49.837416+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9869888848114294,
+      "correlation_fidelity": 0.9797920091215925,
+      "tail_preservation": 1.003250850726173,
+      "ml_utility_retention": 0.8946293295673905,
+      "emergence_score": 0.703375,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0034
+    },
+    "timestamp": "2026-02-20T00:21:50.482645+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9863944902894077,
+      "correlation_fidelity": 0.9796728470475065,
+      "tail_preservation": 0.9963339359445446,
+      "ml_utility_retention": 0.9068388554342994,
+      "emergence_score": 0.72925,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004
+    },
+    "timestamp": "2026-02-20T00:21:51.114218+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8637331213415278,
+      "correlation_fidelity": 0.9621055005962983,
+      "tail_preservation": 1.177867692244553,
+      "ml_utility_retention": 0.900439274979235,
+      "emergence_score": 0.4415,
+      "train_time_seconds": 0.0248,
+      "operation_time_seconds": 0.0176
+    },
+    "timestamp": "2026-02-20T00:21:51.517036+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8409305975448378,
+      "correlation_fidelity": 0.9511436607941129,
+      "tail_preservation": 1.1815457582396984,
+      "ml_utility_retention": 0.9085075277740491,
+      "emergence_score": 0.449125,
+      "train_time_seconds": 0.0254,
+      "operation_time_seconds": 0.0166
+    },
+    "timestamp": "2026-02-20T00:21:51.920536+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8513411938113621,
+      "correlation_fidelity": 0.9823367980005616,
+      "tail_preservation": 1.21444478381018,
+      "ml_utility_retention": 0.9055382474832138,
+      "emergence_score": 0.4765,
+      "train_time_seconds": 0.0184,
+      "operation_time_seconds": 0.0173
+    },
+    "timestamp": "2026-02-20T00:21:52.325349+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.836348152637587,
+      "correlation_fidelity": 0.9764156119226071,
+      "tail_preservation": 1.2173378151853138,
+      "ml_utility_retention": 0.9087683494439238,
+      "emergence_score": 0.219875,
+      "train_time_seconds": 0.0183,
+      "operation_time_seconds": 0.019
+    },
+    "timestamp": "2026-02-20T00:21:52.734584+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8048227662046644,
+      "correlation_fidelity": 0.9693301010250855,
+      "tail_preservation": 1.213680535193819,
+      "ml_utility_retention": 0.9067871148175821,
+      "emergence_score": 0.119625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.8399
+    },
+    "timestamp": "2026-02-20T00:21:53.806024+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9766793247671531,
+      "correlation_fidelity": 0.9568402333363899,
+      "tail_preservation": 0.9997999291551903,
+      "ml_utility_retention": 0.8924717480286581,
+      "emergence_score": 0.6385,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0021
+    },
+    "timestamp": "2026-02-20T00:21:54.158435+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9822909621668992,
+      "correlation_fidelity": 0.9706350001073676,
+      "tail_preservation": 0.9862641443755639,
+      "ml_utility_retention": 0.8966108763854261,
+      "emergence_score": 0.633875,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0012
+    },
+    "timestamp": "2026-02-20T00:21:54.517311+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9776718477482262,
+      "correlation_fidelity": 0.9590203608829472,
+      "tail_preservation": 0.9997676275436304,
+      "ml_utility_retention": 0.892233859081618,
+      "emergence_score": 0.34575,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:21:54.870550+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8285710860002095,
+      "correlation_fidelity": 0.9566592307963039,
+      "tail_preservation": 1.2227719250893427,
+      "ml_utility_retention": 0.9040361133674975,
+      "emergence_score": 0.002625,
+      "train_time_seconds": 0.0238,
+      "operation_time_seconds": 0.011
+    },
+    "timestamp": "2026-02-20T00:21:55.167635+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.802619955322422,
+      "correlation_fidelity": 0.9508053664017951,
+      "tail_preservation": 1.2294704208308953,
+      "ml_utility_retention": 0.9054755615038802,
+      "emergence_score": 0.0045,
+      "train_time_seconds": 0.0251,
+      "operation_time_seconds": 0.0123
+    },
+    "timestamp": "2026-02-20T00:21:55.455367+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8115280255494269,
+      "correlation_fidelity": 0.9801077224808394,
+      "tail_preservation": 1.2797800898701015,
+      "ml_utility_retention": 0.8874397156064852,
+      "emergence_score": 0.434875,
+      "train_time_seconds": 0.0178,
+      "operation_time_seconds": 0.0119
+    },
+    "timestamp": "2026-02-20T00:21:55.739437+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8040813057604662,
+      "correlation_fidelity": 0.9837632287501329,
+      "tail_preservation": 1.2772195789267318,
+      "ml_utility_retention": 0.9062868321823472,
+      "emergence_score": 0.34525,
+      "train_time_seconds": 0.0169,
+      "operation_time_seconds": 0.0116
+    },
+    "timestamp": "2026-02-20T00:21:56.014340+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7548797468238696,
+      "correlation_fidelity": 0.9575780490800062,
+      "tail_preservation": 1.2771150370453317,
+      "ml_utility_retention": 0.9089563659687789,
+      "emergence_score": 0.107125,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.7774
+    },
+    "timestamp": "2026-02-20T00:21:56.975431+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9704075276514311,
+      "correlation_fidelity": 0.9426001150822476,
+      "tail_preservation": 1.0160429010349457,
+      "ml_utility_retention": 0.8758285928011278,
+      "emergence_score": 0.687375,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0026
+    },
+    "timestamp": "2026-02-20T00:21:57.236209+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9769102842891362,
+      "correlation_fidelity": 0.963947179009708,
+      "tail_preservation": 0.9852087150557561,
+      "ml_utility_retention": 0.871871539907515,
+      "emergence_score": 0.2955,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0014
+    },
+    "timestamp": "2026-02-20T00:21:57.487234+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.969747723047116,
+      "correlation_fidelity": 0.9477068036175885,
+      "tail_preservation": 0.9968432078382309,
+      "ml_utility_retention": 0.8952097422913097,
+      "emergence_score": 0.35075,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:21:57.734289+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.759712230495649,
+      "correlation_fidelity": 0.9304572136401399,
+      "tail_preservation": 1.326162267766152,
+      "ml_utility_retention": 0.8898766225634309,
+      "emergence_score": 0.00475,
+      "train_time_seconds": 0.0242,
+      "operation_time_seconds": 0.0063
+    },
+    "timestamp": "2026-02-20T00:21:57.905772+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.739629228515707,
+      "correlation_fidelity": 0.9317904369380732,
+      "tail_preservation": 1.3350055948712896,
+      "ml_utility_retention": 0.8872476752058633,
+      "emergence_score": 0.115375,
+      "train_time_seconds": 0.0246,
+      "operation_time_seconds": 0.007
+    },
+    "timestamp": "2026-02-20T00:21:58.080442+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7378574761541936,
+      "correlation_fidelity": 0.9774753471784231,
+      "tail_preservation": 1.4153667587689236,
+      "ml_utility_retention": 0.8692671618343609,
+      "emergence_score": 0.107125,
+      "train_time_seconds": 0.017,
+      "operation_time_seconds": 0.0065
+    },
+    "timestamp": "2026-02-20T00:21:58.251827+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7277283438505849,
+      "correlation_fidelity": 0.9767788552909589,
+      "tail_preservation": 1.4167084790241182,
+      "ml_utility_retention": 0.8774177441680229,
+      "emergence_score": 0.004875,
+      "train_time_seconds": 0.0177,
+      "operation_time_seconds": 0.0078
+    },
+    "timestamp": "2026-02-20T00:21:58.428697+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6828925299749117,
+      "correlation_fidelity": 0.9433717479078196,
+      "tail_preservation": 1.3617965522513367,
+      "ml_utility_retention": 0.8840203253167457,
+      "emergence_score": 0.304375,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.7981
+    },
+    "timestamp": "2026-02-20T00:21:59.333392+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9539589846713729,
+      "correlation_fidelity": 0.9264717110438937,
+      "tail_preservation": 1.0337473446759282,
+      "ml_utility_retention": 0.8660611076861696,
+      "emergence_score": 0.218625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0026
+    },
+    "timestamp": "2026-02-20T00:21:59.485853+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9649883047304391,
+      "correlation_fidelity": 0.9484725614212028,
+      "tail_preservation": 0.9879426392705078,
+      "ml_utility_retention": 0.8523462808302013,
+      "emergence_score": 0.217375,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:21:59.630235+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_divergence",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9487273919587836,
+      "correlation_fidelity": 0.9368073539191357,
+      "tail_preservation": 0.9996875743023526,
+      "ml_utility_retention": 0.8474734283046164,
+      "emergence_score": 0.352625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:21:59.777704+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9128267030268105,
+      "correlation_fidelity": 0.9753858163502829,
+      "tail_preservation": 1.110844237547208,
+      "ml_utility_retention": 0.9667427952862865,
+      "emergence_score": 0.8525,
+      "train_time_seconds": 0.0271,
+      "operation_time_seconds": 0.0247
+    },
+    "timestamp": "2026-02-20T00:22:00.426186+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8914068618501834,
+      "correlation_fidelity": 0.9678634102362931,
+      "tail_preservation": 1.1174105553137097,
+      "ml_utility_retention": 0.9654496166533774,
+      "emergence_score": 0.85475,
+      "train_time_seconds": 0.026,
+      "operation_time_seconds": 0.0277
+    },
+    "timestamp": "2026-02-20T00:22:01.073229+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9057376713416612,
+      "correlation_fidelity": 0.9878721332259445,
+      "tail_preservation": 1.1325128601442924,
+      "ml_utility_retention": 0.9649436104413546,
+      "emergence_score": 0.886875,
+      "train_time_seconds": 0.0173,
+      "operation_time_seconds": 0.0256
+    },
+    "timestamp": "2026-02-20T00:22:01.698394+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.892145675960098,
+      "correlation_fidelity": 0.9767037210917054,
+      "tail_preservation": 1.1335399060981395,
+      "ml_utility_retention": 0.9640757018806179,
+      "emergence_score": 0.8535,
+      "train_time_seconds": 0.0166,
+      "operation_time_seconds": 0.0257
+    },
+    "timestamp": "2026-02-20T00:22:02.357626+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8737639778918297,
+      "correlation_fidelity": 0.9794245189126605,
+      "tail_preservation": 1.1304033702423186,
+      "ml_utility_retention": 0.9611379783458964,
+      "emergence_score": 0.834625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.9165
+    },
+    "timestamp": "2026-02-20T00:22:03.689831+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.988079862778915,
+      "correlation_fidelity": 0.9719914319899104,
+      "tail_preservation": 1.003692633056453,
+      "ml_utility_retention": 0.9552444321133997,
+      "emergence_score": 0.880625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0017
+    },
+    "timestamp": "2026-02-20T00:22:04.284416+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.988988202321385,
+      "correlation_fidelity": 0.9772536512154246,
+      "tail_preservation": 0.9992058765879536,
+      "ml_utility_retention": 0.9560980544587364,
+      "emergence_score": 0.005125,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:22:04.871591+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9863944902894077,
+      "correlation_fidelity": 0.9796728470475065,
+      "tail_preservation": 0.9963339359445446,
+      "ml_utility_retention": 0.9522728589154856,
+      "emergence_score": 0.77675,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:22:05.488529+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8637331213415278,
+      "correlation_fidelity": 0.9621055005962983,
+      "tail_preservation": 1.177867692244553,
+      "ml_utility_retention": 0.9645692515339348,
+      "emergence_score": 0.7645,
+      "train_time_seconds": 0.0255,
+      "operation_time_seconds": 0.0193
+    },
+    "timestamp": "2026-02-20T00:22:05.942355+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8409305975448378,
+      "correlation_fidelity": 0.9511436607941129,
+      "tail_preservation": 1.1815457582396984,
+      "ml_utility_retention": 0.9628583610088286,
+      "emergence_score": 0.8615,
+      "train_time_seconds": 0.0251,
+      "operation_time_seconds": 0.0176
+    },
+    "timestamp": "2026-02-20T00:22:06.358354+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8513411938113621,
+      "correlation_fidelity": 0.9823367980005616,
+      "tail_preservation": 1.21444478381018,
+      "ml_utility_retention": 0.9631352549950973,
+      "emergence_score": 0.007875,
+      "train_time_seconds": 0.0172,
+      "operation_time_seconds": 0.0165
+    },
+    "timestamp": "2026-02-20T00:22:06.758889+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.836348152637587,
+      "correlation_fidelity": 0.9764156119226071,
+      "tail_preservation": 1.2173378151853138,
+      "ml_utility_retention": 0.9631938838985425,
+      "emergence_score": 0.835125,
+      "train_time_seconds": 0.0194,
+      "operation_time_seconds": 0.0163
+    },
+    "timestamp": "2026-02-20T00:22:07.151582+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8048227662046644,
+      "correlation_fidelity": 0.9693301010250855,
+      "tail_preservation": 1.213680535193819,
+      "ml_utility_retention": 0.9618763016303882,
+      "emergence_score": 0.826625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.8346
+    },
+    "timestamp": "2026-02-20T00:22:08.220543+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9766793247671531,
+      "correlation_fidelity": 0.9568402333363899,
+      "tail_preservation": 0.9997999291551903,
+      "ml_utility_retention": 0.9489927446856685,
+      "emergence_score": 0.71675,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0031
+    },
+    "timestamp": "2026-02-20T00:22:08.586208+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9813165984925774,
+      "correlation_fidelity": 0.963444003964292,
+      "tail_preservation": 0.9997057047448613,
+      "ml_utility_retention": 0.9475435519202847,
+      "emergence_score": 0.792,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0016
+    },
+    "timestamp": "2026-02-20T00:22:08.953791+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9776718477482262,
+      "correlation_fidelity": 0.9590203608829472,
+      "tail_preservation": 0.9997676275436304,
+      "ml_utility_retention": 0.9522570832831845,
+      "emergence_score": 0.85925,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:22:09.357613+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8285710860002095,
+      "correlation_fidelity": 0.9566592307963039,
+      "tail_preservation": 1.2227719250893427,
+      "ml_utility_retention": 0.9631738978953933,
+      "emergence_score": 0.80125,
+      "train_time_seconds": 0.0248,
+      "operation_time_seconds": 0.0111
+    },
+    "timestamp": "2026-02-20T00:22:09.646536+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.802619955322422,
+      "correlation_fidelity": 0.9508053664017951,
+      "tail_preservation": 1.2294704208308953,
+      "ml_utility_retention": 0.9627246880126377,
+      "emergence_score": 0.774125,
+      "train_time_seconds": 0.0325,
+      "operation_time_seconds": 0.012
+    },
+    "timestamp": "2026-02-20T00:22:09.981711+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8115280255494269,
+      "correlation_fidelity": 0.9801077224808394,
+      "tail_preservation": 1.2797800898701015,
+      "ml_utility_retention": 0.9555998358161992,
+      "emergence_score": 0.008,
+      "train_time_seconds": 0.0214,
+      "operation_time_seconds": 0.0107
+    },
+    "timestamp": "2026-02-20T00:22:10.296366+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8040813057604662,
+      "correlation_fidelity": 0.9837632287501329,
+      "tail_preservation": 1.2772195789267318,
+      "ml_utility_retention": 0.9570016892351425,
+      "emergence_score": 0.02425,
+      "train_time_seconds": 0.0169,
+      "operation_time_seconds": 0.0122
+    },
+    "timestamp": "2026-02-20T00:22:10.654540+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7548797468238696,
+      "correlation_fidelity": 0.9575780490800062,
+      "tail_preservation": 1.2771150370453317,
+      "ml_utility_retention": 0.9535281080872112,
+      "emergence_score": 0.815875,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.8039
+    },
+    "timestamp": "2026-02-20T00:22:11.630631+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9704075276514311,
+      "correlation_fidelity": 0.9426001150822476,
+      "tail_preservation": 1.0160429010349457,
+      "ml_utility_retention": 0.9443667717176845,
+      "emergence_score": 0.7365,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019
+    },
+    "timestamp": "2026-02-20T00:22:11.883100+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9699228536893644,
+      "correlation_fidelity": 0.9615297134739897,
+      "tail_preservation": 1.0015199284516834,
+      "ml_utility_retention": 0.9428852269410657,
+      "emergence_score": 0.750625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0014
+    },
+    "timestamp": "2026-02-20T00:22:12.146066+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.969747723047116,
+      "correlation_fidelity": 0.9477068036175885,
+      "tail_preservation": 0.9968432078382309,
+      "ml_utility_retention": 0.9368646587425342,
+      "emergence_score": 0.734625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:22:12.400110+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.759712230495649,
+      "correlation_fidelity": 0.9304572136401399,
+      "tail_preservation": 1.326162267766152,
+      "ml_utility_retention": 0.947723999492361,
+      "emergence_score": 0.128625,
+      "train_time_seconds": 0.0243,
+      "operation_time_seconds": 0.0064
+    },
+    "timestamp": "2026-02-20T00:22:12.583034+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.739629228515707,
+      "correlation_fidelity": 0.9317904369380732,
+      "tail_preservation": 1.3350055948712896,
+      "ml_utility_retention": 0.9500367691107979,
+      "emergence_score": 0.028125,
+      "train_time_seconds": 0.0279,
+      "operation_time_seconds": 0.0073
+    },
+    "timestamp": "2026-02-20T00:22:12.763187+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7378574761541936,
+      "correlation_fidelity": 0.9774753471784231,
+      "tail_preservation": 1.4153667587689236,
+      "ml_utility_retention": 0.9458716710696469,
+      "emergence_score": 0.111375,
+      "train_time_seconds": 0.0166,
+      "operation_time_seconds": 0.0063
+    },
+    "timestamp": "2026-02-20T00:22:12.931093+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7277283438505849,
+      "correlation_fidelity": 0.9767788552909589,
+      "tail_preservation": 1.4167084790241182,
+      "ml_utility_retention": 0.9429131366225202,
+      "emergence_score": 0.111375,
+      "train_time_seconds": 0.0174,
+      "operation_time_seconds": 0.0073
+    },
+    "timestamp": "2026-02-20T00:22:13.095236+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6828925299749117,
+      "correlation_fidelity": 0.9433717479078196,
+      "tail_preservation": 1.3617965522513367,
+      "ml_utility_retention": 0.9177502993614364,
+      "emergence_score": 0.6555,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.8038
+    },
+    "timestamp": "2026-02-20T00:22:14.005280+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9539589846713729,
+      "correlation_fidelity": 0.9264717110438937,
+      "tail_preservation": 1.0337473446759282,
+      "ml_utility_retention": 0.9335263738809003,
+      "emergence_score": 0.562125,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019
+    },
+    "timestamp": "2026-02-20T00:22:14.156947+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9583656725391134,
+      "correlation_fidelity": 0.9236400546184127,
+      "tail_preservation": 0.9834482166551544,
+      "ml_utility_retention": 0.9233730180628348,
+      "emergence_score": 0.012625,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0012
+    },
+    "timestamp": "2026-02-20T00:22:14.302415+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "emergence_bifurcation",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9487273919587836,
+      "correlation_fidelity": 0.9368073539191357,
+      "tail_preservation": 0.9996875743023526,
+      "ml_utility_retention": 0.9329216357428501,
+      "emergence_score": 0.619125,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:22:14.449950+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7612603925167454,
+      "correlation_fidelity": 0.8629255512700742,
+      "tail_preservation": 3.9635596076696022,
+      "discriminator_accuracy": 0.5250110294462749,
+      "privacy_dcr": 784.4004023335682,
+      "novelty_min": 5921.871658186285,
+      "ml_utility_tstr": 0.48,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:22:14.576975+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7612603925167454,
+      "correlation_fidelity": 0.8629255512700742,
+      "tail_preservation": 3.9635596076696022,
+      "discriminator_accuracy": 0.5250110294462749,
+      "privacy_dcr": 784.4004023335682,
+      "novelty_min": 5921.871658186285,
+      "ml_utility_tstr": 0.48,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:22:14.698548+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7612603925167454,
+      "correlation_fidelity": 0.8629255512700742,
+      "tail_preservation": 3.9635596076696022,
+      "discriminator_accuracy": 0.5250110294462749,
+      "privacy_dcr": 784.4004023335682,
+      "novelty_min": 5921.871658186285,
+      "ml_utility_tstr": 0.48,
+      "train_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:22:14.822031+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7612603925167454,
+      "correlation_fidelity": 0.8629255512700742,
+      "tail_preservation": 3.9635596076696022,
+      "discriminator_accuracy": 0.5250110294462749,
+      "privacy_dcr": 784.4004023335682,
+      "novelty_min": 5921.871658186285,
+      "ml_utility_tstr": 0.48,
+      "train_time_seconds": 0.0025,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:22:14.950772+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7369075767639454,
+      "correlation_fidelity": 0.8743678308301034,
+      "tail_preservation": 2.9494192635031893,
+      "discriminator_accuracy": 0.5012719063576544,
+      "privacy_dcr": 180.21179062433933,
+      "novelty_min": 2403.2752970580423,
+      "ml_utility_tstr": 0.6538609842719432,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.72
+    },
+    "timestamp": "2026-02-20T00:22:16.845633+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9263159703008348,
+      "correlation_fidelity": 0.8468461233334518,
+      "tail_preservation": 0.08118376040821407,
+      "discriminator_accuracy": 0.5174828456910064,
+      "privacy_dcr": 0.32834775067027966,
+      "novelty_min": 5.24819513166917,
+      "ml_utility_tstr": 0.6183288409703505,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002
+    },
+    "timestamp": "2026-02-20T00:22:16.985019+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.902043581201553,
+      "correlation_fidelity": 0.8514964054237483,
+      "tail_preservation": 2.2929049916151576,
+      "discriminator_accuracy": 0.5074718631785456,
+      "privacy_dcr": 163.56137849062256,
+      "novelty_min": 1826.2994020058325,
+      "ml_utility_tstr": 0.626070686070686,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0002
+    },
+    "timestamp": "2026-02-20T00:22:17.194179+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8654532930250441,
+      "correlation_fidelity": 0.8722944345706332,
+      "tail_preservation": 0.7763203236545243,
+      "discriminator_accuracy": 0.5137844611528822,
+      "privacy_dcr": 0.3828503309433343,
+      "novelty_min": 0.06731318937825591,
+      "ml_utility_tstr": 0.6116331096196868,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.239
+    },
+    "timestamp": "2026-02-20T00:22:17.609302+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.42352488077273176,
+      "correlation_fidelity": 0.7830034489306018,
+      "tail_preservation": 3.1116938083610703,
+      "discriminator_accuracy": 0.7949837139665643,
+      "privacy_dcr": 153.74063558799355,
+      "novelty_min": 2330.0897982992456,
+      "ml_utility_tstr": 0.6105936073059361,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 7.906
+    },
+    "timestamp": "2026-02-20T00:22:25.682757+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5990627688441714,
+      "correlation_fidelity": 0.7851022241263859,
+      "tail_preservation": 1.1387890338821745,
+      "discriminator_accuracy": 0.7962462335614316,
+      "privacy_dcr": 74.2498418272166,
+      "novelty_min": 98.3684903892706,
+      "ml_utility_tstr": 0.6426614861583293,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 3.0602
+    },
+    "timestamp": "2026-02-20T00:22:28.908986+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7926711754535959,
+      "correlation_fidelity": 0.9412201064396735,
+      "tail_preservation": 3.855539141257195,
+      "discriminator_accuracy": 0.5137844611528822,
+      "privacy_dcr": 764.5281099252172,
+      "novelty_min": 1103.3950409715546,
+      "ml_utility_tstr": 0.6338255033557048,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:22:29.111080+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7926711754535959,
+      "correlation_fidelity": 0.9412201064396735,
+      "tail_preservation": 3.855539141257195,
+      "discriminator_accuracy": 0.5137844611528822,
+      "privacy_dcr": 764.5281099252172,
+      "novelty_min": 1103.3950409715546,
+      "ml_utility_tstr": 0.6338255033557048,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:22:29.318992+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7926711754535959,
+      "correlation_fidelity": 0.9412201064396735,
+      "tail_preservation": 3.855539141257195,
+      "discriminator_accuracy": 0.5137844611528822,
+      "privacy_dcr": 764.5281099252172,
+      "novelty_min": 1103.3950409715546,
+      "ml_utility_tstr": 0.6338255033557048,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:22:29.523043+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7926711754535959,
+      "correlation_fidelity": 0.9412201064396735,
+      "tail_preservation": 3.855539141257195,
+      "discriminator_accuracy": 0.5137844611528822,
+      "privacy_dcr": 764.5281099252172,
+      "novelty_min": 1103.3950409715546,
+      "ml_utility_tstr": 0.6338255033557048,
+      "train_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:22:29.724815+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7510837022163224,
+      "correlation_fidelity": 0.9293494519940296,
+      "tail_preservation": 3.0176265981760286,
+      "discriminator_accuracy": 0.4725906526616166,
+      "privacy_dcr": 164.67084366864702,
+      "novelty_min": 1965.9256766669048,
+      "ml_utility_tstr": 0.6416,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0084
+    },
+    "timestamp": "2026-02-20T00:22:29.985766+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9364025862921843,
+      "correlation_fidelity": 0.8711904215011228,
+      "tail_preservation": 0.0807443857086907,
+      "discriminator_accuracy": 0.4999953066186064,
+      "privacy_dcr": 0.3422980580721449,
+      "novelty_min": 5.24819513166917,
+      "ml_utility_tstr": 0.567326230339929,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0021
+    },
+    "timestamp": "2026-02-20T00:22:30.172709+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9287573962845386,
+      "correlation_fidelity": 0.9004997159097625,
+      "tail_preservation": 2.3705458471206278,
+      "discriminator_accuracy": 0.4912421503196193,
+      "privacy_dcr": 177.3463863690298,
+      "novelty_min": 841.8443349772803,
+      "ml_utility_tstr": 0.6416,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:22:30.418688+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8703777791170948,
+      "correlation_fidelity": 0.9278754240561611,
+      "tail_preservation": 0.8227335768601334,
+      "discriminator_accuracy": 0.5174593787840388,
+      "privacy_dcr": 0.4209318335307689,
+      "novelty_min": 0.23104889762020814,
+      "ml_utility_tstr": 0.6055238095238095,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0018
+    },
+    "timestamp": "2026-02-20T00:22:30.637610+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6684498770194088,
+      "correlation_fidelity": 0.7780461014196453,
+      "tail_preservation": 2.785927802399198,
+      "discriminator_accuracy": 0.7350069931382763,
+      "privacy_dcr": 331.12839590562703,
+      "novelty_min": 676.7569494614941,
+      "ml_utility_tstr": 0.6116331096196868,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 5.5307
+    },
+    "timestamp": "2026-02-20T00:22:36.426875+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6143319363155277,
+      "correlation_fidelity": 0.6932328172732708,
+      "tail_preservation": 1.1367545700407025,
+      "discriminator_accuracy": 0.7799977471769312,
+      "privacy_dcr": 66.16561170315137,
+      "novelty_min": 115.3543266433967,
+      "ml_utility_tstr": 0.5718139199423008,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 2.8947
+    },
+    "timestamp": "2026-02-20T00:22:39.568982+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7938740261691497,
+      "correlation_fidelity": 0.9520002275129482,
+      "tail_preservation": 3.8145020536321743,
+      "discriminator_accuracy": 0.465001454948232,
+      "privacy_dcr": 763.1965238405636,
+      "novelty_min": 1782.619216038386,
+      "ml_utility_tstr": 0.6040748440748441,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:22:40.040037+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7938740261691497,
+      "correlation_fidelity": 0.9520002275129482,
+      "tail_preservation": 3.8145020536321743,
+      "discriminator_accuracy": 0.465001454948232,
+      "privacy_dcr": 763.1965238405636,
+      "novelty_min": 1782.619216038386,
+      "ml_utility_tstr": 0.6040748440748441,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:22:40.503286+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7938740261691497,
+      "correlation_fidelity": 0.9520002275129482,
+      "tail_preservation": 3.8145020536321743,
+      "discriminator_accuracy": 0.465001454948232,
+      "privacy_dcr": 763.1965238405636,
+      "novelty_min": 1782.619216038386,
+      "ml_utility_tstr": 0.6040748440748441,
+      "train_time_seconds": 0.0007,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:22:40.970412+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7938740261691497,
+      "correlation_fidelity": 0.9520002275129482,
+      "tail_preservation": 3.8145020536321743,
+      "discriminator_accuracy": 0.465001454948232,
+      "privacy_dcr": 763.1965238405636,
+      "novelty_min": 1782.619216038386,
+      "ml_utility_tstr": 0.6040748440748441,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:22:41.435280+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7603017625988828,
+      "correlation_fidelity": 0.9394909902039679,
+      "tail_preservation": 3.054273058616064,
+      "discriminator_accuracy": 0.47498427717233155,
+      "privacy_dcr": 162.88451952656763,
+      "novelty_min": 1715.9122930963772,
+      "ml_utility_tstr": 0.6590476190476191,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0097
+    },
+    "timestamp": "2026-02-20T00:22:41.972130+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9523123057358313,
+      "correlation_fidelity": 0.8827744476293299,
+      "tail_preservation": 0.08178218537970985,
+      "discriminator_accuracy": 0.5137422207203403,
+      "privacy_dcr": 0.35785350691452,
+      "novelty_min": 4.312003144458429,
+      "ml_utility_tstr": 0.5965190604543704,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.003
+    },
+    "timestamp": "2026-02-20T00:22:42.341795+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9291537316058858,
+      "correlation_fidelity": 0.9436947749804088,
+      "tail_preservation": 2.371392633182608,
+      "discriminator_accuracy": 0.4974796541916589,
+      "privacy_dcr": 172.90836778941042,
+      "novelty_min": 707.5573705938444,
+      "ml_utility_tstr": 0.626070686070686,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004
+    },
+    "timestamp": "2026-02-20T00:22:42.858221+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.887778807290461,
+      "correlation_fidelity": 0.9331361863964763,
+      "tail_preservation": 0.8879603193337048,
+      "discriminator_accuracy": 0.5075234903738748,
+      "privacy_dcr": 0.43129399150961106,
+      "novelty_min": 0.04866709481534901,
+      "ml_utility_tstr": 0.6377380952380952,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019
+    },
+    "timestamp": "2026-02-20T00:22:43.279994+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.4729622969268412,
+      "correlation_fidelity": 0.8330545261098595,
+      "tail_preservation": 3.1744547025908414,
+      "discriminator_accuracy": 0.7950024874921385,
+      "privacy_dcr": 286.7222409917849,
+      "novelty_min": 511.0521237242805,
+      "ml_utility_tstr": 0.6322272957889397,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 5.5453
+    },
+    "timestamp": "2026-02-20T00:22:49.339994+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "adult",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6171757036640126,
+      "correlation_fidelity": 0.7136931063377541,
+      "tail_preservation": 1.1462156642113142,
+      "discriminator_accuracy": 0.7849915049796777,
+      "privacy_dcr": 67.48312285833359,
+      "novelty_min": 124.89017685055771,
+      "ml_utility_tstr": 0.5329192546583852,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 3.101
+    },
+    "timestamp": "2026-02-20T00:22:52.934248+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8435815153645834,
+      "correlation_fidelity": 0.8584399259890877,
+      "tail_preservation": 1.2018764437097131,
+      "discriminator_accuracy": 0.48499056630339893,
+      "privacy_dcr": 0.7933017256784949,
+      "novelty_min": 0.8509444789597301,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0017,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:22:53.083654+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8435815153645834,
+      "correlation_fidelity": 0.8584399259890877,
+      "tail_preservation": 1.2018764437097131,
+      "discriminator_accuracy": 0.48499056630339893,
+      "privacy_dcr": 0.7933017256784949,
+      "novelty_min": 0.8509444789597301,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:22:53.225655+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8435815153645834,
+      "correlation_fidelity": 0.8584399259890877,
+      "tail_preservation": 1.2018764437097131,
+      "discriminator_accuracy": 0.48499056630339893,
+      "privacy_dcr": 0.7933017256784949,
+      "novelty_min": 0.8509444789597301,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:22:53.364636+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8435815153645834,
+      "correlation_fidelity": 0.8584399259890877,
+      "tail_preservation": 1.2018764437097131,
+      "discriminator_accuracy": 0.48499056630339893,
+      "privacy_dcr": 0.7933017256784949,
+      "novelty_min": 0.8509444789597301,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:22:53.496576+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9074060812572009,
+      "correlation_fidelity": 0.7454976459679479,
+      "tail_preservation": 1.0072938488058303,
+      "discriminator_accuracy": 0.5087531562989872,
+      "privacy_dcr": 0.9856083450087817,
+      "novelty_min": 0.9747226494618593,
+      "ml_utility_tstr": 0.9776041666666667,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0315
+    },
+    "timestamp": "2026-02-20T00:22:53.727810+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.931611666575032,
+      "correlation_fidelity": 0.703988054762638,
+      "tail_preservation": 0.9786379757458014,
+      "discriminator_accuracy": 0.4775374766504276,
+      "privacy_dcr": 1.0266836473092196,
+      "novelty_min": 1.318005602173556,
+      "ml_utility_tstr": 0.9256410256410257,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.003
+    },
+    "timestamp": "2026-02-20T00:22:53.876465+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.903589442694669,
+      "correlation_fidelity": 0.7604717758264081,
+      "tail_preservation": 0.9426203367779267,
+      "discriminator_accuracy": 0.49004533806426176,
+      "privacy_dcr": 0.15834261615240833,
+      "novelty_min": 0.1956483688197525,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:22:54.071811+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9096858111310333,
+      "correlation_fidelity": 0.7736673661756334,
+      "tail_preservation": 0.9130844033026255,
+      "discriminator_accuracy": 0.47501243746069294,
+      "privacy_dcr": 0.2626154897193007,
+      "novelty_min": 0.0008050406620088459,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0028
+    },
+    "timestamp": "2026-02-20T00:22:54.272384+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8818400353630661,
+      "correlation_fidelity": 0.9081973269141232,
+      "tail_preservation": 1.150977137216168,
+      "discriminator_accuracy": 0.4637717890231196,
+      "privacy_dcr": 0.7751729168080737,
+      "novelty_min": 0.835130487591497,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0015,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:23:08.412077+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8818400353630661,
+      "correlation_fidelity": 0.9081973269141232,
+      "tail_preservation": 1.150977137216168,
+      "discriminator_accuracy": 0.4637717890231196,
+      "privacy_dcr": 0.7751729168080737,
+      "novelty_min": 0.835130487591497,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0016,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:23:08.747298+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8818400353630661,
+      "correlation_fidelity": 0.9081973269141232,
+      "tail_preservation": 1.150977137216168,
+      "discriminator_accuracy": 0.4637717890231196,
+      "privacy_dcr": 0.7751729168080737,
+      "novelty_min": 0.835130487591497,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:23:09.098900+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8818400353630661,
+      "correlation_fidelity": 0.9081973269141232,
+      "tail_preservation": 1.150977137216168,
+      "discriminator_accuracy": 0.4637717890231196,
+      "privacy_dcr": 0.7751729168080737,
+      "novelty_min": 0.835130487591497,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0007,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:23:09.436832+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.932002994080511,
+      "correlation_fidelity": 0.8847556682799358,
+      "tail_preservation": 0.9888683693915168,
+      "discriminator_accuracy": 0.450034261684173,
+      "privacy_dcr": 0.9817400554496581,
+      "novelty_min": 1.2589124752043197,
+      "ml_utility_tstr": 0.9638045891931902,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.031
+    },
+    "timestamp": "2026-02-20T00:23:09.778724+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9542229960942773,
+      "correlation_fidelity": 0.682788775798268,
+      "tail_preservation": 0.9997273047536965,
+      "discriminator_accuracy": 0.45628115231899974,
+      "privacy_dcr": 1.032473728438419,
+      "novelty_min": 1.318005602173556,
+      "ml_utility_tstr": 0.9256410256410257,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0036
+    },
+    "timestamp": "2026-02-20T00:23:09.986161+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9345916513197863,
+      "correlation_fidelity": 0.8133324572349802,
+      "tail_preservation": 1.0001607126353327,
+      "discriminator_accuracy": 0.4850046464475796,
+      "privacy_dcr": 0.1589274769226688,
+      "novelty_min": 0.17053821630481908,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004
+    },
+    "timestamp": "2026-02-20T00:23:10.284965+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9051499362467985,
+      "correlation_fidelity": 0.8352157809916271,
+      "tail_preservation": 0.8867083061735204,
+      "discriminator_accuracy": 0.4474951423502576,
+      "privacy_dcr": 0.26192960359357237,
+      "novelty_min": 0.0008785021123777938,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0028
+    },
+    "timestamp": "2026-02-20T00:23:10.614524+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8933432006647136,
+      "correlation_fidelity": 0.9272553781075435,
+      "tail_preservation": 1.142658021316474,
+      "discriminator_accuracy": 0.4637530154975454,
+      "privacy_dcr": 0.7573054287072716,
+      "novelty_min": 0.6271203187944555,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0012
+    },
+    "timestamp": "2026-02-20T00:23:25.299919+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8933432006647136,
+      "correlation_fidelity": 0.9272553781075435,
+      "tail_preservation": 1.142658021316474,
+      "discriminator_accuracy": 0.4637530154975454,
+      "privacy_dcr": 0.7573054287072716,
+      "novelty_min": 0.6271203187944555,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0014,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:23:26.121129+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8933432006647136,
+      "correlation_fidelity": 0.9272553781075435,
+      "tail_preservation": 1.142658021316474,
+      "discriminator_accuracy": 0.4637530154975454,
+      "privacy_dcr": 0.7573054287072716,
+      "novelty_min": 0.6271203187944555,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:23:26.960204+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8933432006647136,
+      "correlation_fidelity": 0.9272553781075435,
+      "tail_preservation": 1.142658021316474,
+      "discriminator_accuracy": 0.4637530154975454,
+      "privacy_dcr": 0.7573054287072716,
+      "novelty_min": 0.6271203187944555,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0012
+    },
+    "timestamp": "2026-02-20T00:23:27.762841+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9437927820368961,
+      "correlation_fidelity": 0.8985949569047728,
+      "tail_preservation": 0.9932378839308535,
+      "discriminator_accuracy": 0.4562436052678513,
+      "privacy_dcr": 0.9862882296597291,
+      "novelty_min": 1.1568375982813779,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0331
+    },
+    "timestamp": "2026-02-20T00:23:28.660965+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9650303159124081,
+      "correlation_fidelity": 0.6836335177406201,
+      "tail_preservation": 0.9899991125030267,
+      "discriminator_accuracy": 0.44125763847821803,
+      "privacy_dcr": 1.029042551959444,
+      "novelty_min": 1.1235139047247251,
+      "ml_utility_tstr": 0.9470790378006874,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.005
+    },
+    "timestamp": "2026-02-20T00:23:29.458736+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9611622158003186,
+      "correlation_fidelity": 0.874173732315044,
+      "tail_preservation": 1.003469072270612,
+      "discriminator_accuracy": 0.4825030741648128,
+      "privacy_dcr": 0.15766587215968375,
+      "novelty_min": 0.17043849228528818,
+      "ml_utility_tstr": 1.0,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:23:30.089724+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8954527004696591,
+      "correlation_fidelity": 0.8559072241351391,
+      "tail_preservation": 0.8645529287148854,
+      "discriminator_accuracy": 0.4525170604413655,
+      "privacy_dcr": 0.2709891655693221,
+      "novelty_min": 0.0004951450333733272,
+      "ml_utility_tstr": 0.9894706224549157,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0029
+    },
+    "timestamp": "2026-02-20T00:23:30.722522+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.24592799905844875,
+      "correlation_fidelity": 0.32000948029150655,
+      "tail_preservation": 1.5467413756381578,
+      "discriminator_accuracy": 0.8887621675912628,
+      "privacy_dcr": 1.9612641834192357,
+      "novelty_min": 1.655845949380908,
+      "ml_utility_tstr": 0.9256410256410257,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 8.0532
+    },
+    "timestamp": "2026-02-20T00:23:39.274470+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "fraud",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7433777840815018,
+      "correlation_fidelity": 0.4865450015754834,
+      "tail_preservation": 0.742466032737388,
+      "discriminator_accuracy": 0.6637614635840539,
+      "privacy_dcr": 0.8850517747222516,
+      "novelty_min": 1.1143608799128484,
+      "ml_utility_tstr": 0.9256410256410257,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 5.7227
+    },
+    "timestamp": "2026-02-20T00:23:45.526249+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8327162056939733,
+      "correlation_fidelity": 0.8951708924483628,
+      "tail_preservation": 1.2006512582158309,
+      "discriminator_accuracy": 0.5324828926248205,
+      "privacy_dcr": 1.4064422073358103,
+      "novelty_min": 90.92260196199472,
+      "ml_utility_tstr": 0.4845469811141163,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:23:45.624774+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8339301321740574,
+      "correlation_fidelity": 0.8801728133157225,
+      "tail_preservation": 1.1761884642603346,
+      "discriminator_accuracy": 0.4987374804051327,
+      "privacy_dcr": 1.3483841816148323,
+      "novelty_min": 86.82647244579488,
+      "ml_utility_tstr": 0.480515783501236,
+      "train_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:23:45.716190+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8523883245190407,
+      "correlation_fidelity": 0.8879496177812914,
+      "tail_preservation": 1.1195140987434988,
+      "discriminator_accuracy": 0.4837327400899252,
+      "privacy_dcr": 1.3498407461861792,
+      "novelty_min": 126.84351505699482,
+      "ml_utility_tstr": 0.5199454838207453,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:23:45.802302+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8667821622535448,
+      "correlation_fidelity": 0.9306651040687128,
+      "tail_preservation": 1.091681566164484,
+      "discriminator_accuracy": 0.4787295955243915,
+      "privacy_dcr": 1.2671958251416726,
+      "novelty_min": 99.53079661972819,
+      "ml_utility_tstr": 0.6264427818376899,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:23:45.890835+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8435810961155816,
+      "correlation_fidelity": 0.9169863561959303,
+      "tail_preservation": 1.0670158926017386,
+      "discriminator_accuracy": 0.4624623356143167,
+      "privacy_dcr": 1.3221559669923417,
+      "novelty_min": 178.9466054177343,
+      "ml_utility_tstr": 0.533500443967944,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0188
+    },
+    "timestamp": "2026-02-20T00:23:46.034996+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9290308927287885,
+      "correlation_fidelity": 0.8767682729026499,
+      "tail_preservation": 0.9907479811419123,
+      "discriminator_accuracy": 0.4974702674288718,
+      "privacy_dcr": 0.9444142387379251,
+      "novelty_min": 46.087001520956335,
+      "ml_utility_tstr": 0.5522917568045905,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0015
+    },
+    "timestamp": "2026-02-20T00:23:46.159227+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9381512354109851,
+      "correlation_fidelity": 0.8612764327936349,
+      "tail_preservation": 0.972287874100118,
+      "discriminator_accuracy": 0.4874874452047722,
+      "privacy_dcr": 0.8031570224344491,
+      "novelty_min": 74.06747257690313,
+      "ml_utility_tstr": 0.5606860078519305,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0002
+    },
+    "timestamp": "2026-02-20T00:23:46.283806+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8961482110878938,
+      "correlation_fidelity": 0.8924094309944912,
+      "tail_preservation": 0.8427916476467983,
+      "discriminator_accuracy": 0.48125463471412616,
+      "privacy_dcr": 0.36218298185957165,
+      "novelty_min": 0.2551512238052031,
+      "ml_utility_tstr": 0.5515280213564113,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:23:46.416780+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.4666565897949445,
+      "correlation_fidelity": 0.8605829328844843,
+      "tail_preservation": 1.1715960538868968,
+      "discriminator_accuracy": 0.7287788760290238,
+      "privacy_dcr": 1.5509162396742535,
+      "novelty_min": 182.15764511011054,
+      "ml_utility_tstr": 0.47391838010172194,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 5.0095
+    },
+    "timestamp": "2026-02-20T00:23:51.558630+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5416347881883068,
+      "correlation_fidelity": 0.6657098395429,
+      "tail_preservation": 0.4382936925377279,
+      "discriminator_accuracy": 0.8187369171993654,
+      "privacy_dcr": 0.7494945636185459,
+      "novelty_min": 73.29893561400566,
+      "ml_utility_tstr": 0.3835608958177026,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 3.0967
+    },
+    "timestamp": "2026-02-20T00:23:54.793660+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8748474406599485,
+      "correlation_fidelity": 0.9287379982133007,
+      "tail_preservation": 1.1340509114712571,
+      "discriminator_accuracy": 0.5237578966141946,
+      "privacy_dcr": 1.3196023983099243,
+      "novelty_min": 107.67089610541831,
+      "ml_utility_tstr": 0.604930801874348,
+      "train_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:23:54.950375+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8600271589335599,
+      "correlation_fidelity": 0.8969905991238789,
+      "tail_preservation": 1.1611720369284655,
+      "discriminator_accuracy": 0.4499685543446632,
+      "privacy_dcr": 1.3523361954063802,
+      "novelty_min": 62.44535491610341,
+      "ml_utility_tstr": 0.5352371630999921,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:23:55.106331+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8764288672964107,
+      "correlation_fidelity": 0.9139060160191219,
+      "tail_preservation": 1.1527769463052968,
+      "discriminator_accuracy": 0.4587968047459472,
+      "privacy_dcr": 1.2913701132669255,
+      "novelty_min": 61.27863094059541,
+      "ml_utility_tstr": 0.5885822468633561,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:23:55.265143+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8596571079971155,
+      "correlation_fidelity": 0.9337591362748694,
+      "tail_preservation": 1.1609572165347972,
+      "discriminator_accuracy": 0.5036843043939436,
+      "privacy_dcr": 1.3860145167937186,
+      "novelty_min": 90.75321331812265,
+      "ml_utility_tstr": 0.7037816247427151,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0011
+    },
+    "timestamp": "2026-02-20T00:23:55.423849+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8417835749422585,
+      "correlation_fidelity": 0.9213446342335864,
+      "tail_preservation": 1.0570275067283823,
+      "discriminator_accuracy": 0.5025156524269475,
+      "privacy_dcr": 1.336112922421863,
+      "novelty_min": 162.03930887988605,
+      "ml_utility_tstr": 0.5586052635978523,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0225
+    },
+    "timestamp": "2026-02-20T00:23:55.667643+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9517534320642395,
+      "correlation_fidelity": 0.9063073028748894,
+      "tail_preservation": 0.9992414966605766,
+      "discriminator_accuracy": 0.5349375310936516,
+      "privacy_dcr": 0.9981539834349318,
+      "novelty_min": 46.087001520956335,
+      "ml_utility_tstr": 0.5402409600382727,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002
+    },
+    "timestamp": "2026-02-20T00:23:55.876334+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9542389373503205,
+      "correlation_fidelity": 0.9033062938041762,
+      "tail_preservation": 1.0084594382252887,
+      "discriminator_accuracy": 0.47499835731651224,
+      "privacy_dcr": 0.8769524242133202,
+      "novelty_min": 70.09436379582057,
+      "ml_utility_tstr": 0.5728926498210383,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:23:56.085691+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8998184365114066,
+      "correlation_fidelity": 0.9212859486360968,
+      "tail_preservation": 0.8453096950122339,
+      "discriminator_accuracy": 0.5012390526878995,
+      "privacy_dcr": 0.35839756269094397,
+      "novelty_min": 0.6433786710659651,
+      "ml_utility_tstr": 0.5481377257850555,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0014
+    },
+    "timestamp": "2026-02-20T00:23:56.279656+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.31779538777378447,
+      "correlation_fidelity": 0.8053034460040209,
+      "tail_preservation": 1.2722512308506013,
+      "discriminator_accuracy": 0.800019712201853,
+      "privacy_dcr": 1.8918506251483327,
+      "novelty_min": 131.55869334339266,
+      "ml_utility_tstr": 0.44652525097669615,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 6.0568
+    },
+    "timestamp": "2026-02-20T00:24:02.532751+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5238188414115588,
+      "correlation_fidelity": 0.7120739467416055,
+      "tail_preservation": 0.4424617186023567,
+      "discriminator_accuracy": 0.8037462570283386,
+      "privacy_dcr": 0.7601494436049562,
+      "novelty_min": 56.41056043601981,
+      "ml_utility_tstr": 0.43986718097783595,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 3.327
+    },
+    "timestamp": "2026-02-20T00:24:06.056887+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8765800875630152,
+      "correlation_fidelity": 0.9739201050958216,
+      "tail_preservation": 1.160050121154559,
+      "discriminator_accuracy": 0.46996705246261716,
+      "privacy_dcr": 1.2945625521131674,
+      "novelty_min": 83.48977772956376,
+      "ml_utility_tstr": 0.6449152259670758,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:24:06.415846+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8778701646022162,
+      "correlation_fidelity": 0.9510601069302549,
+      "tail_preservation": 1.149779662972958,
+      "discriminator_accuracy": 0.4774623825481306,
+      "privacy_dcr": 1.3000533310413074,
+      "novelty_min": 46.055215169670355,
+      "ml_utility_tstr": 0.6183871487193304,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0019
+    },
+    "timestamp": "2026-02-20T00:24:06.778544+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.874111469159822,
+      "correlation_fidelity": 0.9455675483937861,
+      "tail_preservation": 1.179586603349519,
+      "discriminator_accuracy": 0.5012672129762609,
+      "privacy_dcr": 1.2892038320509285,
+      "novelty_min": 60.23697119663729,
+      "ml_utility_tstr": 0.615901393752371,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:24:07.141473+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8791569973441254,
+      "correlation_fidelity": 0.9364742740516943,
+      "tail_preservation": 1.1847727105874744,
+      "discriminator_accuracy": 0.46124205645199146,
+      "privacy_dcr": 1.3332316449298391,
+      "novelty_min": 86.46578715034687,
+      "ml_utility_tstr": 0.6269907066034395,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0013
+    },
+    "timestamp": "2026-02-20T00:24:07.501022+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8345863618692108,
+      "correlation_fidelity": 0.9406590814922678,
+      "tail_preservation": 1.0775097790648185,
+      "discriminator_accuracy": 0.501276599739048,
+      "privacy_dcr": 1.3093259159120332,
+      "novelty_min": 53.90904203251948,
+      "ml_utility_tstr": 0.5609151814160507,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.022
+    },
+    "timestamp": "2026-02-20T00:24:07.919196+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9713939463698337,
+      "correlation_fidelity": 0.9098845371803014,
+      "tail_preservation": 0.9974492838658484,
+      "discriminator_accuracy": 0.48498587292200535,
+      "privacy_dcr": 1.0112523612192779,
+      "novelty_min": 46.087001520956335,
+      "ml_utility_tstr": 0.538462476690823,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0024
+    },
+    "timestamp": "2026-02-20T00:24:08.335307+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9648134034465555,
+      "correlation_fidelity": 0.9612353089031238,
+      "tail_preservation": 1.0136978718523595,
+      "discriminator_accuracy": 0.4762421033858053,
+      "privacy_dcr": 0.8461651656164775,
+      "novelty_min": 18.55724916516793,
+      "ml_utility_tstr": 0.5066234983442927,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004
+    },
+    "timestamp": "2026-02-20T00:24:08.738486+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8959281884992581,
+      "correlation_fidelity": 0.9334379344863541,
+      "tail_preservation": 0.8583289996000234,
+      "discriminator_accuracy": 0.5261984549388452,
+      "privacy_dcr": 0.37183565763111864,
+      "novelty_min": 0.17301360153669326,
+      "ml_utility_tstr": 0.5427509154823286,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0016
+    },
+    "timestamp": "2026-02-20T00:24:09.147488+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.30050141783174567,
+      "correlation_fidelity": 0.7922711477082452,
+      "tail_preservation": 1.5888298217118288,
+      "discriminator_accuracy": 0.7562773976138849,
+      "privacy_dcr": 2.517380970094687,
+      "novelty_min": 66.42509490712824,
+      "ml_utility_tstr": 0.5475548424628057,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 5.4758
+    },
+    "timestamp": "2026-02-20T00:24:15.016042+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.530094037967866,
+      "correlation_fidelity": 0.7281603854368374,
+      "tail_preservation": 0.44488135663520983,
+      "discriminator_accuracy": 0.8149775187031248,
+      "privacy_dcr": 0.7709800628616083,
+      "novelty_min": 27.28280070227453,
+      "ml_utility_tstr": 0.45058653965292605,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 2.9665
+    },
+    "timestamp": "2026-02-20T00:24:18.393264+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8619151296071879,
+      "correlation_fidelity": 0.8730436825500998,
+      "tail_preservation": 1.1298975894755545,
+      "discriminator_accuracy": 0.47497019702815085,
+      "privacy_dcr": 1.1028099644727734,
+      "novelty_min": 0.8665306066988939,
+      "ml_utility_tstr": 0.9599448356416331,
+      "train_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:24:18.534865+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8619151296071879,
+      "correlation_fidelity": 0.8730436825500998,
+      "tail_preservation": 1.1298975894755545,
+      "discriminator_accuracy": 0.47497019702815085,
+      "privacy_dcr": 1.1028099644727734,
+      "novelty_min": 0.8665306066988939,
+      "ml_utility_tstr": 0.9599448356416331,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:24:18.669159+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8619151296071879,
+      "correlation_fidelity": 0.8730436825500998,
+      "tail_preservation": 1.1298975894755545,
+      "discriminator_accuracy": 0.47497019702815085,
+      "privacy_dcr": 1.1028099644727734,
+      "novelty_min": 0.8665306066988939,
+      "ml_utility_tstr": 0.9599448356416331,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:24:18.808312+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8619151296071879,
+      "correlation_fidelity": 0.8730436825500998,
+      "tail_preservation": 1.1298975894755545,
+      "discriminator_accuracy": 0.47497019702815085,
+      "privacy_dcr": 1.1028099644727734,
+      "novelty_min": 0.8665306066988939,
+      "ml_utility_tstr": 0.9599448356416331,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0007
+    },
+    "timestamp": "2026-02-20T00:24:18.946635+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8838125734800454,
+      "correlation_fidelity": 0.9073480443670573,
+      "tail_preservation": 1.03125593340349,
+      "discriminator_accuracy": 0.4737405311030385,
+      "privacy_dcr": 1.1926572268988118,
+      "novelty_min": 1.081824298439301,
+      "ml_utility_tstr": 0.9479576553059209,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0112
+    },
+    "timestamp": "2026-02-20T00:24:19.148111+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9508791018670562,
+      "correlation_fidelity": 0.7632560304057334,
+      "tail_preservation": 0.9802598284107018,
+      "discriminator_accuracy": 0.4687702402072597,
+      "privacy_dcr": 1.5382906896021291,
+      "novelty_min": 0.793634854713071,
+      "ml_utility_tstr": 0.9399179300115659,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0023
+    },
+    "timestamp": "2026-02-20T00:24:19.341654+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9413985806035842,
+      "correlation_fidelity": 0.8346568621808403,
+      "tail_preservation": 0.9976114093811479,
+      "discriminator_accuracy": 0.4987562539307069,
+      "privacy_dcr": 0.26146583545644525,
+      "novelty_min": 0.24809103588829626,
+      "ml_utility_tstr": 0.9386039115419724,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:24:19.531881+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8987169332452665,
+      "correlation_fidelity": 0.8713300926953387,
+      "tail_preservation": 0.9124166031016675,
+      "discriminator_accuracy": 0.5125313283208021,
+      "privacy_dcr": 0.26092409198020505,
+      "novelty_min": 0.0004995762304360747,
+      "ml_utility_tstr": 0.9443039866561291,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002
+    },
+    "timestamp": "2026-02-20T00:24:19.734555+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.49348145688831946,
+      "correlation_fidelity": 0.4115196873940057,
+      "tail_preservation": 1.1828396921909352,
+      "discriminator_accuracy": 0.8287619798560071,
+      "privacy_dcr": 2.1433815628888158,
+      "novelty_min": 1.7699829296840481,
+      "ml_utility_tstr": 0.9407611508503839,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 6.8473
+    },
+    "timestamp": "2026-02-20T00:24:26.774098+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8015819635848493,
+      "correlation_fidelity": 0.7696079415979578,
+      "tail_preservation": 0.9089798219778756,
+      "discriminator_accuracy": 0.6499910825753522,
+      "privacy_dcr": 1.0101992093895635,
+      "novelty_min": 0.9942969743053818,
+      "ml_utility_tstr": 0.9415609252235692,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 4.4481
+    },
+    "timestamp": "2026-02-20T00:24:31.417400+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8862063051852319,
+      "correlation_fidelity": 0.9120418520556379,
+      "tail_preservation": 1.1259025299312122,
+      "discriminator_accuracy": 0.49374841598377966,
+      "privacy_dcr": 1.1177688441511207,
+      "novelty_min": 0.8322788382885662,
+      "ml_utility_tstr": 0.9641024820841719,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:24:31.649771+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8862063051852319,
+      "correlation_fidelity": 0.9120418520556379,
+      "tail_preservation": 1.1259025299312122,
+      "discriminator_accuracy": 0.49374841598377966,
+      "privacy_dcr": 1.1177688441511207,
+      "novelty_min": 0.8322788382885662,
+      "ml_utility_tstr": 0.9641024820841719,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0008
+    },
+    "timestamp": "2026-02-20T00:24:31.885448+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8862063051852319,
+      "correlation_fidelity": 0.9120418520556379,
+      "tail_preservation": 1.1259025299312122,
+      "discriminator_accuracy": 0.49374841598377966,
+      "privacy_dcr": 1.1177688441511207,
+      "novelty_min": 0.8322788382885662,
+      "ml_utility_tstr": 0.9641024820841719,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.001
+    },
+    "timestamp": "2026-02-20T00:24:32.126651+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8862063051852319,
+      "correlation_fidelity": 0.9120418520556379,
+      "tail_preservation": 1.1259025299312122,
+      "discriminator_accuracy": 0.49374841598377966,
+      "privacy_dcr": 1.1177688441511207,
+      "novelty_min": 0.8322788382885662,
+      "ml_utility_tstr": 0.9641024820841719,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0009
+    },
+    "timestamp": "2026-02-20T00:24:32.367500+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.894820868561072,
+      "correlation_fidelity": 0.9149735099502514,
+      "tail_preservation": 1.0304293448081892,
+      "discriminator_accuracy": 0.4750030506979059,
+      "privacy_dcr": 1.1949339380195587,
+      "novelty_min": 1.081824298439301,
+      "ml_utility_tstr": 0.9493349460765079,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0098
+    },
+    "timestamp": "2026-02-20T00:24:32.666985+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9643213456564137,
+      "correlation_fidelity": 0.7907877554186326,
+      "tail_preservation": 0.9904830258100986,
+      "discriminator_accuracy": 0.49374841598377966,
+      "privacy_dcr": 1.6029124996308077,
+      "novelty_min": 0.793634854713071,
+      "ml_utility_tstr": 0.9412501258886754,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0031
+    },
+    "timestamp": "2026-02-20T00:24:32.969669+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9524359152349448,
+      "correlation_fidelity": 0.9174111159195216,
+      "tail_preservation": 1.0090759177710544,
+      "discriminator_accuracy": 0.49001248439450684,
+      "privacy_dcr": 0.2665240924244144,
+      "novelty_min": 0.15655789127039868,
+      "ml_utility_tstr": 0.9441659958471574,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003
+    },
+    "timestamp": "2026-02-20T00:24:33.266097+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9147278953627302,
+      "correlation_fidelity": 0.9015843310963748,
+      "tail_preservation": 0.9267544748757912,
+      "discriminator_accuracy": 0.5025344259525217,
+      "privacy_dcr": 0.2815434967966268,
+      "novelty_min": 0.0005946962202637245,
+      "ml_utility_tstr": 0.9438130563785718,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019
+    },
+    "timestamp": "2026-02-20T00:24:33.577717+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.42909190357898697,
+      "correlation_fidelity": 0.38345351017371676,
+      "tail_preservation": 1.3252696220215834,
+      "discriminator_accuracy": 0.8237635286718669,
+      "privacy_dcr": 2.2852949954117947,
+      "novelty_min": 1.8960490170858422,
+      "ml_utility_tstr": 0.9426127424679562,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 6.964
+    },
+    "timestamp": "2026-02-20T00:24:40.832247+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7702777815668939,
+      "correlation_fidelity": 0.802331208513459,
+      "tail_preservation": 0.8843449592885841,
+      "discriminator_accuracy": 0.6662865027737884,
+      "privacy_dcr": 0.9851745454221552,
+      "novelty_min": 0.6748359737706963,
+      "ml_utility_tstr": 0.9414661207054328,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 4.5759
+    },
+    "timestamp": "2026-02-20T00:24:45.713745+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.876189436732888,
+      "correlation_fidelity": 0.943763470693439,
+      "tail_preservation": 1.153140098931438,
+      "discriminator_accuracy": 0.4712530389644523,
+      "privacy_dcr": 1.107766359333595,
+      "novelty_min": 0.564729054223578,
+      "ml_utility_tstr": 0.9656057984833889,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0014
+    },
+    "timestamp": "2026-02-20T00:24:46.277831+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.876189436732888,
+      "correlation_fidelity": 0.943763470693439,
+      "tail_preservation": 1.153140098931438,
+      "discriminator_accuracy": 0.4712530389644523,
+      "privacy_dcr": 1.107766359333595,
+      "novelty_min": 0.564729054223578,
+      "ml_utility_tstr": 0.9656057984833889,
+      "train_time_seconds": 0.0014,
+      "operation_time_seconds": 0.0014
+    },
+    "timestamp": "2026-02-20T00:24:46.848839+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.876189436732888,
+      "correlation_fidelity": 0.943763470693439,
+      "tail_preservation": 1.153140098931438,
+      "discriminator_accuracy": 0.4712530389644523,
+      "privacy_dcr": 1.107766359333595,
+      "novelty_min": 0.564729054223578,
+      "ml_utility_tstr": 0.9656057984833889,
+      "train_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0012
+    },
+    "timestamp": "2026-02-20T00:24:47.426567+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.876189436732888,
+      "correlation_fidelity": 0.943763470693439,
+      "tail_preservation": 1.153140098931438,
+      "discriminator_accuracy": 0.4712530389644523,
+      "privacy_dcr": 1.107766359333595,
+      "novelty_min": 0.564729054223578,
+      "ml_utility_tstr": 0.9656057984833889,
+      "train_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0012
+    },
+    "timestamp": "2026-02-20T00:24:47.995852+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8991133763375365,
+      "correlation_fidelity": 0.9495917179646215,
+      "tail_preservation": 1.0306457969625566,
+      "discriminator_accuracy": 0.5312438399369209,
+      "privacy_dcr": 1.1867296141220336,
+      "novelty_min": 0.954729167389466,
+      "ml_utility_tstr": 0.9459844794946792,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0118
+    },
+    "timestamp": "2026-02-20T00:24:48.647096+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9727867647298241,
+      "correlation_fidelity": 0.8136637344626575,
+      "tail_preservation": 0.9984397152615198,
+      "discriminator_accuracy": 0.4687937071142276,
+      "privacy_dcr": 1.5369278721461743,
+      "novelty_min": 0.793634854713071,
+      "ml_utility_tstr": 0.9431352187546849,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0034
+    },
+    "timestamp": "2026-02-20T00:24:49.288484+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9680994435766586,
+      "correlation_fidelity": 0.9380663239588656,
+      "tail_preservation": 1.0216222584541392,
+      "discriminator_accuracy": 0.5000046933813936,
+      "privacy_dcr": 0.26272235199887406,
+      "novelty_min": 0.1680840276094509,
+      "ml_utility_tstr": 0.9450847349157199,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006
+    },
+    "timestamp": "2026-02-20T00:24:49.933584+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9251834870090672,
+      "correlation_fidelity": 0.9312081912775553,
+      "tail_preservation": 0.9235874225402191,
+      "discriminator_accuracy": 0.518764138811448,
+      "privacy_dcr": 0.28392813534826,
+      "novelty_min": 0.0004252521581049825,
+      "ml_utility_tstr": 0.9426720691059348,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0021
+    },
+    "timestamp": "2026-02-20T00:24:50.557765+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "CTGAN",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.3197236196722135,
+      "correlation_fidelity": 0.3623489916706222,
+      "tail_preservation": 1.1835437682165453,
+      "discriminator_accuracy": 0.847516731904668,
+      "privacy_dcr": 2.320514371470602,
+      "novelty_min": 1.643995653409908,
+      "ml_utility_tstr": 0.9339130895782669,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 6.9769
+    },
+    "timestamp": "2026-02-20T00:24:58.149198+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "TVAE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7738289990934967,
+      "correlation_fidelity": 0.8019960883110522,
+      "tail_preservation": 0.9094861043702162,
+      "discriminator_accuracy": 0.6887584128861479,
+      "privacy_dcr": 1.0175946783061487,
+      "novelty_min": 1.0641789751522313,
+      "ml_utility_tstr": 0.9438370975551598,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 4.6258
+    },
+    "timestamp": "2026-02-20T00:25:03.392642+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "published_benchmark",
+    "method": "TabDDPM\u2020",
+    "params": {
+      "expansion_ratio": null
+    },
+    "metrics": {
+      "marginal_fidelity": 0.96,
+      "discriminator_accuracy": 0.52,
+      "tail_preservation": 0.7,
+      "correlation_fidelity": 0.97
+    },
+    "note": "Kotelnikov et al. 2023 \u2014 not run locally",
+    "published_only": true,
+    "timestamp": "2026-02-20T00:25:03.392695+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "published_benchmark",
+    "method": "MOSTLY AI\u2020",
+    "params": {
+      "expansion_ratio": null
+    },
+    "metrics": {
+      "marginal_fidelity": 0.975,
+      "discriminator_accuracy": 0.51,
+      "tail_preservation": 0.85,
+      "correlation_fidelity": 0.98
+    },
+    "note": "MOSTLY AI evaluation 2024 \u2014 commercial service, not run locally",
+    "published_only": true,
+    "timestamp": "2026-02-20T00:25:03.392695+00:00"
+  }
+]

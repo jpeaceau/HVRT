@@ -1,49 +1,50 @@
 """
-Multivariate KDE-based sample expansion for HVRT v2.
+Expansion helpers for HVRT v2.
 
-Each partition receives its own multivariate gaussian_kde fitted on the
-full (z-score-normalized) feature matrix of that partition's members.
-Samples are drawn from the KDE and optionally filtered by a minimum
-novelty distance threshold.
-
-Design notes
-------------
-- KDEs are MULTIVARIATE: one kde per partition, fitted on all d features
-  simultaneously. This captures within-partition correlation structure that
-  per-feature univariate KDEs miss.
-- Bandwidth: Scott's rule (scipy default) is used when bandwidth=None.
-- Single-sample partitions fall back to bootstrap with tiny Gaussian noise.
-- min_novelty filtering oversamples then discards samples too close to any
-  original (in z-score space). Falls back gracefully if the budget cannot
-  be met after max_attempts.
+Provides per-partition KDE fitting, budget allocation for expansion, KDE
+sampling with optional novelty filtering, strategy-based sampling, and
+categorical empirical-distribution sampling.
 """
+
+from __future__ import annotations
+
+from typing import Union
 
 import numpy as np
 from scipy.stats import gaussian_kde
 from scipy.spatial.distance import cdist
+
+from ._budgets import _compute_weights, allocate_budgets
 
 
 # ---------------------------------------------------------------------------
 # KDE fitting
 # ---------------------------------------------------------------------------
 
-def fit_partition_kdes(X_z, partition_ids, unique_partitions, bandwidth=None):
+def fit_partition_kdes(
+    X_z: np.ndarray,
+    partition_ids: np.ndarray,
+    unique_partitions: np.ndarray,
+    bandwidth: Union[float, str, dict, None] = None,
+) -> dict:
     """
-    Fit a multivariate gaussian_kde for every partition.
+    Fit a multivariate ``gaussian_kde`` for every partition.
 
     Parameters
     ----------
     X_z : ndarray (n_samples, n_features)
-        Z-score-normalized data.
+        Z-score-normalised continuous features.
     partition_ids : ndarray (n_samples,)
     unique_partitions : ndarray
-    bandwidth : float or None
-        Scalar bandwidth factor. None → Scott's rule (scipy default).
+    bandwidth : float, str, dict, or None
+        Passed as ``bw_method`` to ``scipy.stats.gaussian_kde``.
+        ``None`` → Scott's rule.  A ``dict {pid: float}`` enables
+        per-partition adaptive bandwidths.
 
     Returns
     -------
-    kdes : dict {int pid -> gaussian_kde or None}
-        None entries indicate single-sample partitions.
+    kdes : dict[int, gaussian_kde | None]
+        ``None`` entries indicate single-sample partitions (no KDE fitted).
     """
     kdes = {}
     for pid in unique_partitions:
@@ -51,17 +52,13 @@ def fit_partition_kdes(X_z, partition_ids, unique_partitions, bandwidth=None):
         if len(X_part) < 2:
             kdes[int(pid)] = None
         else:
-            # bandwidth: None / 'scott' / scalar → same for every partition.
-            # dict {pid: float} → per-partition value (used by adaptive mode).
             if isinstance(bandwidth, dict):
                 bw = bandwidth.get(int(pid), 'scott')
             else:
                 bw = bandwidth if bandwidth is not None else 'scott'
             try:
-                # gaussian_kde expects shape (n_features, n_samples)
                 kdes[int(pid)] = gaussian_kde(X_part.T, bw_method=bw)
             except np.linalg.LinAlgError:
-                # Singular covariance matrix (e.g. constant-valued partition)
                 kdes[int(pid)] = None
     return kdes
 
@@ -71,50 +68,32 @@ def fit_partition_kdes(X_z, partition_ids, unique_partitions, bandwidth=None):
 # ---------------------------------------------------------------------------
 
 def compute_expansion_budgets(
-    partition_ids,
-    unique_partitions,
-    n_synthetic,
-    variance_weighted,
-    X_z,
-):
+    partition_ids: np.ndarray,
+    unique_partitions: np.ndarray,
+    n_synthetic: int,
+    variance_weighted: bool,
+    X_z: np.ndarray,
+) -> np.ndarray:
     """
-    Allocate synthetic samples across partitions.
+    Allocate synthetic sample budget across partitions.
 
     Parameters
     ----------
     partition_ids : ndarray (n_samples,)
     unique_partitions : ndarray
     n_synthetic : int
+        Total synthetic samples to allocate.
     variance_weighted : bool
-        True  → oversample high-variance (tail) partitions.
-        False → proportional to partition size (preserves distribution).
+        ``True``  — weight by mean |z-score| (oversample tail partitions).
+        ``False`` — weight proportionally to partition size.
     X_z : ndarray (n_samples, n_features)
 
     Returns
     -------
     budgets : ndarray of int, shape (len(unique_partitions),)
     """
-    partition_sizes = np.array(
-        [np.sum(partition_ids == pid) for pid in unique_partitions], dtype=float
-    )
-
-    if variance_weighted:
-        weights = np.array(
-            [np.mean(np.abs(X_z[partition_ids == pid])) for pid in unique_partitions]
-        )
-        weights = np.maximum(weights, 1e-10)
-        weights = weights / weights.sum()
-    else:
-        weights = partition_sizes / partition_sizes.sum()
-
-    budgets = np.maximum(0, (weights * n_synthetic).astype(int))
-
-    while budgets.sum() > n_synthetic:
-        budgets[np.argmax(budgets)] -= 1
-    while budgets.sum() < n_synthetic:
-        budgets[np.argmin(budgets)] += 1
-
-    return budgets
+    weights = _compute_weights(partition_ids, unique_partitions, variance_weighted, X_z)
+    return allocate_budgets(weights, n_synthetic, floor=0)
 
 
 # ---------------------------------------------------------------------------
@@ -122,40 +101,39 @@ def compute_expansion_budgets(
 # ---------------------------------------------------------------------------
 
 def sample_from_kdes(
-    kdes,
-    unique_partitions,
-    budgets,
-    X_z,
-    partition_ids,
-    random_state,
-    min_novelty=0.0,
-    oversample_factor=5,
-    max_attempts=10,
-):
+    kdes: dict,
+    unique_partitions: np.ndarray,
+    budgets: np.ndarray,
+    X_z: np.ndarray,
+    partition_ids: np.ndarray,
+    random_state: int,
+    min_novelty: float = 0.0,
+    oversample_factor: int = 5,
+    max_attempts: int = 10,
+) -> np.ndarray:
     """
     Draw synthetic samples from per-partition multivariate KDEs.
 
     Parameters
     ----------
-    kdes : dict {pid -> gaussian_kde or None}
+    kdes : dict[int, gaussian_kde | None]
+        From ``fit_partition_kdes``.  ``None`` entries fall back to
+        bootstrap-with-noise.
     unique_partitions : ndarray
     budgets : ndarray of int
     X_z : ndarray (n_samples, n_features)
-        Original data in z-score space (used for novelty filtering).
+        Original data in z-score space, used for novelty filtering.
     partition_ids : ndarray (n_samples,)
     random_state : int
-    min_novelty : float
-        Minimum Euclidean distance (in z-score space) from any original
-        sample. 0.0 disables filtering.
-    oversample_factor : int
-        When novelty filtering is active, draw this many extra samples per
-        needed sample before filtering.
-    max_attempts : int
-        Maximum oversampling rounds before falling back without constraint.
+    min_novelty : float, default 0.0
+        Minimum Euclidean distance from any original sample.
+        ``0.0`` disables filtering.
+    oversample_factor : int, default 5
+    max_attempts : int, default 10
 
     Returns
     -------
-    X_synthetic : ndarray (n_synthetic, n_features) in z-score space
+    X_synthetic : ndarray (n_synthetic, n_features), z-score space
     """
     rng = np.random.RandomState(random_state)
     all_synthetic = []
@@ -168,17 +146,14 @@ def sample_from_kdes(
         X_part = X_z[partition_ids == pid]
 
         if kde is None:
-            # Single-sample partition: bootstrap with tiny noise
             base = np.tile(X_part[0], (budget, 1))
             base += rng.normal(0, 0.01, base.shape)
             all_synthetic.append(base)
             continue
 
         if min_novelty <= 0.0:
-            # No filtering: draw directly
             samples = kde.resample(budget, seed=int(rng.randint(0, 2**31))).T
         else:
-            # Oversample → filter → repeat until budget is met
             collected = []
             needed = budget
             attempts = 0
@@ -195,7 +170,6 @@ def sample_from_kdes(
                 attempts += 1
 
             if needed > 0:
-                # Fallback: fill remainder without novelty constraint
                 fallback = kde.resample(needed, seed=int(rng.randint(0, 2**31))).T
                 collected.append(fallback)
 
@@ -214,25 +188,18 @@ def sample_from_kdes(
 # ---------------------------------------------------------------------------
 
 def sample_categorical_from_freqs(
-    cat_partition_freqs,
-    unique_partitions,
-    budgets,
-    random_state,
-):
+    cat_partition_freqs: dict,
+    unique_partitions: np.ndarray,
+    budgets: np.ndarray,
+    random_state: int,
+) -> np.ndarray:
     """
     Sample categorical column values from per-partition empirical distributions.
 
-    Categorical values are drawn directly from the observed values in each
-    partition with their empirical probabilities — no KDE or interpolation
-    is applied.  This ensures categorical outputs are always valid members
-    of the original category set.
-
     Parameters
     ----------
-    cat_partition_freqs : dict {int pid -> list of (unique_values, probs)}
-        Per-partition empirical frequency tables, one entry per categorical
-        column.  ``unique_values`` is an ndarray of the original values seen
-        in that partition; ``probs`` is the corresponding probability vector.
+    cat_partition_freqs : dict[int, list[tuple[ndarray, ndarray]]]
+        Per-partition frequency tables from _preprocessing.build_cat_partition_freqs.
     unique_partitions : ndarray
     budgets : ndarray of int
     random_state : int
@@ -240,9 +207,8 @@ def sample_categorical_from_freqs(
     Returns
     -------
     X_cat : ndarray (n_synthetic, n_cat_cols)
-        Sampled categorical values with the same dtype as the stored values.
     """
-    rng = np.random.RandomState(random_state + 1)  # offset to decorrelate from KDE seed
+    rng = np.random.RandomState(random_state + 1)
     all_cat = []
     n_cat_cols = None
 
@@ -252,8 +218,6 @@ def sample_categorical_from_freqs(
 
         col_freqs = cat_partition_freqs[int(pid)]
         n_cat_cols = len(col_freqs)
-
-        # Infer output dtype from the stored value arrays
         dtype = col_freqs[0][0].dtype
 
         cat_block = np.empty((budget, n_cat_cols), dtype=dtype)
@@ -271,107 +235,23 @@ def sample_categorical_from_freqs(
 
 
 # ---------------------------------------------------------------------------
-# Strategy-based sampling (alternative to KDE path)
-# ---------------------------------------------------------------------------
-
-def sample_with_strategy(
-    strategy_fn,
-    unique_partitions,
-    budgets,
-    X_z,
-    partition_ids,
-    random_state,
-    min_novelty=0.0,
-    oversample_factor=5,
-    max_attempts=10,
-):
-    """
-    Draw synthetic samples using an arbitrary generation strategy callable.
-
-    This mirrors the interface of ``sample_from_kdes`` but delegates
-    per-partition sampling to ``strategy_fn`` instead of a fitted KDE.
-
-    Parameters
-    ----------
-    strategy_fn : callable  (X_partition, budget, random_state) -> ndarray
-        A ``GenerationStrategy``-compatible callable.
-    unique_partitions : ndarray
-    budgets : ndarray of int
-    X_z : ndarray (n_samples, n_features)
-        Original data in z-score space.
-    partition_ids : ndarray (n_samples,)
-    random_state : int
-    min_novelty : float
-        Minimum Euclidean distance from any original sample.  0.0 disables.
-    oversample_factor : int
-        Extra samples drawn per iteration when novelty filtering is active.
-    max_attempts : int
-        Maximum oversampling rounds before falling back without constraint.
-
-    Returns
-    -------
-    X_synthetic : ndarray (n_synthetic, n_features) in z-score space
-    """
-    rng = np.random.RandomState(random_state)
-    all_synthetic = []
-
-    for pid, budget in zip(unique_partitions, budgets):
-        if budget == 0:
-            continue
-
-        X_part = X_z[partition_ids == pid]
-        seed = int(rng.randint(0, 2 ** 31))
-
-        if min_novelty <= 0.0:
-            samples = strategy_fn(X_part, budget, seed)
-        else:
-            # Oversample → filter → repeat until budget is met
-            collected = []
-            needed = budget
-            attempts = 0
-
-            while needed > 0 and attempts < max_attempts:
-                n_draw = needed * oversample_factor
-                drawn = strategy_fn(X_part, n_draw, int(rng.randint(0, 2 ** 31)))
-                dists = cdist(drawn, X_part, metric='euclidean').min(axis=1)
-                novel = drawn[dists >= min_novelty]
-                if len(novel) > 0:
-                    take = min(needed, len(novel))
-                    collected.append(novel[:take])
-                    needed -= take
-                attempts += 1
-
-            if needed > 0:
-                fallback = strategy_fn(X_part, needed, int(rng.randint(0, 2 ** 31)))
-                collected.append(fallback)
-
-            samples = (
-                np.vstack(collected) if collected
-                else np.empty((0, X_z.shape[1]))
-            )
-
-        all_synthetic.append(samples[:budget])
-
-    if not all_synthetic:
-        return np.empty((0, X_z.shape[1]))
-
-    return np.vstack(all_synthetic)
-
-
-# ---------------------------------------------------------------------------
 # Novelty distances
 # ---------------------------------------------------------------------------
 
-def compute_novelty_distances(X_synthetic, X_original, chunk_size=1000):
+def compute_novelty_distances(
+    X_synthetic: np.ndarray,
+    X_original: np.ndarray,
+    chunk_size: int = 1000,
+) -> np.ndarray:
     """
     Compute minimum Euclidean distance from each synthetic sample to any
-    original sample. Chunked for memory efficiency.
+    original sample.  Chunked to bound peak memory usage.
 
     Parameters
     ----------
     X_synthetic : ndarray (n_synthetic, d)
     X_original : ndarray (n_original, d)
-    chunk_size : int
+    chunk_size : int, default 1000
 
     Returns
     -------

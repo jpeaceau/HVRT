@@ -31,7 +31,7 @@ import numpy as np
 from datetime import datetime, timezone
 from sklearn.model_selection import train_test_split
 
-from ..core import HVRT, FastHVRT
+from .. import HVRT, FastHVRT
 from .datasets import BENCHMARK_DATASETS, make_emergence_divergence, make_emergence_bifurcation
 from .metrics import evaluate_reduction, evaluate_expansion, ml_utility_tstr
 
