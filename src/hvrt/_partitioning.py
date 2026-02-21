@@ -48,11 +48,16 @@ def auto_tune_tree_params(
             # relaxed by 2/3 to support 3x more partitions.
             min_samples_leaf = max(5, (n_features * 40 * 2) // 3)
         else:
-            # For expansion / augmentation: scale with dataset size so partitions
-            # stay generous enough for stable KDE without over-constraining.
-            # Formula: 0.75 * n^(2/3), floor at 5.
-            # (~250 samples → ~30 per leaf; ~1000 samples → ~75 per leaf)
-            min_samples_leaf = max(5, int(0.75 * n_samples ** (2 / 3)))
+            # For expansion / augmentation: use sqrt(n) with a feature-aware
+            # floor of (n_features + 2) to guarantee a non-singular covariance
+            # matrix for multivariate KDE in every partition.
+            # scipy.stats.gaussian_kde raises LinAlgError when n_part <= d;
+            # floor d+2 provides one clear margin above that threshold.
+            # sqrt(n) grows slower than n^(2/3), allowing finer partitioning
+            # (better local density capture) while staying safe across all
+            # (n, d) combinations, including small-n / high-d datasets.
+            # (~50 samples → ≥8 per leaf; ~500 samples → ≥22 per leaf)
+            min_samples_leaf = max(n_features + 2, int(n_samples ** 0.5))
 
     if max_leaf_nodes is None:
         # 3x multiplier: finer partitions for better outlier isolation

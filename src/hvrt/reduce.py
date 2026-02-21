@@ -49,8 +49,28 @@ def compute_partition_budgets(
     -------
     budgets : ndarray of int, shape (len(unique_partitions),)
     """
+    partition_sizes = np.array(
+        [np.sum(partition_ids == pid) for pid in unique_partitions], dtype=int
+    )
     weights = _compute_weights(partition_ids, unique_partitions, variance_weighted, X_z)
-    return allocate_budgets(weights, n_target, floor=min_per_partition)
+    budgets = allocate_budgets(weights, n_target, floor=min_per_partition)
+
+    # Variance-weighted allocation can assign more budget to a partition than
+    # it actually contains.  Clip each budget to its partition size, then
+    # greedily redistribute any shortfall to partitions with remaining capacity
+    # so the total stays equal to n_target.
+    np.clip(budgets, 0, partition_sizes, out=budgets)
+    remaining_capacity = partition_sizes - budgets
+    shortfall = n_target - int(budgets.sum())
+    for _ in range(shortfall):
+        candidates = np.where(remaining_capacity > 0)[0]
+        if not len(candidates):
+            break
+        pick = candidates[np.argmax(remaining_capacity[candidates])]
+        budgets[pick] += 1
+        remaining_capacity[pick] -= 1
+
+    return budgets
 
 
 def select_from_partitions(

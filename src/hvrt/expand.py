@@ -46,10 +46,14 @@ def fit_partition_kdes(
     kdes : dict[int, gaussian_kde | None]
         ``None`` entries indicate single-sample partitions (no KDE fitted).
     """
+    n_features = X_z.shape[1]
     kdes = {}
     for pid in unique_partitions:
         X_part = X_z[partition_ids == pid]
-        if len(X_part) < 2:
+        # Need at least 2 samples, and more samples than features for a
+        # non-singular covariance matrix (gaussian_kde raises either
+        # LinAlgError or ValueError depending on the scipy version).
+        if len(X_part) < 2 or len(X_part) <= n_features:
             kdes[int(pid)] = None
         else:
             if isinstance(bandwidth, dict):
@@ -58,7 +62,7 @@ def fit_partition_kdes(
                 bw = bandwidth if bandwidth is not None else 'scott'
             try:
                 kdes[int(pid)] = gaussian_kde(X_part.T, bw_method=bw)
-            except np.linalg.LinAlgError:
+            except (np.linalg.LinAlgError, ValueError):
                 kdes[int(pid)] = None
     return kdes
 
