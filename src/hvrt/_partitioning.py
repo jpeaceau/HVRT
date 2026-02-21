@@ -14,7 +14,9 @@ import numpy as np
 from sklearn.tree import DecisionTreeRegressor
 
 
-def auto_tune_tree_params(n_samples, n_features, max_leaf_nodes=None, min_samples_leaf=None):
+def auto_tune_tree_params(
+    n_samples, n_features, max_leaf_nodes=None, min_samples_leaf=None, is_reduction=True
+):
     """
     Auto-tune decision tree hyperparameters from dataset shape.
 
@@ -29,6 +31,11 @@ def auto_tune_tree_params(n_samples, n_features, max_leaf_nodes=None, min_sample
         Returned unchanged if provided (manual override).
     min_samples_leaf : int or None
         Returned unchanged if provided (manual override).
+    is_reduction : bool, default True
+        When True, enforces a 40:1 sample-to-feature ratio per leaf to ensure
+        partitions are large enough for meaningful representative selection.
+        When False (expansion / augmentation), uses a far more permissive 1:1
+        ratio so the tree can produce finer-grained partitions for KDE fitting.
 
     Returns
     -------
@@ -36,9 +43,16 @@ def auto_tune_tree_params(n_samples, n_features, max_leaf_nodes=None, min_sample
     min_samples_leaf : int
     """
     if min_samples_leaf is None:
-        # Maintain 40:1 sample-to-feature ratio inside each leaf,
-        # relaxed by 2/3 to support 3x more partitions.
-        min_samples_leaf = max(5, (n_features * 40 * 2) // 3)
+        if is_reduction:
+            # Maintain 40:1 sample-to-feature ratio inside each leaf,
+            # relaxed by 2/3 to support 3x more partitions.
+            min_samples_leaf = max(5, (n_features * 40 * 2) // 3)
+        else:
+            # For expansion / augmentation: scale with dataset size so partitions
+            # stay generous enough for stable KDE without over-constraining.
+            # Formula: 0.75 * n^(2/3), floor at 5.
+            # (~250 samples → ~30 per leaf; ~1000 samples → ~75 per leaf)
+            min_samples_leaf = max(5, int(0.75 * n_samples ** (2 / 3)))
 
     if max_leaf_nodes is None:
         # 3x multiplier: finer partitions for better outlier isolation
@@ -84,6 +98,7 @@ def resolve_tree_params(
     n_partitions=None,
     min_samples_leaf=None,
     auto_tune=True,
+    is_reduction=True,
 ):
     """
     Resolve max_leaf_nodes and min_samples_leaf for a tree fit.
@@ -101,6 +116,9 @@ def resolve_tree_params(
     min_samples_leaf : int or None
         Instance-level default (may be None → auto-tuned).
     auto_tune : bool
+    is_reduction : bool, default True
+        Passed to auto_tune_tree_params to select the appropriate
+        min_samples_leaf formula (40:1 for reduction, 1:1 for expansion).
 
     Returns
     -------
@@ -116,7 +134,8 @@ def resolve_tree_params(
             min_samples_leaf = max(2, n_samples // (n_partitions_override * 3))
     elif auto_tune:
         max_leaf_nodes, min_samples_leaf = auto_tune_tree_params(
-            n_samples, n_features, max_leaf_nodes, min_samples_leaf
+            n_samples, n_features, max_leaf_nodes, min_samples_leaf,
+            is_reduction=is_reduction,
         )
     else:
         if max_leaf_nodes is None:

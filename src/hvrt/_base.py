@@ -162,13 +162,20 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     # Tree helpers
     # ------------------------------------------------------------------
 
-    def _fit_tree(self, X_z, target, n_partitions_override=None):
+    def _fit_tree(self, X_z, target, n_partitions_override=None, is_reduction=False):
         """
         (Re-)fit the partitioning tree and update partition state.
 
         If n_partitions_override is provided the tree is always refitted
         with that leaf budget; otherwise a previously fitted tree is reused
         when the resolved parameters match (no-op).
+
+        Parameters
+        ----------
+        is_reduction : bool, default False
+            When True, the stricter 40:1 sample-to-feature auto-tune formula
+            is used for min_samples_leaf.  When False, the permissive 1:1
+            formula is used, allowing many more fine-grained partitions.
         """
         n_samples, n_features = X_z.shape
         max_leaf, min_leaf = resolve_tree_params(
@@ -177,6 +184,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             n_partitions=self.n_partitions,
             min_samples_leaf=self.min_samples_leaf,
             auto_tune=self.auto_tune,
+            is_reduction=is_reduction,
         )
 
         if (
@@ -236,7 +244,15 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self._tree_max_leaf_ = None
         self._tree_min_leaf_ = None
 
-        self._fit_tree(self.X_z_, self._last_target_)
+        # Use the stricter 40:1 leaf constraint only when reduction is the
+        # declared pipeline operation; default to the permissive 1:1 formula
+        # for expansion / augmentation (or when no params are declared).
+        _is_reduction = (
+            self.reduce_params is not None
+            and self.expand_params is None
+            and self.augment_params is None
+        )
+        self._fit_tree(self.X_z_, self._last_target_, is_reduction=_is_reduction)
 
         return self
 
@@ -287,7 +303,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self._check_fitted()
 
         if n_partitions is not None:
-            self._fit_tree(self.X_z_, self._last_target_, n_partitions)
+            self._fit_tree(self.X_z_, self._last_target_, n_partitions, is_reduction=True)
 
         if X is None:
             X_src = self.X_
@@ -372,7 +388,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             )
 
         if n_partitions is not None:
-            self._fit_tree(self.X_z_, self._last_target_, n_partitions)
+            self._fit_tree(self.X_z_, self._last_target_, n_partitions, is_reduction=False)
 
         n_cont = int(self.continuous_mask_.sum())
         n_cat = int(self.categorical_mask_.sum())
