@@ -79,8 +79,13 @@ class TestMinNovelty:
         X = correlated_data
         model = HVRT(random_state=0).fit(X)
         threshold = 0.5
+        # Use a wide bandwidth so the KDE can actually generate samples far
+        # enough from training points to satisfy the novelty threshold.
+        # (The default bandwidth=0.1 is intentionally tight and would make
+        # novelty filtering impossible by design — samples land within ~0.1σ
+        # of training points, which is well below the 0.25 threshold.)
         with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
-            X_synth = model.expand(n=100, min_novelty=threshold)
+            X_synth = model.expand(n=100, min_novelty=threshold, bandwidth=0.5)
         # Check a sample of points
         from scipy.spatial.distance import cdist
         # Normalize to z-score space for comparison (model stores X_z_)

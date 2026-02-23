@@ -36,6 +36,7 @@ Legacy API (v1, kept for backward compatibility)
 from ._warnings import HVRTWarning, HVRTFeatureWarning, HVRTDeprecationWarning
 from ._params import ReduceParams, ExpandParams, AugmentParams
 from .model import HVRT, FastHVRT
+from .optimizer import HVRTOptimizer
 
 # Legacy v1 classes — kept for backward compatibility
 from .legacy.sample_reduction import HVRTSampleReducer
@@ -54,16 +55,18 @@ from .generation_strategies import (
     multivariate_kde,
     univariate_kde_copula,
     bootstrap_noise,
+    epanechnikov,
     BUILTIN_GENERATION_STRATEGIES,
     get_generation_strategy,
 )
 
-__version__ = '2.1.2'
+__version__ = '2.2.0'
 
 __all__ = [
     # v2 primary API
     'HVRT',
     'FastHVRT',
+    'HVRTOptimizer',
     # Operation params
     'ReduceParams',
     'ExpandParams',
@@ -85,6 +88,7 @@ __all__ = [
     'multivariate_kde',
     'univariate_kde_copula',
     'bootstrap_noise',
+    'epanechnikov',
     'BUILTIN_GENERATION_STRATEGIES',
     'get_generation_strategy',
     # v1 legacy API

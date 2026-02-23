@@ -100,7 +100,7 @@ model = HVRT(
     n_partitions=None,           # Max tree leaves; auto-tuned if None
     min_samples_leaf=None,       # Min samples per leaf; auto-tuned if None
     y_weight=0.0,                # 0.0 = unsupervised; 1.0 = y drives splits
-    bandwidth=0.5,               # Default KDE bandwidth for expand()
+    bandwidth='auto',            # KDE bandwidth: 'auto' (default), float, 'scott', 'silverman'
     auto_tune=True,
     random_state=42,
     # Pipeline params (see Pipeline section)
@@ -117,10 +117,58 @@ Target: sum of normalised pairwise feature interactions. O(n · d²). Preferred 
 ```python
 from hvrt import FastHVRT
 
-model = FastHVRT(bandwidth=0.5, random_state=42)
+model = FastHVRT(bandwidth='auto', random_state=42)
 ```
 
 Target: sum of z-scores. O(n · d). Equivalent quality to HVRT for expansion. All constructor parameters identical to HVRT.
+
+### `HVRTOptimizer`
+
+Requires: `pip install hvrt[optimizer]`
+
+```python
+from hvrt import HVRTOptimizer
+
+opt = HVRTOptimizer(
+    n_trials=30,             # Optuna trials; use ≥50 in production
+    n_jobs=1,                # Parallel trials (-1 = all cores)
+    cv=3,                    # Cross-validation folds for the objective
+    expansion_ratio=5.0,     # Synthetic-to-real ratio during evaluation
+    task='auto',             # 'auto', 'regression', 'classification'
+    timeout=None,            # Wall-clock time limit in seconds
+    random_state=None,
+    verbose=0,               # 0 = silent, 1 = Optuna trial progress
+)
+opt = opt.fit(X, y)          # y enables TSTR Δ objective; required for classification
+```
+
+Performs TPE-based Bayesian optimisation over `n_partitions`, `min_samples_leaf`,
+`y_weight`, kernel / bandwidth, and `variance_weighted`. The HVRT defaults are always
+evaluated as trial 0 (warm start), so HPO can only match or improve on the baseline.
+
+**Post-fit attributes:**
+
+| Attribute | Type | Description |
+|---|---|---|
+| `best_score_` | float | Best mean TSTR Δ across CV folds |
+| `best_params_` | dict | Best constructor kwargs (`n_partitions`, `min_samples_leaf`, `y_weight`, `bandwidth`) |
+| `best_expand_params_` | dict | Best expand kwargs (`variance_weighted`, optionally `generation_strategy`) |
+| `best_model_` | HVRT | Refitted on the full dataset using `best_params_` |
+| `study_` | optuna.Study | Full Optuna study for visualisation and diagnostics |
+
+**After fitting:**
+
+```python
+opt = HVRTOptimizer(n_trials=50, n_jobs=4, cv=3, random_state=42).fit(X, y)
+print(f'Best TSTR Δ: {opt.best_score_:+.4f}')
+print(f'Best params: {opt.best_params_}')
+
+X_synth = opt.expand(n=50000)         # y column stripped automatically
+X_aug   = opt.augment(n=len(X) * 5)   # originals + synthetic
+```
+
+`expand()` and `augment()` strip the appended y column, returning arrays with the same
+number of columns as the training X.
 
 ### `fit`
 
@@ -148,7 +196,7 @@ X_reduced = model.reduce(
 X_synth = model.expand(
     n=10000,
     variance_weighted=False,      # True = oversample tails
-    bandwidth=None,               # Override instance bandwidth
+    bandwidth=None,               # Override instance bandwidth; accepts float, 'auto', 'scott'
     adaptive_bandwidth=False,     # Scale bandwidth with local expansion ratio
     generation_strategy=None,     # See Generation Strategies
     return_novelty_stats=False,
@@ -247,12 +295,12 @@ AugmentParams(
 ## Generation Strategies
 
 ```python
-from hvrt import FastHVRT, univariate_kde_copula
+from hvrt import FastHVRT, epanechnikov, univariate_kde_copula
 
 model = FastHVRT(random_state=42).fit(X)
 
 # By name
-X_synth = model.expand(n=10000, generation_strategy='bootstrap_noise')
+X_synth = model.expand(n=10000, generation_strategy='epanechnikov')
 
 # By reference
 X_synth = model.expand(n=10000, generation_strategy=univariate_kde_copula)
@@ -267,14 +315,15 @@ X_synth = model.expand(n=10000, generation_strategy=my_strategy)
 
 | Strategy | Behaviour | Notes |
 |---|---|---|
-| `'multivariate_kde'` | `scipy.stats.gaussian_kde` on all features jointly. Scott's rule. **Default.** | Captures full joint covariance |
+| `'multivariate_kde'` | `scipy.stats.gaussian_kde` on all features jointly. Uses instance `bandwidth`. | Captures full joint covariance |
+| `'epanechnikov'` | Product Epanechnikov kernel, Ahrens-Dieter sampling. Bounded support. | Recommended for classification; ≥5× ratios |
 | `'univariate_kde_copula'` | Per-feature 1-D KDE marginals + Gaussian copula. | More flexible per-feature marginals |
 | `'bootstrap_noise'` | Resample with replacement + Gaussian noise at 10% of per-feature std. | Fastest; no distributional assumptions |
 
 ```python
 from hvrt import BUILTIN_GENERATION_STRATEGIES
 list(BUILTIN_GENERATION_STRATEGIES)
-# ['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise']
+# ['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise', 'epanechnikov']
 ```
 
 ---
@@ -305,6 +354,243 @@ X_red = model.reduce(ratio=0.2, method=my_selector)
 | `'medoid_fps'` | FPS seeded at the partition medoid. |
 | `'variance_ordered'` | Select samples with highest local k-NN variance (k=10). |
 | `'stratified'` | Random sample within each partition. |
+
+---
+
+## Recommendations
+
+Findings from a systematic bandwidth and kernel benchmark across 6 datasets,
+3 expansion ratios (2×/5×/10×), and 11 methods (see `benchmarks/bandwidth_benchmark.py`
+and `findings.md`).
+
+### `bandwidth='auto'` — the default
+
+`bandwidth='auto'` is the default and requires no tuning for most datasets. At each
+`expand()` call it inspects the fitted partition structure and picks the kernel most
+likely to produce high-quality synthetic data:
+
+```python
+model = HVRT().fit(X)          # bandwidth='auto' by default
+X_synth = model.expand(n=50000)  # auto chooses at call-time
+```
+
+**How it decides:**
+
+At call-time, `'auto'` computes the mean number of samples per partition and
+compares it against a feature-scaled threshold: `max(15, 2 × n_continuous_features)`.
+
+| Condition | Chosen kernel | Reason |
+|---|---|---|
+| mean partition size **≥** threshold | Narrow Gaussian `h=0.1` | Enough samples for stable multivariate covariance estimation; tight kernel stays within partition geometry |
+| mean partition size **<** threshold | Epanechnikov product kernel | Too few samples for reliable covariance; product kernel requires no covariance matrix and bounded support keeps samples within the local region |
+
+The threshold scales with dimensionality because the minimum samples needed for a
+non-degenerate `d`-dimensional covariance matrix grows with `d`. At 5 features the
+threshold is 15; at 15 features it is 30.
+
+**Why not just always use one or the other:**
+
+Benchmarking across 4 regression datasets showed a clean crossover depending on
+partition size. With the default auto-tuned partition count (typically 15–20 partitions
+at n=500), partitions hold ~25 samples and narrow Gaussian wins on TSTR. But when
+partitions are finer — either because the dataset is large and the auto-tuner produces
+more leaves, or because `n_partitions` is manually increased — Gaussian KDE degrades
+as partitions become too small for stable covariance estimation, while Epanechnikov
+holds steady or improves. For example, on the housing dataset (d=6) at 10× expansion:
+
+| Partition count | Gaussian `h=0.1` TSTR | Epanechnikov TSTR |
+|---|---|---|
+| auto (~18) | +0.004 | −0.014 |
+| 50 | −0.033 | **−0.008** |
+| 100 | −0.037 | **−0.011** |
+| 200 | −0.080 | **−0.008** |
+
+The crossover point depends on dimensionality: higher-dimensional datasets shift it
+earlier. On multimodal (d=10), Epanechnikov wins from 30 partitions onward (mean
+partition size ~13 at n=500). On housing (d=6) and emergence_divergence (d=5),
+the crossover is ~50 partitions. This is because higher dimensionality makes a
+d×d covariance matrix harder to estimate stably from small samples, while
+Epanechnikov is always covariance-free.
+
+`'auto'` captures this automatically: when you call `expand(n_partitions=200)`,
+`'auto'` sees the resulting small partition sizes and switches to Epanechnikov
+without any manual intervention.
+
+**When to override `'auto'`:**
+
+- **Heterogeneous / high-skew classification task (mean |skew| ≳ 0.8):**
+  `generation_strategy='epanechnikov'` directly — Epanechnikov wins consistently
+  when within-partition data is non-Gaussian. On near-Gaussian classification data,
+  `bandwidth='auto'` (`h=0.10`) or `adaptive_bandwidth=True` is competitive or
+  better, particularly at 2×–5× expansion ratios.
+- **Small dataset, coarse partitions, regression:** `bandwidth=0.1` or `bandwidth=0.3`
+  — explicit narrow Gaussian if you know partition sizes are large and correlation
+  structure matters.
+- **Diagnostic / ablation:** pass explicit values (`bandwidth=0.3`, `bandwidth='scott'`)
+  to isolate the bandwidth effect.
+
+### Why Scott's rule underperforms
+
+Scott's rule is AMISE-optimal for iid Gaussian data. HVRT partitions, while locally
+more homogeneous than the global distribution, are not Gaussian enough for this to
+hold (mean |skewness| 0.49–1.37 across benchmark datasets). More importantly, the
+decision tree already captures the primary variance structure of each partition, so
+the residual within-partition variance is narrower than Scott's formula assumes.
+The result is systematic over-smoothing: synthetic samples bleed across partition
+boundaries and dilute the local density structure. Scott's rule won 0 of 18
+benchmark conditions.
+
+Wide bandwidths (≥ 0.75) are actively harmful. They produce synthetic data that
+degrades downstream ML models (TSTR Δ as low as −0.75 R²). Discriminator accuracy
+can paradoxically *improve* with wide bandwidths on regression — a metric artifact
+where spreading matches marginals while destroying joint structure. Use TSTR as the
+primary quality signal, not disc_err.
+
+### Partition granularity
+
+If `'auto'` is already in use, increasing `n_partitions` will automatically trigger
+the switch to Epanechnikov when partition sizes fall below the threshold. You can
+also set it explicitly:
+
+```python
+# Finer partitions — 'auto' will pick Epanechnikov when sizes drop below threshold
+model.expand(n=50000, n_partitions=150)
+
+# Or fix at construction time
+model = HVRT(n_partitions=150, min_samples_leaf=10).fit(X)
+```
+
+Benchmark evidence (regression datasets, 5×/10× expansion ratios):
+
+| Dataset (d) | At auto (~18 parts) best TSTR | At 150 parts Epan TSTR |
+|---|---|---|
+| housing (d=6) | h=0.30: −0.001 | **−0.013** |
+| multimodal (d=10) | h=0.30: +0.004 | **+0.001** |
+| emergence_divergence (d=5) | h=0.10: +0.007 | **+0.004** |
+| emergence_bifurcation (d=5) | h=0.10: −0.022 | **−0.118** |
+
+Note: for the emergence_bifurcation dataset (where the same feature region maps
+to a bimodal target), all methods remain significantly negative at any partition
+count. This indicates a structural limit: if the same X values correspond to
+multiple distinct y outcomes, expansion without conditioning on y cannot reproduce
+that structure. In such cases consider conditioning expansion on y directly
+(e.g., expand class-conditional subsets separately).
+
+### Hyperparameter optimisation (HPO)
+
+Dataset heterogeneity is the primary driver of how sensitive synthetic quality
+is to HVRT's parameters. A well-behaved, near-Gaussian dataset with few
+sub-populations produces good synthetic data at defaults with little room to
+improve. A dataset with distinct clusters, non-linear interactions, or
+regime-switching needs finer partitions to achieve local homogeneity within
+each leaf — and the optimal settings are dataset-specific.
+
+Benchmark evidence: on near-Gaussian data (fraud, housing at auto partition
+count), TSTR varied by less than 0.01 across all bandwidth candidates. On
+heterogeneous datasets (emergence_divergence, emergence_bifurcation), TSTR
+varied by up to 0.20+ between the best and worst methods at the same partition
+count. If your data is heterogeneous, HPO pays; if it is well-behaved, defaults
+are sufficient.
+
+**When HPO is worth running:**
+
+- TSTR Δ is significantly negative on your downstream task (below −0.05 is a
+  useful rule of thumb)
+- Your dataset has known sub-populations, clusters, non-linear interactions, or
+  regime changes (e.g., different dynamics at different feature values)
+- You are generating at a high ratio (10×+) where compounding errors matter more
+
+**Parameter search space:**
+
+| Parameter | Default | Suggested search | Effect |
+|---|---|---|---|
+| `n_partitions` | auto | `None`, 20, 30, 50, 75, 100 | **Primary lever.** More partitions → finer local homogeneity. Start here. |
+| `min_samples_leaf` | auto | 5, 10, 15, 20 | Controls auto-tuner floor; lower allows finer splits when n is large. |
+| `bandwidth` | `'auto'` | `'auto'`, 0.05, 0.10, 0.30, `epanechnikov` | `'auto'` is usually near-optimal once partition count is right. |
+| `variance_weighted` | `False` | `True`, `False` | `True` oversamples high-variance partitions; useful for tail-heavy distributions. |
+| `y_weight` | 0.0 | 0.1, 0.3, 0.5 | Weights target in synthetic target; helps when y governs sub-population identity. |
+
+**Evaluation metric:** Use **TSTR Δ** (train-on-synthetic, test-on-real minus
+train-on-real baseline) as the HPO objective. Discriminator accuracy (`disc_err`)
+is structurally insensitive — wide bandwidths can lower it by spreading marginals
+while destroying joint structure. TSTR directly measures what matters: can a model
+trained on synthetic data perform as well as one trained on real data?
+
+**Example HPO loop:**
+
+Use `HVRTOptimizer` for automated Bayesian optimisation with Optuna
+(install the optional extra first: `pip install hvrt[optimizer]`):
+
+```python
+from hvrt import HVRTOptimizer
+
+opt = HVRTOptimizer(n_trials=50, n_jobs=4, cv=3, random_state=42).fit(X, y)
+print(f'Best TSTR Δ: {opt.best_score_:+.4f}')
+print(f'Best params: {opt.best_params_}')
+
+X_synth = opt.expand(n=50000)        # uses tuned kernel + params
+X_aug   = opt.augment(n=len(X) * 5)  # originals + synthetic
+```
+
+`HVRTOptimizer` searches over `n_partitions`, `min_samples_leaf`,
+`y_weight`, kernel / bandwidth, and `variance_weighted` using TPE
+sampling, with TRTR pre-computed once to halve GBM fitting overhead.
+The fitted `best_model_` is refitted on the full dataset after tuning.
+
+For a custom objective or manual grid search:
+
+```python
+from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.metrics import r2_score
+from sklearn.model_selection import train_test_split
+import numpy as np
+from hvrt import HVRT
+
+X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
+
+def tstr_delta(n_partitions, bandwidth, variance_weighted=False, seed=42):
+    XY_tr = np.column_stack([X_tr, y_tr.reshape(-1, 1)])
+    model = HVRT(n_partitions=n_partitions, bandwidth=bandwidth,
+                 random_state=seed).fit(XY_tr)
+    XY_s = model.expand(n=len(X_tr) * 5, variance_weighted=variance_weighted)
+    X_s, y_s = XY_s[:, :-1], XY_s[:, -1]
+    trtr = r2_score(y_te, GradientBoostingRegressor(
+                        random_state=seed).fit(X_tr, y_tr).predict(X_te))
+    tstr = r2_score(y_te, GradientBoostingRegressor(
+                        random_state=seed).fit(X_s, y_s).predict(X_te))
+    return tstr - trtr
+
+best_score, best_cfg = float('-inf'), {}
+for n_parts in [None, 30, 50, 100]:   # None = let auto-tune decide
+    for bw in ['auto', 0.10, 0.30]:
+        score = tstr_delta(n_partitions=n_parts, bandwidth=bw)
+        if score > best_score:
+            best_score, best_cfg = score, {'n_partitions': n_parts, 'bandwidth': bw}
+
+print(f'Best TSTR Δ={best_score:+.4f}  params={best_cfg}')
+```
+
+**Recommended tuning sequence:**
+
+1. **Run with defaults.** Establish a baseline TSTR Δ. If it is close to zero, stop.
+2. **Sweep `n_partitions`.** This has the largest effect on heterogeneous data. Try
+   `None` (auto), 20, 30, 50, 75, 100. More partitions only help when `n` is large
+   enough — a rule of thumb is at least 10–15 real samples per partition.
+3. **Check `bandwidth`.** With `'auto'`, HVRT already picks the right kernel for
+   the resulting partition size. If you have prior knowledge (classification → prefer
+   `'epanechnikov'`; regression with large partitions → prefer `0.10`), override it.
+4. **Try `variance_weighted=True`** if your dataset has a long tail or rare events
+   you want the expansion to oversample.
+5. **If TSTR remains poor at any partition count**, the dataset likely has inherently
+   unpredictable local structure (e.g., the same feature region maps to multiple
+   distinct outcomes). Consider conditioning: split by `y` quantile or class and
+   expand each subset independently.
+
+**What not to try:** Expanding synthetically and re-fitting HVRT on that output
+("two-phase pipeline") to manufacture fine partitions does not improve TSTR.
+Phase 1 Gaussian smoothing introduces distribution drift that Phase 2 amplifies,
+and the net TSTR is worse than single-phase at the auto partition count. Finer
+partitions must come from more *real* data.
 
 ---
 
@@ -363,6 +649,8 @@ python benchmarks/adaptive_kde_benchmark.py
 python benchmarks/adaptive_full_benchmark.py
 python benchmarks/heart_disease_benchmark.py      # requires: pip install ctgan
 python benchmarks/bootstrap_failure_benchmark.py
+python benchmarks/hpo_benchmark.py               # HPO vs defaults, nested CV (requires: pip install hvrt[optimizer])
+python benchmarks/hpo_benchmark.py --quick       # 3 datasets, 10 trials, fast mode
 ```
 
 ---

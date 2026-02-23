@@ -68,8 +68,9 @@ class ExpandParams:
         Number of synthetic samples to generate.
     variance_weighted : bool, default False
         True = oversample high-variance (tail) partitions.
-    bandwidth : float, optional
-        KDE bandwidth scalar. None uses the instance default.
+    bandwidth : float or str, optional
+        KDE bandwidth scalar or selector.  ``None`` uses the instance default.
+        Accepts ``'auto'``, ``'scott'``, ``'silverman'``, or a float scalar.
     adaptive_bandwidth : bool, default False
         Scale each partition's KDE bandwidth with the local expansion ratio.
     generation_strategy : str or callable, optional
@@ -82,10 +83,10 @@ class ExpandParams:
 
     n: int = field(default=None)
     variance_weighted: bool = False
-    bandwidth: Optional[float] = None
+    bandwidth: Union[float, str, None] = None
     adaptive_bandwidth: bool = False
     generation_strategy: Union[
-        Literal['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise'],
+        Literal['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise', 'epanechnikov'],
         Callable,
         None,
     ] = None

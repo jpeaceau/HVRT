@@ -8,9 +8,8 @@ z-score space.
 
 Built-in strategies
 -------------------
-multivariate_kde      — default: one scipy multivariate gaussian_kde per
-                        partition.  Captures joint correlation structure
-                        exactly.  Best overall quality; default for expand().
+multivariate_kde      — one scipy multivariate gaussian_kde per partition.
+                        Captures joint correlation structure exactly.
 
 univariate_kde_copula — per-feature 1-D Gaussian KDE marginals + Gaussian
                         copula for the joint dependence.  More flexible
@@ -25,6 +24,14 @@ bootstrap_noise       — resample from the partition with replacement and
                         Fastest option; no distributional assumptions.
                         Works well for dense, low-variance partitions; may
                         under-explore high-variance or tail partitions.
+
+epanechnikov          — product Epanechnikov kernel using the Ahrens-Dieter
+                        (1980) exact O(1) algorithm.  Fully vectorized.
+                        Bandwidth per feature: h × σ_j where
+                        h = n_part^(−1/(d+4)) (Scott's formula).
+                        Bounded support prevents samples from escaping the
+                        local partition region.  Recommended for
+                        classification tasks and high expansion ratios (≥5×).
 
 Custom strategies
 -----------------
@@ -43,15 +50,15 @@ is a valid strategy.  Pass it directly to ``expand(generation_strategy=...)``.
 Usage
 -----
     from hvrt import HVRT
-    from hvrt.generation_strategies import bootstrap_noise, univariate_kde_copula
+    from hvrt.generation_strategies import epanechnikov, bootstrap_noise
 
     model = HVRT(random_state=42).fit(X)
 
     # Built-in strategy by name
-    X_synth = model.expand(n=5000, generation_strategy='bootstrap_noise')
+    X_synth = model.expand(n=5000, generation_strategy='epanechnikov')
 
     # Built-in strategy by reference
-    X_synth = model.expand(n=5000, generation_strategy=univariate_kde_copula)
+    X_synth = model.expand(n=5000, generation_strategy=epanechnikov)
 
     # Custom strategy
     def my_strategy(X_z, partition_ids, unique_partitions, budgets, random_state):
@@ -348,6 +355,87 @@ def bootstrap_noise(
 
 
 # ---------------------------------------------------------------------------
+# Built-in strategy 4: Epanechnikov product kernel
+# ---------------------------------------------------------------------------
+
+def epanechnikov(
+    X_z: np.ndarray,
+    partition_ids: np.ndarray,
+    unique_partitions: np.ndarray,
+    budgets: np.ndarray,
+    random_state: int,
+) -> np.ndarray:
+    """
+    Product Epanechnikov kernel with Scott's bandwidth (fully vectorized).
+
+    Uses the Ahrens-Dieter (1980) exact O(1) algorithm for sampling from the
+    1-D Epanechnikov kernel ``K(u) = (3/4)(1 − u²)`` for ``|u| ≤ 1``.
+    Applied independently per feature (product kernel).
+
+    Algorithm per dimension: draw U1, U2, U3 ~ Uniform(−1, 1).  Return U2
+    if ``|U3| ≥ |U2|`` and ``|U3| ≥ |U1|``, else return U3.
+
+    Bandwidth per feature: ``h × σ_j`` where ``h = n_part^(−1/(d+4))``
+    (Scott's rule) and ``σ_j`` is the within-partition standard deviation of
+    feature j.
+
+    Bounded support means no synthetic sample can fall outside the local
+    bandwidth window, keeping all samples within the partition's feature-space
+    region.  This prevents the distributional bleed across partition boundaries
+    that affects Gaussian tails.
+
+    Particularly effective for classification tasks and high expansion ratios
+    (≥ 5×).  For regression tasks with strong inter-feature correlations,
+    the product (independence) assumption may reduce quality relative to
+    multivariate Gaussian KDE with a narrow bandwidth.
+
+    Parameters
+    ----------
+    X_z : ndarray (n_samples, n_features)
+    partition_ids : ndarray (n_samples,)
+    unique_partitions : ndarray
+    budgets : ndarray of int
+    random_state : int
+
+    Returns
+    -------
+    X_synthetic : ndarray (sum(budgets), n_features), z-score space
+    """
+    rng = np.random.RandomState(random_state)
+    all_synthetic = []
+    n_features = X_z.shape[1]
+
+    for _, X_part, budget in _iter_partitions(
+        X_z, partition_ids, unique_partitions, budgets
+    ):
+        n_p, d = X_part.shape
+
+        # Scott's bandwidth factor for d-dimensional data
+        h = n_p ** (-1.0 / (d + 4))
+
+        # Per-feature within-partition std; floored to avoid zero scale
+        per_feature_std = np.maximum(X_part.std(axis=0), 0.01)
+
+        # Resample base points (kernel centring)
+        idx = rng.choice(n_p, size=budget, replace=True)
+        base = X_part[idx]  # (budget, d)
+
+        # Ahrens-Dieter vectorized over all samples and features at once
+        U1 = rng.uniform(-1.0, 1.0, (budget, d))
+        U2 = rng.uniform(-1.0, 1.0, (budget, d))
+        U3 = rng.uniform(-1.0, 1.0, (budget, d))
+        use_U2 = (np.abs(U3) >= np.abs(U2)) & (np.abs(U3) >= np.abs(U1))
+        noise_unit = np.where(use_U2, U2, U3)  # (budget, d)
+
+        # Scale by h × per-feature std and add to base
+        all_synthetic.append(base + h * per_feature_std * noise_unit)
+
+    if not all_synthetic:
+        return np.empty((0, n_features))
+    return np.vstack(all_synthetic)
+
+
+# ---------------------------------------------------------------------------
 # Registry and lookup
 # ---------------------------------------------------------------------------
 
@@ -355,6 +443,7 @@ BUILTIN_GENERATION_STRATEGIES: dict = {
     'multivariate_kde': multivariate_kde,
     'univariate_kde_copula': univariate_kde_copula,
     'bootstrap_noise': bootstrap_noise,
+    'epanechnikov': epanechnikov,
 }
 
 

@@ -4,6 +4,38 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.2.0] — 2026-02-24
+
+### Added
+- **`HVRTOptimizer`**: Optuna-backed hyperparameter optimiser for HVRT.
+  Searches over `n_partitions`, `min_samples_leaf`, `y_weight`, kernel /
+  bandwidth, and `variance_weighted` using TPE sampling. Objective is mean
+  TSTR Δ (train-on-synthetic minus train-on-real) across CV folds, with TRTR
+  pre-computed once per fold to halve GBM fitting overhead. Exposes `expand()`
+  and `augment()` methods that delegate to the best fitted model; both strip
+  the appended y column automatically so output always matches training-X shape.
+- **`optimizer` optional extra**: `pip install hvrt[optimizer]` installs
+  `optuna>=3.0.0`. The import guard is lazy — `from hvrt import HVRTOptimizer`
+  always succeeds regardless of whether optuna is present.
+- **HPO benchmark** (`benchmarks/hpo_benchmark.py`): evaluates `HVRTOptimizer`
+  vs. HVRT defaults using a nested-CV protocol (outer CV for evaluation, inner
+  HPO on the training split only) across 6 benchmark datasets, reporting
+  TSTR Δ, disc_err, Wasserstein-1, and Corr.MAE.
+
+### Fixed
+- **`HVRTOptimizer` objective: classification y-snapping.** KDE generates
+  continuous synthetic y values; `GradientBoostingClassifier` requires discrete
+  class labels. The objective now snaps KDE-generated y to the nearest observed
+  class label before downstream TSTR scoring, preventing every classification
+  trial from returning `float('-inf')`.
+- **`HVRTOptimizer` warm-start guarantee.** The HVRT default configuration
+  (`n_partitions=auto`, `min_samples_leaf=auto`, `y_weight=0.0`,
+  `kernel=auto`, `variance_weighted=False`) is always enqueued as trial 0
+  via `study.enqueue_trial()` so that HPO is guaranteed to find at least as
+  good a result as the untuned defaults.
+
+---
+
 ## [2.1.2] — 2026-02-22
 
 ### Changed

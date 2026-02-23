@@ -65,9 +65,21 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     auto_tune : bool, default=True
         Auto-tune tree hyperparameters from dataset size when explicit
         values are not provided.
-    bandwidth : float, default=0.5
-        Default KDE bandwidth used by expand().  Individual expand() calls
-        may override this.
+    bandwidth : float or 'auto', default='auto'
+        Default KDE bandwidth used by expand().  Options:
+
+        * ``float`` — scalar passed directly as scipy's ``bw_method``;
+          kernel covariance = ``bandwidth² × data_cov`` within each partition.
+          0.1 (10 % of within-partition std) is recommended for most cases.
+        * ``'scott'`` / ``'silverman'`` — scipy's built-in rules.
+          Reliably suboptimal for HVRT partitions; avoid.
+        * ``'auto'`` — chooses at expand-time based on mean partition size:
+          narrow Gaussian (h=0.1) when partitions are large enough for stable
+          covariance estimation (mean size ≥ max(15, 2·d)); Epanechnikov
+          product kernel otherwise.  Robust default when partition count
+          is unknown in advance.
+
+        Individual expand() calls may override this per-call.
     random_state : int, default=42
     reduce_params : ReduceParams or None
         Operation parameters for fit_transform() pipeline use.
@@ -92,7 +104,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         min_samples_per_partition=5,
         y_weight=0.0,
         auto_tune=True,
-        bandwidth=0.5,
+        bandwidth='auto',
         random_state=42,
         reduce_params=None,
         expand_params=None,
@@ -342,10 +354,11 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         n: int,
         min_novelty: float = 0.0,
         variance_weighted: bool = False,
-        bandwidth: Optional[float] = None,
+        bandwidth: Union[float, str, None] = None,
         adaptive_bandwidth: bool = False,
         generation_strategy: Union[
-            Literal['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise'],
+            Literal['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise',
+                    'epanechnikov'],
             Callable,
             None,
         ] = None,
@@ -363,8 +376,10 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         min_novelty : float, default 0.0
             Deprecated.
         variance_weighted : bool, default False
-        bandwidth : float, optional
-            KDE bandwidth scalar.  None uses self.bandwidth.
+        bandwidth : float or str, optional
+            KDE bandwidth scalar or selector.  ``None`` uses ``self.bandwidth``.
+            Accepts the same values as the constructor ``bandwidth`` parameter,
+            including ``'auto'`` for data-driven kernel selection.
         adaptive_bandwidth : bool, default False
         generation_strategy : str or callable, optional
         return_novelty_stats : bool, default False
@@ -393,6 +408,16 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         n_cont = int(self.continuous_mask_.sum())
         n_cat = int(self.categorical_mask_.sum())
         n_orig = len(self.continuous_mask_)
+
+        # Resolve 'auto' bandwidth before any KDE fitting.
+        # 'auto' inspects mean partition size relative to n_cont and selects
+        # narrow Gaussian (h=0.1) or Epanechnikov at call-time.
+        _eff_bw = bandwidth if bandwidth is not None else self.bandwidth
+        if _eff_bw == 'auto':
+            if generation_strategy is None:
+                bandwidth, generation_strategy = self._resolve_bandwidth_auto(n_cont)
+            else:
+                bandwidth = None  # explicit strategy overrides; clear sentinel
 
         if X is None:
             X_z_src = self.X_z_
@@ -725,6 +750,38 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
                 self.partition_ids_,
                 self.unique_partitions_,
             )
+
+    def _resolve_bandwidth_auto(self, n_cont: int):
+        """
+        Resolve ``bandwidth='auto'`` at expand-time.
+
+        Compares mean partition size against a feature-scaled threshold and
+        returns either narrow Gaussian KDE or Epanechnikov:
+
+        * mean partition size ≥ ``max(15, 2 × n_cont)``:
+          narrow Gaussian ``bandwidth=0.1``.  Partitions are large enough for
+          stable multivariate covariance estimation.
+
+        * mean partition size < ``max(15, 2 × n_cont)``:
+          Epanechnikov product kernel.  Covariance-free; robust to small
+          partitions where Gaussian KDE degenerates.
+
+        Returns
+        -------
+        (bandwidth, generation_strategy) : exactly one is non-None.
+        """
+        from .generation_strategies import epanechnikov as _epan
+
+        mean_part_size = float(np.mean([
+            int(np.sum(self.partition_ids_ == pid))
+            for pid in self.unique_partitions_
+        ]))
+        threshold = max(15, 2 * max(1, n_cont))
+
+        if mean_part_size >= threshold:
+            return 0.1, None   # narrow Gaussian: partitions are covariance-stable
+        else:
+            return None, _epan  # Epanechnikov: covariance-free product kernel
 
     def _adaptive_bandwidths(self, budgets, n_cont, partition_ids=None, unique_partitions=None):
         """Compute per-partition adaptive KDE bandwidth scaling with expansion ratio."""
