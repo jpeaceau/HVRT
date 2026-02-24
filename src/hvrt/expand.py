@@ -18,6 +18,48 @@ from ._budgets import _compute_weights, allocate_budgets
 
 
 # ---------------------------------------------------------------------------
+# Private per-partition KDE helper (used by joblib workers)
+# ---------------------------------------------------------------------------
+
+def _fit_kde_partition(
+    X_part: np.ndarray,
+    n_features: int,
+    bw,
+) -> 'gaussian_kde | None':
+    """
+    Fit a multivariate gaussian_kde on one partition.
+
+    Returns ``None`` when the partition is too small for a non-singular
+    covariance matrix or when scipy raises a numerical error.
+    """
+    if len(X_part) < 2 or len(X_part) <= n_features:
+        return None
+    try:
+        return gaussian_kde(X_part.T, bw_method=bw)
+    except (np.linalg.LinAlgError, ValueError):
+        return None
+
+
+def _sample_kde_partition_simple(
+    kde: 'gaussian_kde | None',
+    X_part: np.ndarray,
+    budget: int,
+    seed: int,
+) -> np.ndarray:
+    """
+    Draw ``budget`` samples from a single-partition KDE (min_novelty=0 path).
+
+    Falls back to bootstrap-with-tiny-noise when kde is None (single-sample
+    or singular-covariance partition).
+    """
+    if kde is None:
+        rng = np.random.RandomState(seed)
+        base = np.tile(X_part[0], (budget, 1))
+        return base + rng.normal(0, 0.01, base.shape)
+    return kde.resample(budget, seed=seed).T
+
+
+# ---------------------------------------------------------------------------
 # KDE fitting
 # ---------------------------------------------------------------------------
 
@@ -26,6 +68,7 @@ def fit_partition_kdes(
     partition_ids: np.ndarray,
     unique_partitions: np.ndarray,
     bandwidth: Union[float, str, dict, None] = None,
+    n_jobs: int = 1,
 ) -> dict:
     """
     Fit a multivariate ``gaussian_kde`` for every partition.
@@ -40,6 +83,8 @@ def fit_partition_kdes(
         Passed as ``bw_method`` to ``scipy.stats.gaussian_kde``.
         ``None`` → Scott's rule.  A ``dict {pid: float}`` enables
         per-partition adaptive bandwidths.
+    n_jobs : int, default 1
+        Number of parallel jobs for KDE fitting.  -1 uses all cores.
 
     Returns
     -------
@@ -47,24 +92,30 @@ def fit_partition_kdes(
         ``None`` entries indicate single-sample partitions (no KDE fitted).
     """
     n_features = X_z.shape[1]
-    kdes = {}
+
+    # Collect per-partition data and resolve bandwidth
+    pids = []
+    tasks = []
     for pid in unique_partitions:
         X_part = X_z[partition_ids == pid]
-        # Need at least 2 samples, and more samples than features for a
-        # non-singular covariance matrix (gaussian_kde raises either
-        # LinAlgError or ValueError depending on the scipy version).
-        if len(X_part) < 2 or len(X_part) <= n_features:
-            kdes[int(pid)] = None
+        if isinstance(bandwidth, dict):
+            bw = bandwidth.get(int(pid), 'scott')
         else:
-            if isinstance(bandwidth, dict):
-                bw = bandwidth.get(int(pid), 'scott')
-            else:
-                bw = bandwidth if bandwidth is not None else 'scott'
-            try:
-                kdes[int(pid)] = gaussian_kde(X_part.T, bw_method=bw)
-            except (np.linalg.LinAlgError, ValueError):
-                kdes[int(pid)] = None
-    return kdes
+            bw = bandwidth if bandwidth is not None else 'scott'
+        pids.append(int(pid))
+        tasks.append((X_part, n_features, bw))
+
+    _MIN_PAR = 6
+    if n_jobs == 1 or len(tasks) < _MIN_PAR:
+        kdes_list = [_fit_kde_partition(*t) for t in tasks]
+    else:
+        from joblib import Parallel, delayed
+        # prefer='threads': gaussian_kde fit releases the GIL (scipy/BLAS).
+        kdes_list = Parallel(n_jobs=n_jobs, prefer='threads')(
+            delayed(_fit_kde_partition)(*t) for t in tasks
+        )
+
+    return {pid: kde for pid, kde in zip(pids, kdes_list)}
 
 
 # ---------------------------------------------------------------------------
@@ -114,6 +165,7 @@ def sample_from_kdes(
     min_novelty: float = 0.0,
     oversample_factor: int = 5,
     max_attempts: int = 10,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Draw synthetic samples from per-partition multivariate KDEs.
@@ -134,14 +186,44 @@ def sample_from_kdes(
         ``0.0`` disables filtering.
     oversample_factor : int, default 5
     max_attempts : int, default 10
+    n_jobs : int, default 1
+        Number of parallel jobs for the min_novelty=0 fast path.
+        The novelty-filtering path is always serial (deprecated feature).
 
     Returns
     -------
     X_synthetic : ndarray (n_synthetic, n_features), z-score space
     """
     rng = np.random.RandomState(random_state)
-    all_synthetic = []
 
+    if min_novelty <= 0.0:
+        # Fast path: simple KDE resample — fully parallelisable.
+        tasks = []
+        for pid, budget in zip(unique_partitions, budgets):
+            if budget == 0:
+                continue
+            kde = kdes.get(int(pid))
+            X_part = X_z[partition_ids == pid]
+            seed = int(rng.randint(0, 2 ** 31))
+            tasks.append((kde, X_part, budget, seed))
+
+        if not tasks:
+            return np.empty((0, X_z.shape[1]))
+
+        _MIN_PAR = 6
+        if n_jobs == 1 or len(tasks) < _MIN_PAR:
+            results = [_sample_kde_partition_simple(*t) for t in tasks]
+        else:
+            from joblib import Parallel, delayed
+            # prefer='threads': kde.resample() releases the GIL (scipy/BLAS).
+            results = Parallel(n_jobs=n_jobs, prefer='threads')(
+                delayed(_sample_kde_partition_simple)(*t) for t in tasks
+            )
+
+        return np.vstack(results)
+
+    # Novelty-filtering path (deprecated, always serial — complex retry logic).
+    all_synthetic = []
     for pid, budget in zip(unique_partitions, budgets):
         if budget == 0:
             continue
@@ -155,30 +237,26 @@ def sample_from_kdes(
             all_synthetic.append(base)
             continue
 
-        if min_novelty <= 0.0:
-            samples = kde.resample(budget, seed=int(rng.randint(0, 2**31))).T
-        else:
-            collected = []
-            needed = budget
-            attempts = 0
+        collected = []
+        needed = budget
+        attempts = 0
 
-            while needed > 0 and attempts < max_attempts:
-                n_draw = needed * oversample_factor
-                drawn = kde.resample(n_draw, seed=int(rng.randint(0, 2**31))).T
-                dists = cdist(drawn, X_part, metric='euclidean').min(axis=1)
-                novel = drawn[dists >= min_novelty]
-                if len(novel) > 0:
-                    take = min(needed, len(novel))
-                    collected.append(novel[:take])
-                    needed -= take
-                attempts += 1
+        while needed > 0 and attempts < max_attempts:
+            n_draw = needed * oversample_factor
+            drawn = kde.resample(n_draw, seed=int(rng.randint(0, 2 ** 31))).T
+            dists = cdist(drawn, X_part, metric='euclidean').min(axis=1)
+            novel = drawn[dists >= min_novelty]
+            if len(novel) > 0:
+                take = min(needed, len(novel))
+                collected.append(novel[:take])
+                needed -= take
+            attempts += 1
 
-            if needed > 0:
-                fallback = kde.resample(needed, seed=int(rng.randint(0, 2**31))).T
-                collected.append(fallback)
+        if needed > 0:
+            fallback = kde.resample(needed, seed=int(rng.randint(0, 2 ** 31))).T
+            collected.append(fallback)
 
-            samples = np.vstack(collected) if collected else np.empty((0, X_z.shape[1]))
-
+        samples = np.vstack(collected) if collected else np.empty((0, X_z.shape[1]))
         all_synthetic.append(samples[:budget])
 
     if not all_synthetic:

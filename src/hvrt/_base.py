@@ -18,6 +18,7 @@ only, without a separate ``fit()`` call.
 
 from __future__ import annotations
 
+import inspect
 import warnings
 from typing import Callable, Literal, Optional, Union
 
@@ -65,6 +66,12 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     auto_tune : bool, default=True
         Auto-tune tree hyperparameters from dataset size when explicit
         values are not provided.
+    n_jobs : int, default=1
+        Number of parallel jobs used for within-partition work (KDE fitting,
+        KDE sampling, selection strategies).  ``-1`` uses all available CPU
+        cores.  Parallelism is provided by ``joblib`` (already a transitive
+        dependency of scikit-learn).  Overhead dominates for small datasets
+        (n < ~1000 or n_partitions < 8); use ``n_jobs=1`` in those cases.
     bandwidth : float or 'auto', default='auto'
         Default KDE bandwidth used by expand().  Options:
 
@@ -104,6 +111,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         min_samples_per_partition=5,
         y_weight=0.0,
         auto_tune=True,
+        n_jobs=1,
         bandwidth='auto',
         random_state=42,
         reduce_params=None,
@@ -117,6 +125,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self.min_samples_per_partition = min_samples_per_partition
         self.y_weight = y_weight
         self.auto_tune = auto_tune
+        self.n_jobs = n_jobs
         self.bandwidth = bandwidth
         self.random_state = random_state
         self.reduce_params = reduce_params
@@ -338,6 +347,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         indices = select_from_partitions(
             X_z_src, partition_ids_src, unique_partitions_src,
             budgets, method, self.random_state,
+            n_jobs=self.n_jobs,
         )
 
         X_reduced = X_src[indices]
@@ -433,7 +443,8 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             unique_partitions_src = np.unique(partition_ids_src)
             bw = bandwidth if bandwidth is not None else self.bandwidth
             kdes_default = fit_partition_kdes(
-                X_z_src[:, :n_cont], partition_ids_src, unique_partitions_src, bw
+                X_z_src[:, :n_cont], partition_ids_src, unique_partitions_src, bw,
+                n_jobs=self.n_jobs,
             ) if n_cont > 0 else {}
             cat_partition_freqs = build_cat_partition_freqs(
                 X_src[:, self.categorical_mask_], partition_ids_src, unique_partitions_src
@@ -460,6 +471,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             kdes = fit_partition_kdes(
                 X_z_src[:, :n_cont], partition_ids_src,
                 unique_partitions_src, bw_per_partition,
+                n_jobs=self.n_jobs,
             )
         else:
             kdes = kdes_default
@@ -467,7 +479,8 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         if n_cont > 0:
             X_z_cont = X_z_src[:, :n_cont]
             if strategy_fn is not None:
-                X_synth_cont_z = strategy_fn(
+                X_synth_cont_z = self._call_strategy(
+                    strategy_fn,
                     X_z_cont, partition_ids_src, unique_partitions_src,
                     budgets, self.random_state,
                 )
@@ -476,6 +489,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
                     kdes, unique_partitions_src, budgets,
                     X_z_cont, partition_ids_src,
                     self.random_state, min_novelty=min_novelty,
+                    n_jobs=self.n_jobs,
                 )
             X_synth_cont = self.scaler_.inverse_transform(X_synth_cont_z)
         else:
@@ -672,6 +686,23 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     # Internal helpers
     # ------------------------------------------------------------------
 
+    def _call_strategy(self, strategy_fn, X_z, partition_ids, unique_partitions, budgets, random_state):
+        """
+        Call a generation strategy, passing ``n_jobs`` only when the strategy
+        declares it.  Built-in strategies declare ``n_jobs``; custom strategies
+        with the standard 5-arg signature are called without it.
+        """
+        try:
+            sig = inspect.signature(strategy_fn)
+            if 'n_jobs' in sig.parameters:
+                return strategy_fn(
+                    X_z, partition_ids, unique_partitions, budgets, random_state,
+                    n_jobs=self.n_jobs,
+                )
+        except (ValueError, TypeError):
+            pass
+        return strategy_fn(X_z, partition_ids, unique_partitions, budgets, random_state)
+
     def _coerce_external_X(self, X):
         """
         Coerce an external array or DataFrame to match the training feature layout.
@@ -738,7 +769,8 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         if self._kdes_ is None or bw != getattr(self, '_kdes_bandwidth_', object()):
             if n_cont > 0:
                 self._kdes_ = fit_partition_kdes(
-                    self.X_z_[:, :n_cont], self.partition_ids_, self.unique_partitions_, bw
+                    self.X_z_[:, :n_cont], self.partition_ids_, self.unique_partitions_, bw,
+                    n_jobs=self.n_jobs,
                 )
             else:
                 self._kdes_ = {}
@@ -771,11 +803,11 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         (bandwidth, generation_strategy) : exactly one is non-None.
         """
         from .generation_strategies import epanechnikov as _epan
+        from ._budgets import _partition_pos
 
-        mean_part_size = float(np.mean([
-            int(np.sum(self.partition_ids_ == pid))
-            for pid in self.unique_partitions_
-        ]))
+        pos = _partition_pos(self.partition_ids_, self.unique_partitions_)
+        sizes = np.bincount(pos, minlength=len(self.unique_partitions_))
+        mean_part_size = float(sizes.mean())
         threshold = max(15, 2 * max(1, n_cont))
 
         if mean_part_size >= threshold:
@@ -785,14 +817,20 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
 
     def _adaptive_bandwidths(self, budgets, n_cont, partition_ids=None, unique_partitions=None):
         """Compute per-partition adaptive KDE bandwidth scaling with expansion ratio."""
+        from ._budgets import _partition_pos
+
         if partition_ids is None:
             partition_ids = self.partition_ids_
         if unique_partitions is None:
             unique_partitions = self.unique_partitions_
         d = max(1, n_cont)
+
+        pos = _partition_pos(partition_ids, unique_partitions)
+        sizes = np.bincount(pos, minlength=len(unique_partitions))
+
         bw_dict = {}
-        for pid, budget in zip(unique_partitions, budgets):
-            n_p = int(np.sum(partition_ids == pid))
+        for i, (pid, budget) in enumerate(zip(unique_partitions, budgets)):
+            n_p = int(sizes[i])
             if n_p < 2:
                 bw_dict[int(pid)] = 'scott'
                 continue

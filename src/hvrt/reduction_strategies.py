@@ -79,11 +79,58 @@ def _centroid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
     return np.array(selected, dtype=np.int64)
 
 
+# Partitions smaller than this use the exact O(n²) medoid.
+# Above the threshold the approximate O(n·d) method is used instead.
+_MEDOID_EXACT_THRESHOLD = 200
+
+
+def _approximate_medoid_idx(X_part: np.ndarray) -> int:
+    """
+    Approximate the medoid index via a centroid-nearest candidate set.
+
+    Computing all n² pairwise distances for the exact medoid is O(n²·d).
+    For HVRT's variance-structured partitions, the true medoid almost always
+    lies close to the centroid.  This function:
+
+    1. Computes Euclidean distance from each point to the centroid — O(n·d).
+    2. Selects the k = max(30, ⌊√n⌋) centroid-nearest candidates using
+       ``np.argpartition`` — O(n).
+    3. Finds the exact medoid within that candidate set — O(k²·d).
+
+    Total cost: O(n·d + k²·d) = O(n·d) since k = O(√n).
+
+    The approximation quality is high for HVRT partitions because they are
+    compact, roughly unimodal regions: the true medoid is virtually always
+    within the top-√n centroid-nearest points.
+    """
+    n = len(X_part)
+    k = min(max(int(n ** 0.5), 30), n)
+
+    centroid = X_part.mean(axis=0)
+    dists_sq = np.sum((X_part - centroid) ** 2, axis=1)
+    # argpartition: O(n), avoids a full sort
+    candidate_idx = np.argpartition(dists_sq, k - 1)[:k]
+
+    # Exact medoid within the candidate set
+    pairwise_sq = cdist(
+        X_part[candidate_idx], X_part[candidate_idx], metric='sqeuclidean'
+    )
+    local_best = int(np.argmin(pairwise_sq.sum(axis=1)))
+    return int(candidate_idx[local_best])
+
+
 def _medoid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
     """Medoid-seeded FPS on a single partition; returns local indices."""
     n_points = len(X_part)
-    pairwise_sq = cdist(X_part, X_part, metric='sqeuclidean')
-    medoid_idx = int(np.argmin(pairwise_sq.sum(axis=1)))
+
+    if n_points <= _MEDOID_EXACT_THRESHOLD:
+        # Small partition: exact O(n²·d) medoid
+        pairwise_sq = cdist(X_part, X_part, metric='sqeuclidean')
+        medoid_idx = int(np.argmin(pairwise_sq.sum(axis=1)))
+    else:
+        # Large partition: approximate O(n·d) medoid via centroid-nearest set
+        medoid_idx = _approximate_medoid_idx(X_part)
+
     selected = [medoid_idx]
     min_sq_dists = np.full(n_points, np.inf)
 
@@ -98,6 +145,97 @@ def _medoid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
 
 
 # ---------------------------------------------------------------------------
+# Private per-partition dispatch helpers (for joblib)
+# ---------------------------------------------------------------------------
+
+def _centroid_fps_partition(
+    global_indices: np.ndarray, X_part: np.ndarray, budget: int
+) -> np.ndarray:
+    """Return global indices selected by centroid FPS on one partition."""
+    if len(global_indices) <= budget:
+        return global_indices
+    local = _centroid_fps_core(X_part, budget)
+    return global_indices[local]
+
+
+def _medoid_fps_partition(
+    global_indices: np.ndarray, X_part: np.ndarray, budget: int
+) -> np.ndarray:
+    """Return global indices selected by medoid FPS on one partition."""
+    if len(global_indices) <= budget:
+        return global_indices
+    local = _medoid_fps_core(X_part, budget)
+    return global_indices[local]
+
+
+def _variance_ordered_partition(
+    global_indices: np.ndarray, X_part: np.ndarray, budget: int
+) -> np.ndarray:
+    """Return global indices selected by variance-ordered on one partition."""
+    from sklearn.neighbors import NearestNeighbors
+
+    n_points = len(global_indices)
+    if n_points <= budget:
+        return global_indices
+    k = min(10, n_points - 1)
+    nn = NearestNeighbors(n_neighbors=k, algorithm='auto')
+    nn.fit(X_part)
+    distances, _ = nn.kneighbors(X_part)
+    local_variance = distances.var(axis=1)
+    local = np.argsort(-local_variance, kind='stable')[:budget].astype(np.int64)
+    return global_indices[local]
+
+
+def _stratified_partition(
+    global_indices: np.ndarray, X_part: np.ndarray, budget: int, seed: int
+) -> np.ndarray:
+    """Return global indices selected by stratified random on one partition."""
+    n_points = len(global_indices)
+    if n_points <= budget:
+        return global_indices
+    rng = np.random.RandomState(seed)
+    local = np.sort(rng.choice(n_points, size=budget, replace=False))
+    return global_indices[local]
+
+
+# ---------------------------------------------------------------------------
+# Internal dispatch helper
+# ---------------------------------------------------------------------------
+
+_MIN_PARALLEL_TASKS = 6      # don't dispatch to loky for trivially few partitions
+_MIN_PARALLEL_SAMPLES = 3000  # minimum total samples to justify loky IPC overhead
+
+
+def _run_parallel(fn, tasks, n_jobs):
+    """
+    Execute ``fn(*task)`` for each task, in parallel when n_jobs != 1.
+
+    Uses the ``loky`` (process) backend.  Although each FPS iteration
+    contains NumPy calls that release the GIL, the Python for-loop
+    bookkeeping between those calls holds the GIL long enough that threads
+    serialise against each other and see no throughput benefit.  True
+    multiprocessing via loky gives genuine CPU parallelism for the
+    GIL-bound portions.  The loky worker pool is lazily created on the
+    first call and then reused within the Python session; pool initialisation
+    is a one-time overhead of ~1–2 s on Windows.
+
+    Two guards prevent dispatching when overhead would dominate:
+    - Fewer than ``_MIN_PARALLEL_TASKS`` non-empty partitions.
+    - Fewer than ``_MIN_PARALLEL_SAMPLES`` total samples across all tasks
+      (t[1] is the per-partition X_part array in every task format).
+
+    Returns results in the same order as ``tasks``.
+    """
+    if n_jobs == 1 or len(tasks) < _MIN_PARALLEL_TASKS:
+        return [fn(*t) for t in tasks]
+    total_samples = sum(len(t[1]) for t in tasks)
+    if total_samples < _MIN_PARALLEL_SAMPLES:
+        return [fn(*t) for t in tasks]
+    from joblib import Parallel, delayed
+    return Parallel(n_jobs=n_jobs)(delayed(fn)(*t) for t in tasks)
+
+
+# ---------------------------------------------------------------------------
 # Built-in strategies
 # ---------------------------------------------------------------------------
 
@@ -107,6 +245,7 @@ def centroid_fps(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Centroid-seeded Furthest Point Sampling (default strategy).
@@ -123,22 +262,24 @@ def centroid_fps(
     budgets : ndarray of int
     random_state : int
         Unused (algorithm is deterministic); kept for protocol compatibility.
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     indices : ndarray of int64
         Global indices of selected samples.
     """
-    selected = []
-    for global_indices, X_part, budget in _iter_partitions(
-        X_z, partition_ids, unique_partitions, budgets
-    ):
-        if len(global_indices) <= budget:
-            selected.extend(global_indices.tolist())
-        else:
-            local = _centroid_fps_core(X_part, budget)
-            selected.extend(global_indices[local].tolist())
-    return np.array(selected, dtype=np.int64)
+    tasks = [
+        (global_indices, X_part, budget)
+        for global_indices, X_part, budget in _iter_partitions(
+            X_z, partition_ids, unique_partitions, budgets
+        )
+    ]
+    results = _run_parallel(_centroid_fps_partition, tasks, n_jobs)
+    if not results:
+        return np.array([], dtype=np.int64)
+    return np.concatenate(results).astype(np.int64)
 
 
 def medoid_fps(
@@ -147,6 +288,7 @@ def medoid_fps(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Medoid-seeded Furthest Point Sampling.
@@ -162,22 +304,24 @@ def medoid_fps(
     budgets : ndarray of int
     random_state : int
         Unused (algorithm is deterministic); kept for protocol compatibility.
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     indices : ndarray of int64
         Global indices of selected samples.
     """
-    selected = []
-    for global_indices, X_part, budget in _iter_partitions(
-        X_z, partition_ids, unique_partitions, budgets
-    ):
-        if len(global_indices) <= budget:
-            selected.extend(global_indices.tolist())
-        else:
-            local = _medoid_fps_core(X_part, budget)
-            selected.extend(global_indices[local].tolist())
-    return np.array(selected, dtype=np.int64)
+    tasks = [
+        (global_indices, X_part, budget)
+        for global_indices, X_part, budget in _iter_partitions(
+            X_z, partition_ids, unique_partitions, budgets
+        )
+    ]
+    results = _run_parallel(_medoid_fps_partition, tasks, n_jobs)
+    if not results:
+        return np.array([], dtype=np.int64)
+    return np.concatenate(results).astype(np.int64)
 
 
 def variance_ordered(
@@ -186,6 +330,7 @@ def variance_ordered(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Variance-Ordered Selection.
@@ -201,30 +346,24 @@ def variance_ordered(
     budgets : ndarray of int
     random_state : int
         Unused (algorithm is deterministic); kept for protocol compatibility.
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     indices : ndarray of int64
         Global indices of selected samples (ordered by variance, descending).
     """
-    from sklearn.neighbors import NearestNeighbors
-
-    selected = []
-    for global_indices, X_part, budget in _iter_partitions(
-        X_z, partition_ids, unique_partitions, budgets
-    ):
-        n_points = len(global_indices)
-        if n_points <= budget:
-            selected.extend(global_indices.tolist())
-        else:
-            k = min(10, n_points - 1)
-            nn = NearestNeighbors(n_neighbors=k, algorithm='auto')
-            nn.fit(X_part)
-            distances, _ = nn.kneighbors(X_part)
-            local_variance = distances.var(axis=1)
-            local = np.argsort(-local_variance, kind='stable')[:budget].astype(np.int64)
-            selected.extend(global_indices[local].tolist())
-    return np.array(selected, dtype=np.int64)
+    tasks = [
+        (global_indices, X_part, budget)
+        for global_indices, X_part, budget in _iter_partitions(
+            X_z, partition_ids, unique_partitions, budgets
+        )
+    ]
+    results = _run_parallel(_variance_ordered_partition, tasks, n_jobs)
+    if not results:
+        return np.array([], dtype=np.int64)
+    return np.concatenate(results).astype(np.int64)
 
 
 def stratified(
@@ -233,6 +372,7 @@ def stratified(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Stratified Random Sampling.
@@ -247,6 +387,8 @@ def stratified(
     unique_partitions : ndarray
     budgets : ndarray of int
     random_state : int
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
@@ -254,17 +396,16 @@ def stratified(
         Global indices of selected samples.
     """
     rng = np.random.RandomState(random_state)
-    selected = []
-    for global_indices, X_part, budget in _iter_partitions(
-        X_z, partition_ids, unique_partitions, budgets
-    ):
-        n_points = len(global_indices)
-        if n_points <= budget:
-            selected.extend(global_indices.tolist())
-        else:
-            local = np.sort(rng.choice(n_points, size=budget, replace=False))
-            selected.extend(global_indices[local].tolist())
-    return np.array(selected, dtype=np.int64)
+    tasks = [
+        (global_indices, X_part, budget, int(rng.randint(0, 2 ** 31)))
+        for global_indices, X_part, budget in _iter_partitions(
+            X_z, partition_ids, unique_partitions, budgets
+        )
+    ]
+    results = _run_parallel(_stratified_partition, tasks, n_jobs)
+    if not results:
+        return np.array([], dtype=np.int64)
+    return np.concatenate(results).astype(np.int64)
 
 
 # ---------------------------------------------------------------------------

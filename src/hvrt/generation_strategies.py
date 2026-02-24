@@ -209,6 +209,65 @@ def _bootstrap_noise_partition(X_part: np.ndarray, budget: int, seed: int) -> np
     return base + rng.normal(0, noise_scale, (budget, d))
 
 
+def _epanechnikov_partition(X_part: np.ndarray, budget: int, seed: int) -> np.ndarray:
+    """Product Epanechnikov kernel (Ahrens-Dieter) on one partition."""
+    rng = np.random.RandomState(seed)
+    n_p, d = X_part.shape
+
+    # Scott's bandwidth factor for d-dimensional data
+    h = n_p ** (-1.0 / (d + 4))
+
+    # Per-feature within-partition std; floored to avoid zero scale
+    per_feature_std = np.maximum(X_part.std(axis=0), 0.01)
+
+    # Resample base points (kernel centring)
+    idx = rng.choice(n_p, size=budget, replace=True)
+    base = X_part[idx]  # (budget, d)
+
+    # Ahrens-Dieter vectorized over all samples and features at once
+    U1 = rng.uniform(-1.0, 1.0, (budget, d))
+    U2 = rng.uniform(-1.0, 1.0, (budget, d))
+    U3 = rng.uniform(-1.0, 1.0, (budget, d))
+    use_U2 = (np.abs(U3) >= np.abs(U2)) & (np.abs(U3) >= np.abs(U1))
+    noise_unit = np.where(use_U2, U2, U3)  # (budget, d)
+
+    return base + h * per_feature_std * noise_unit
+
+
+# ---------------------------------------------------------------------------
+# Internal dispatch helper
+# ---------------------------------------------------------------------------
+
+_MIN_PARALLEL_TASKS = 6  # don't spin up threads for trivially few partitions
+
+
+def _run_parallel(fn, tasks, n_jobs):
+    """
+    Execute ``fn(*task)`` for each task, in parallel when n_jobs != 1.
+
+    Uses the ``threads`` backend because all generation workers call scipy /
+    NumPy routines that release the GIL, making threads cheaper than processes.
+
+    Parameters
+    ----------
+    fn : callable
+        Per-partition worker.  Must be importable (module-level function).
+    tasks : list of tuples
+        Each tuple is unpacked as arguments to ``fn``.
+    n_jobs : int
+        1 → serial; -1 or >1 → joblib.Parallel with ``prefer='threads'``.
+
+    Returns
+    -------
+    results : list
+        Return values in the same order as ``tasks``.
+    """
+    if n_jobs == 1 or len(tasks) < _MIN_PARALLEL_TASKS:
+        return [fn(*t) for t in tasks]
+    from joblib import Parallel, delayed
+    return Parallel(n_jobs=n_jobs, prefer='threads')(delayed(fn)(*t) for t in tasks)
+
+
 # ---------------------------------------------------------------------------
 # Built-in strategy 1: multivariate KDE
 # ---------------------------------------------------------------------------
@@ -219,6 +278,7 @@ def multivariate_kde(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Multivariate Gaussian KDE (default strategy).
@@ -238,24 +298,28 @@ def multivariate_kde(
     unique_partitions : ndarray
     budgets : ndarray of int
     random_state : int
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     X_synthetic : ndarray (sum(budgets), n_features), z-score space
     """
     rng = np.random.RandomState(random_state)
-    all_synthetic = []
     n_features = X_z.shape[1]
 
+    tasks = []
     for _, X_part, budget in _iter_partitions(
         X_z, partition_ids, unique_partitions, budgets
     ):
         seed = int(rng.randint(0, 2 ** 31))
-        all_synthetic.append(_kde_sample_partition(X_part, budget, seed))
+        tasks.append((X_part, budget, seed))
 
-    if not all_synthetic:
+    results = _run_parallel(_kde_sample_partition, tasks, n_jobs)
+
+    if not results:
         return np.empty((0, n_features))
-    return np.vstack(all_synthetic)
+    return np.vstack(results)
 
 
 # ---------------------------------------------------------------------------
@@ -268,6 +332,7 @@ def univariate_kde_copula(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Univariate KDE marginals + Gaussian copula.
@@ -286,24 +351,28 @@ def univariate_kde_copula(
     unique_partitions : ndarray
     budgets : ndarray of int
     random_state : int
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     X_synthetic : ndarray (sum(budgets), n_features), z-score space
     """
     rng = np.random.RandomState(random_state)
-    all_synthetic = []
     n_features = X_z.shape[1]
 
+    tasks = []
     for _, X_part, budget in _iter_partitions(
         X_z, partition_ids, unique_partitions, budgets
     ):
         seed = int(rng.randint(0, 2 ** 31))
-        all_synthetic.append(_copula_sample_partition(X_part, budget, seed))
+        tasks.append((X_part, budget, seed))
 
-    if not all_synthetic:
+    results = _run_parallel(_copula_sample_partition, tasks, n_jobs)
+
+    if not results:
         return np.empty((0, n_features))
-    return np.vstack(all_synthetic)
+    return np.vstack(results)
 
 
 # ---------------------------------------------------------------------------
@@ -316,6 +385,7 @@ def bootstrap_noise(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Bootstrap-with-Gaussian-noise.
@@ -334,24 +404,28 @@ def bootstrap_noise(
     unique_partitions : ndarray
     budgets : ndarray of int
     random_state : int
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     X_synthetic : ndarray (sum(budgets), n_features), z-score space
     """
     rng = np.random.RandomState(random_state)
-    all_synthetic = []
     n_features = X_z.shape[1]
 
+    tasks = []
     for _, X_part, budget in _iter_partitions(
         X_z, partition_ids, unique_partitions, budgets
     ):
         seed = int(rng.randint(0, 2 ** 31))
-        all_synthetic.append(_bootstrap_noise_partition(X_part, budget, seed))
+        tasks.append((X_part, budget, seed))
 
-    if not all_synthetic:
+    results = _run_parallel(_bootstrap_noise_partition, tasks, n_jobs)
+
+    if not results:
         return np.empty((0, n_features))
-    return np.vstack(all_synthetic)
+    return np.vstack(results)
 
 
 # ---------------------------------------------------------------------------
@@ -364,6 +438,7 @@ def epanechnikov(
     unique_partitions: np.ndarray,
     budgets: np.ndarray,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Product Epanechnikov kernel with Scott's bandwidth (fully vectorized).
@@ -396,43 +471,28 @@ def epanechnikov(
     unique_partitions : ndarray
     budgets : ndarray of int
     random_state : int
+    n_jobs : int, default 1
+        Number of parallel jobs.  -1 uses all available cores.
 
     Returns
     -------
     X_synthetic : ndarray (sum(budgets), n_features), z-score space
     """
     rng = np.random.RandomState(random_state)
-    all_synthetic = []
     n_features = X_z.shape[1]
 
+    tasks = []
     for _, X_part, budget in _iter_partitions(
         X_z, partition_ids, unique_partitions, budgets
     ):
-        n_p, d = X_part.shape
+        seed = int(rng.randint(0, 2 ** 31))
+        tasks.append((X_part, budget, seed))
 
-        # Scott's bandwidth factor for d-dimensional data
-        h = n_p ** (-1.0 / (d + 4))
+    results = _run_parallel(_epanechnikov_partition, tasks, n_jobs)
 
-        # Per-feature within-partition std; floored to avoid zero scale
-        per_feature_std = np.maximum(X_part.std(axis=0), 0.01)
-
-        # Resample base points (kernel centring)
-        idx = rng.choice(n_p, size=budget, replace=True)
-        base = X_part[idx]  # (budget, d)
-
-        # Ahrens-Dieter vectorized over all samples and features at once
-        U1 = rng.uniform(-1.0, 1.0, (budget, d))
-        U2 = rng.uniform(-1.0, 1.0, (budget, d))
-        U3 = rng.uniform(-1.0, 1.0, (budget, d))
-        use_U2 = (np.abs(U3) >= np.abs(U2)) & (np.abs(U3) >= np.abs(U1))
-        noise_unit = np.where(use_U2, U2, U3)  # (budget, d)
-
-        # Scale by h × per-feature std and add to base
-        all_synthetic.append(base + h * per_feature_std * noise_unit)
-
-    if not all_synthetic:
+    if not results:
         return np.empty((0, n_features))
-    return np.vstack(all_synthetic)
+    return np.vstack(results)
 
 
 # ---------------------------------------------------------------------------

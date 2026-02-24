@@ -7,11 +7,12 @@ and multi-strategy within-partition sample selection.
 
 from __future__ import annotations
 
+import inspect
 from typing import Callable, Literal, Union
 
 import numpy as np
 
-from ._budgets import _compute_weights, allocate_budgets
+from ._budgets import _compute_weights, _partition_pos, allocate_budgets
 from .reduction_strategies import get_strategy
 
 SelectionMethod = Union[
@@ -49,9 +50,9 @@ def compute_partition_budgets(
     -------
     budgets : ndarray of int, shape (len(unique_partitions),)
     """
-    partition_sizes = np.array(
-        [np.sum(partition_ids == pid) for pid in unique_partitions], dtype=int
-    )
+    pos = _partition_pos(partition_ids, unique_partitions)
+    partition_sizes = np.bincount(pos, minlength=len(unique_partitions)).astype(int)
+
     weights = _compute_weights(partition_ids, unique_partitions, variance_weighted, X_z)
     budgets = allocate_budgets(weights, n_target, floor=min_per_partition)
 
@@ -80,6 +81,7 @@ def select_from_partitions(
     budgets: np.ndarray,
     method: SelectionMethod,
     random_state: int,
+    n_jobs: int = 1,
 ) -> np.ndarray:
     """
     Select samples from each partition using the given strategy.
@@ -94,10 +96,22 @@ def select_from_partitions(
         Built-in string aliases or a partition-aware callable
         ``(X_z, partition_ids, unique_partitions, budgets, random_state) -> ndarray[int]``.
     random_state : int
+    n_jobs : int, default 1
+        Number of parallel jobs for built-in strategies.  Passed only when
+        the strategy's signature declares an ``n_jobs`` parameter.
 
     Returns
     -------
     indices : ndarray of int
     """
     strategy = get_strategy(method) if isinstance(method, str) else method
+    try:
+        sig = inspect.signature(strategy)
+        if 'n_jobs' in sig.parameters:
+            return strategy(
+                X_z, partition_ids, unique_partitions, budgets, random_state,
+                n_jobs=n_jobs,
+            )
+    except (ValueError, TypeError):
+        pass
     return strategy(X_z, partition_ids, unique_partitions, budgets, random_state)
