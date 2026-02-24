@@ -68,13 +68,61 @@ python research/generation/compare.py --deep-learning
 
 ---
 
+## `llm_probe/` — HVRT Applied to LLM Activation Spaces
+
+Tests whether HVRT's variance-aware hierarchical partitioning of transformer
+hidden states produces **semantically coherent clusters without supervision**.
+
+### Hypothesis
+
+Later transformer layers encode more semantically discriminative
+representations.  HVRT partitions fitted on those layers should cluster
+prompts of the same topic more tightly than partitions on early layers.
+
+### Experiment
+
+1. Load a frozen pre-trained LLM (GPT-2 small by default — no training required).
+2. Encode a 60-prompt corpus spanning 6 topics (science, history, cooking, sports,
+   technology, emotions).
+3. Extract mean-pooled hidden states from **every transformer layer**.
+4. Apply `FastHVRT` (auto-tune disabled; explicit `n_partitions=8, min_samples_leaf=4`)
+   to partition the activation space at each layer.
+5. Report per-layer **weighted partition purity** and **intra/inter cosine ratio**.
+
+### Key design notes
+
+- **`FastHVRT` not `HVRT`**: GPT-2's hidden size d=768 makes the pairwise
+  interaction computation in standard HVRT unnecessary overhead.  FastHVRT's
+  O(d) z-score sum target is sufficient for partitioning high-dimensional
+  continuous embeddings.
+- **Auto-tune disabled**: HVRT's auto-tuner targets tabular data (d << n).
+  With d=768 and n=60 prompts, `min_samples_leaf` would be set to 770 > n,
+  collapsing the tree to a single leaf.  Set `n_partitions` and
+  `min_samples_leaf` explicitly.
+- **No CUDA required**: inference + activation extraction on CPU is fast for
+  GPT-2 small; CUDA is used automatically if available.
+
+### Running
+
+```bash
+pip install transformers torch
+python research/llm_probe/hvrt_llm_probe.py
+```
+
+Edit `MODEL_NAME`, `N_PARTITIONS`, and `MIN_SAMPLES_LEAF` at the top of the
+script to explore other models or partition granularities.
+
+---
+
 ## Folder Structure
 
 ```
 research/
 ├── README.md
-└── generation/
-    ├── methods.py        # Implementations of all generation methods
-    ├── compare.py        # Comparison runner (CLI + importable)
-    └── results/          # Saved comparison outputs (git-ignored)
+├── generation/
+│   ├── methods.py        # Implementations of all generation methods
+│   ├── compare.py        # Comparison runner (CLI + importable)
+│   └── results/          # Saved comparison outputs (git-ignored)
+└── llm_probe/
+    └── hvrt_llm_probe.py # LLM activation space partitioning experiment
 ```
