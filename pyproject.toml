@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hvrt"
-version = "2.3.0"
+version = "2.4.0"
 description = "Hierarchical Variance-Retaining Transformer (HVRT) — variance-aware sample transformation for tabular data"
 readme = "README.md"
 requires-python = ">=3.8"
-license = "MIT"
+license = "AGPL-3.0-or-later"
 authors = [
     {name = "Jake Peace", email = "mail@jakepeace.me"}
 ]
@@ -21,6 +21,7 @@ classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
     "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.8",
     "Programming Language :: Python :: 3.9",

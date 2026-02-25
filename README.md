@@ -2,7 +2,7 @@
 
 [![PyPI version](https://img.shields.io/pypi/v/hvrt.svg)](https://pypi.org/project/hvrt/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 Variance-aware sample transformation for tabular data: reduce, expand, or augment.
 
@@ -702,7 +702,7 @@ pytest --cov=hvrt --cov-report=term-missing
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+GNU Affero General Public License v3 or later (AGPL-3.0-or-later) — see [LICENSE](LICENSE).
 
 ## Acknowledgments
 

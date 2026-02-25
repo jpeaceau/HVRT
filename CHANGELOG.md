@@ -4,6 +4,15 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.4.0] — 2026-02-25
+
+### Changed
+- **License changed from MIT to GNU Affero General Public License v3 or later (AGPL-3.0-or-later).**
+  All source code, derivatives, and network-facing deployments must now be released under the same
+  license terms. See [LICENSE](LICENSE) for the full text.
+
+---
+
 ## [2.3.0] — 2026-02-24
 
 ### Added
