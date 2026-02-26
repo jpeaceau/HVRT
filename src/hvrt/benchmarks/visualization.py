@@ -188,10 +188,10 @@ def plot_comparison(results, task='reduce', metric='marginal_fidelity',
     return fig
 
 
-def plot_unified_summary(results, figsize=(16, 10)):
+def plot_unified_summary(results, figsize=(20, 10)):
     """
-    Two-panel figure: left = reduction metrics, right = expansion metrics.
-    Each panel shows marginal fidelity and the task-specific key metric.
+    Six-panel figure: top row = reduction metrics, bottom row = expansion metrics.
+    Expansion row includes a privacy DCR panel (target > 1.0).
 
     Parameters
     ----------
@@ -209,24 +209,33 @@ def plot_unified_summary(results, figsize=(16, 10)):
         raise ImportError("matplotlib is required for plotting. pip install matplotlib")
 
     fig = plt.figure(figsize=figsize)
-    gs = gridspec.GridSpec(2, 2, figure=fig, hspace=0.45, wspace=0.35)
+    gs = gridspec.GridSpec(2, 3, figure=fig, hspace=0.50, wspace=0.38)
 
     # Top-left: reduction marginal fidelity
     ax1 = fig.add_subplot(gs[0, 0])
     _fill_ax(ax1, results, 'reduce', 'marginal_fidelity', 'Reduction — Marginal Fidelity')
 
-    # Top-right: reduction ml_utility_retention
+    # Top-middle: reduction ml_utility_retention
     ax2 = fig.add_subplot(gs[0, 1])
     _fill_ax(ax2, results, 'reduce', 'ml_utility_retention', 'Reduction — ML Utility Retention')
 
-    # Bottom-left: expansion marginal fidelity
-    ax3 = fig.add_subplot(gs[1, 0])
-    _fill_ax(ax3, results, 'expand', 'marginal_fidelity', 'Expansion — Marginal Fidelity')
+    # Top-right: reduction correlation fidelity
+    ax3 = fig.add_subplot(gs[0, 2])
+    _fill_ax(ax3, results, 'reduce', 'correlation_fidelity', 'Reduction — Correlation Fidelity')
 
-    # Bottom-right: expansion discriminator accuracy
-    ax4 = fig.add_subplot(gs[1, 1])
-    _fill_ax(ax4, results, 'expand', 'discriminator_accuracy',
+    # Bottom-left: expansion marginal fidelity
+    ax4 = fig.add_subplot(gs[1, 0])
+    _fill_ax(ax4, results, 'expand', 'marginal_fidelity', 'Expansion — Marginal Fidelity')
+
+    # Bottom-middle: expansion discriminator accuracy
+    ax5 = fig.add_subplot(gs[1, 1])
+    _fill_ax(ax5, results, 'expand', 'discriminator_accuracy',
              'Expansion — Discriminator Accuracy\n(target ≈ 50%)')
+
+    # Bottom-right: expansion privacy DCR
+    ax6 = fig.add_subplot(gs[1, 2])
+    _fill_ax(ax6, results, 'expand', 'privacy_dcr',
+             'Expansion — Privacy DCR\n(target > 1.0 = privacy-preserving)')
 
     fig.suptitle('HVRT v2 Benchmark Summary', fontsize=14, fontweight='bold', y=1.01)
     return fig
@@ -263,5 +272,8 @@ def _fill_ax(ax, results, task, metric, title):
     ax.set_xlabel(metric.replace('_', ' '), fontsize=8)
 
     if metric == 'discriminator_accuracy':
-        ax.axvline(0.5, color='red', linestyle='--', linewidth=1, alpha=0.6, label='target')
+        ax.axvline(0.5, color='red', linestyle='--', linewidth=1, alpha=0.6, label='target 0.50')
+        ax.legend(fontsize=7)
+    elif metric == 'privacy_dcr':
+        ax.axvline(1.0, color='red', linestyle='--', linewidth=1, alpha=0.6, label='target 1.0')
         ax.legend(fontsize=7)

@@ -690,7 +690,8 @@ def run_expansion_benchmark(
                     if verbose:
                         da = r['metrics'].get('discriminator_accuracy', float('nan'))
                         mf = r['metrics'].get('marginal_fidelity', float('nan'))
-                        print(f"discriminator={da:.3f}  mf={mf:.3f}")
+                        dcr = r['metrics'].get('privacy_dcr', float('nan'))
+                        print(f"discriminator={da:.3f}  mf={mf:.3f}  dcr={dcr:.3f}")
                 except Exception as exc:
                     if verbose:
                         print(f"ERROR: {exc}")
