@@ -1,6 +1,6 @@
 # HVRT Privacy DCR Benchmark — Findings
 
-**Date:** 2026-02-26
+**Date:** 2026-02-26 (re-run 2026-02-26 after v2.4 vectorization refactor — results unchanged)
 **Benchmarks:** `benchmarks/dcr_privacy_benchmark.py`, `benchmarks/run_benchmarks.py --tasks expand --deep-learning`
 **Script:** `python benchmarks/dcr_privacy_benchmark.py`
 

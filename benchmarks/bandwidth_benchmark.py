@@ -69,6 +69,7 @@ import io
 import os
 import sys
 import warnings
+from dataclasses import dataclass
 from collections import defaultdict
 
 import numpy as np
@@ -86,87 +87,71 @@ if hasattr(sys.stdout, 'buffer') and \
 
 from hvrt import HVRT
 from hvrt.benchmarks.datasets import BENCHMARK_DATASETS
+from hvrt.generation_strategies import (
+    StatefulGenerationStrategy, PartitionContext,
+    _build_base_context, _resample_base_points,
+)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Epanechnikov KDE generation strategy
-# (scipy.stats.gaussian_kde is Gaussian-only, so this lives here)
+# Benchmark-local Epanechnikov variant
+# (no per-feature std scaling — isolates bounded-support effect independently
+# of within-partition variance)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _epanechnikov_1d_samples(rng: np.random.RandomState, n: int) -> np.ndarray:
+class _BenchmarkEpanechnikov:
     """
-    Sample n values from the 1-D Epanechnikov kernel K(u) = (3/4)(1−u²), u∈[−1,1].
+    Product Epanechnikov KDE without per-feature std scaling.
 
-    Uses the Ahrens-Dieter (1980) algorithm: draw three independent
-    Uniform(−1,1) variates; return the middle one if the third has the largest
-    absolute value, otherwise return the third.  Exact, O(n), no rejection.
+    This variant differs from the built-in ``epanechnikov`` strategy, which
+    scales noise by within-partition std (``base + h * std * noise``).  This
+    benchmark variant uses ``base + h * noise`` to isolate the effect of
+    bounded support from the effect of per-partition variance adaptation.
+
+    Implements StatefulGenerationStrategy so it integrates with context
+    caching and avoids HVRTDeprecationWarning.
     """
-    U1 = rng.uniform(-1.0, 1.0, n)
-    U2 = rng.uniform(-1.0, 1.0, n)
-    U3 = rng.uniform(-1.0, 1.0, n)
-    use_U2 = (np.abs(U3) >= np.abs(U2)) & (np.abs(U3) >= np.abs(U1))
-    return np.where(use_U2, U2, U3)
+
+    def prepare(self, X_z, partition_ids, unique_partitions):
+        n_parts = len(unique_partitions)
+        d = X_z.shape[1]
+        pos, sort_idx, part_starts, part_sizes = _build_base_context(
+            X_z, partition_ids, unique_partitions
+        )
+        part_h = np.maximum(part_sizes, 1).astype(float) ** (-1.0 / (d + 4))
+        # Store part_h in a thin wrapper around PartitionContext
+        ctx = _BenchmarkEpanechnikovContext(
+            X_z=X_z, pos=pos, sort_idx=sort_idx,
+            part_starts=part_starts, part_sizes=part_sizes,
+            n_parts=n_parts, n_features=d,
+            part_h=part_h,
+        )
+        return ctx
+
+    def generate(self, context, budgets, random_state):
+        ctx = context
+        rng = np.random.RandomState(random_state)
+        d = ctx.n_features
+        total_budget = int(budgets.sum())
+        if total_budget == 0:
+            return np.empty((0, d))
+        labels = np.repeat(np.arange(ctx.n_parts), budgets)
+        base = _resample_base_points(ctx, labels, total_budget, rng)
+        U1 = rng.uniform(-1.0, 1.0, (total_budget, d))
+        U2 = rng.uniform(-1.0, 1.0, (total_budget, d))
+        U3 = rng.uniform(-1.0, 1.0, (total_budget, d))
+        use_U2 = (np.abs(U3) >= np.abs(U2)) & (np.abs(U3) >= np.abs(U1))
+        noise_unit = np.where(use_U2, U2, U3)
+        h_arr = ctx.part_h[labels][:, None]
+        return base + h_arr * noise_unit
 
 
-def epanechnikov_kde(
-    X_z: np.ndarray,
-    partition_ids: np.ndarray,
-    unique_partitions: np.ndarray,
-    budgets: np.ndarray,
-    random_state: int,
-) -> np.ndarray:
-    """
-    Product Epanechnikov KDE — HVRT generation_strategy callable.
+@dataclass(frozen=True)
+class _BenchmarkEpanechnikovContext(PartitionContext):
+    part_h: np.ndarray
 
-    For each partition:
-      1. Bootstrap base points from the partition (with replacement).
-      2. Add per-feature noise drawn from the 1-D Epanechnikov kernel
-         K(u) = (3/4)(1−u²), u∈[−1,1], scaled by Scott's bandwidth factor
-         h = n_part^(−1/(d+4)).
 
-    The product (per-feature) Epanechnikov kernel has finite support:
-    generated samples are always within h of their base point in each feature
-    dimension, so the synthetic distribution cannot escape the partition's
-    local support.  This is particularly appropriate when HVRT partitions are
-    compact and near-hyperplanar, as the structural hypothesis predicts.
-
-    Bandwidth: Scott's rule applied to each partition independently.
-    Kernel: independent 1-D Epanechnikov per feature (product kernel).
-    """
-    rng = np.random.RandomState(random_state)
-    n_features = X_z.shape[1]
-    all_synthetic = []
-
-    for pid, budget in zip(unique_partitions, budgets):
-        if budget == 0:
-            continue
-
-        X_part = X_z[partition_ids == pid]
-        n_p, d = X_part.shape
-
-        if n_p < 2:
-            # Degenerate partition: single point with tiny isotropic noise
-            base = np.tile(X_part[0], (budget, 1))
-            all_synthetic.append(base + rng.normal(0, 0.01, base.shape))
-            continue
-
-        # Scott's bandwidth for this partition
-        h = n_p ** (-1.0 / (d + 4))
-
-        # Bootstrap base points
-        idx = rng.choice(n_p, size=budget, replace=True)
-        base = X_part[idx]
-
-        # Per-feature Epanechnikov noise via Ahrens-Dieter (exact, no rejection)
-        noise = np.column_stack([
-            h * _epanechnikov_1d_samples(rng, budget)
-            for _ in range(d)
-        ])
-        all_synthetic.append(base + noise)
-
-    if not all_synthetic:
-        return np.empty((0, n_features))
-    return np.vstack(all_synthetic)
+epanechnikov_kde = _BenchmarkEpanechnikov()
 
 
 # ─────────────────────────────────────────────────────────────────────────────

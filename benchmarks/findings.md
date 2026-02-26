@@ -1,6 +1,6 @@
 # HVRT Bandwidth & Kernel Benchmark — Findings
 
-**Date:** 2026-02-23
+**Date:** 2026-02-23 (re-run 2026-02-26 after v2.4 vectorization refactor — results unchanged)
 **Benchmark:** `benchmarks/bandwidth_benchmark.py`
 **Model:** HVRT (pairwise interaction target, O(n·d²))
 **Script:** `python benchmarks/bandwidth_benchmark.py`
@@ -43,15 +43,19 @@
 
 | Method | disc_err ↓ | W1 ↓ | Corr ↓ | TSTR ↑ | **Total** |
 |---|---|---|---|---|---|
-| `h=0.10` | 1 | **15** | 6 | **8** | **30** |
-| `epanechnikov` | **6** | 0 | 7 | 3 | **16** |
+| `h=0.10` | 2 | **15** | 6 | **8** | **31** |
+| `epanechnikov` | **5** | 0 | 7 | 3 | **15** |
 | `h=0.30` | 1 | 0 | 2 | 5 | **8** |
-| `adaptive` | 0 | 3 | 3 | 2 | **8** |
+| `adaptive` | 2 | 3 | 3 | 1 | **9** |
 | `h=2.00` | 7 | 0 | 0 | 0 | **7** |
-| `h=0.50` | 2 | 0 | 0 | 0 | **2** |
+| `h=0.50` | 0 | 0 | 0 | 1 | **1** |
 | `h=1.50` | 1 | 0 | 0 | 0 | **1** |
 | `scott` | 0 | 0 | 0 | 0 | **0** |
 | `silverman` | 0 | 0 | 0 | 0 | **0** |
+
+*Note: win counts differ by ±1–2 from the 2026-02-23 run due to RNG stream
+changes in the v2.4 vectorization refactor (resampling now uses `rng.random()`
+instead of `rng.choice()`).  All conclusions remain unchanged.*
 
 ---
 

@@ -299,26 +299,39 @@ from hvrt import FastHVRT, epanechnikov, univariate_kde_copula
 
 model = FastHVRT(random_state=42).fit(X)
 
-# By name
+# By name (preferred)
 X_synth = model.expand(n=10000, generation_strategy='epanechnikov')
 
 # By reference
 X_synth = model.expand(n=10000, generation_strategy=univariate_kde_copula)
 
-# Custom callable
-def my_strategy(X_z, partition_ids, unique_partitions, budgets, random_state):
-    ...
-    return X_synthetic   # shape (sum(budgets), n_features), z-score space
+# Custom strategy — implement StatefulGenerationStrategy
+from hvrt import StatefulGenerationStrategy, PartitionContext
+import numpy as np
 
-X_synth = model.expand(n=10000, generation_strategy=my_strategy)
+class MyStrategy:
+    def prepare(self, X_z, partition_ids, unique_partitions):
+        # precompute partition metadata once
+        ...
+        return PartitionContext(X_z=X_z, ...)   # or a PartitionContext subclass
+
+    def generate(self, context, budgets, random_state):
+        ...
+        return X_synthetic   # shape (sum(budgets), n_features), z-score space
+
+X_synth = model.expand(n=10000, generation_strategy=MyStrategy())
 ```
 
-| Strategy | Behaviour | Notes |
-|---|---|---|
-| `'multivariate_kde'` | `scipy.stats.gaussian_kde` on all features jointly. Uses instance `bandwidth`. | Captures full joint covariance |
-| `'epanechnikov'` | Product Epanechnikov kernel, Ahrens-Dieter sampling. Bounded support. | Recommended for classification; ≥5× ratios |
-| `'univariate_kde_copula'` | Per-feature 1-D KDE marginals + Gaussian copula. | More flexible per-feature marginals |
-| `'bootstrap_noise'` | Resample with replacement + Gaussian noise at 10% of per-feature std. | Fastest; no distributional assumptions |
+| Strategy | Behaviour | Throughput (5K→25K, d=10) | Notes |
+|---|---|---|---|
+| `'multivariate_kde'` | Gaussian KDE via batch Cholesky (pure NumPy). Captures full joint covariance. | 2.3M samples/s | Default when partitions are large |
+| `'epanechnikov'` | Product Epanechnikov kernel, Ahrens-Dieter sampling. Bounded support. | 2.6M samples/s | Recommended for classification; ≥5× ratios |
+| `'bootstrap_noise'` | Resample with replacement + Gaussian noise at 10% of per-feature std. | **4.3M samples/s** | Fastest; no distributional assumptions |
+| `'univariate_kde_copula'` | Per-feature 1-D KDE marginals + Gaussian copula. CDF grids precomputed at `fit()`. | ~1M samples/s | More flexible per-feature marginals |
+
+All four built-in strategies implement `StatefulGenerationStrategy`: partition
+metadata is precomputed once in `prepare()` (called at `fit()` time when the
+strategy is declared) and reused across repeated `expand()` calls.
 
 ```python
 from hvrt import BUILTIN_GENERATION_STRATEGIES
@@ -335,25 +348,60 @@ from hvrt import HVRT
 
 model = HVRT(random_state=42).fit(X, y)
 
+# By name (preferred)
 X_red = model.reduce(ratio=0.2, method='fps')             # default
 X_red = model.reduce(ratio=0.2, method='medoid_fps')
 X_red = model.reduce(ratio=0.2, method='variance_ordered')
 X_red = model.reduce(ratio=0.2, method='stratified')
 
-# Custom callable
-def my_selector(X_z, partition_ids, unique_partitions, budgets, random_state):
-    ...
-    return selected_indices   # global indices into X
+# By reference (module-level singleton)
+from hvrt import centroid_fps, variance_ordered
+X_red = model.reduce(ratio=0.2, method=variance_ordered)
 
-X_red = model.reduce(ratio=0.2, method=my_selector)
+# Custom strategy — implement StatefulSelectionStrategy
+from hvrt import StatefulSelectionStrategy, SelectionContext
+import numpy as np
+
+class MySelector:
+    def prepare(self, X_z, partition_ids, unique_partitions):
+        # precompute partition metadata once (cached at fit() time)
+        from hvrt.reduction_strategies import _build_selection_context
+        return _build_selection_context(X_z, partition_ids, unique_partitions)
+
+    def select(self, context, budgets, random_state, n_jobs=1):
+        # context.sort_idx, context.part_starts, context.part_sizes available
+        ...
+        return selected_indices   # global indices into X_z
+
+X_red = model.reduce(ratio=0.2, method=MySelector())
 ```
 
-| Strategy | Behaviour |
-|---|---|
-| `'fps'` / `'centroid_fps'` | Greedy Furthest Point Sampling seeded at partition centroid. **Default.** |
-| `'medoid_fps'` | FPS seeded at the partition medoid. |
-| `'variance_ordered'` | Select samples with highest local k-NN variance (k=10). |
-| `'stratified'` | Random sample within each partition. |
+| Strategy | Behaviour | Notes |
+|---|---|---|
+| `'fps'` / `'centroid_fps'` | Greedy FPS seeded at partition centroid. **Default.** | Best general-purpose diversity |
+| `'medoid_fps'` | FPS seeded at partition medoid. | Robust to outliers; slightly slower |
+| `'variance_ordered'` | Highest local k-NN variance (k=10). | **23–37× faster** with `n_jobs=-1` at large n |
+| `'stratified'` | Fully-vectorised random sample. | **2.5–3× faster** than loop; best for repeated `reduce()` |
+
+All four built-in strategies implement `StatefulSelectionStrategy`: partition
+metadata is precomputed once in `prepare()` (eagerly at `fit()` time when
+declared via `reduce_params.method`) and cached across repeated `reduce()` calls.
+The model's `n_jobs` is forwarded to `select()` automatically.
+
+```python
+from hvrt import BUILTIN_STRATEGIES
+list(BUILTIN_STRATEGIES)
+# ['centroid_fps', 'fps', 'medoid_fps', 'variance_ordered', 'stratified']
+```
+
+**Memory-conscious large-data workflow:** FPS strategies dispatch partitions to
+loky workers independently, keeping per-worker memory O(partition size) regardless
+of total dataset size.  Enable with `n_jobs=-1`:
+
+```python
+model = HVRT(n_jobs=-1).fit(X_large)          # n_jobs forwarded to select()
+X_red = model.reduce(ratio=0.1, method='fps') # parallel FPS, bounded memory per worker
+```
 
 ---
 
@@ -752,6 +800,8 @@ Use `adaptive_bandwidth=True` when expanding at ratios ≥ 2× and a DCR ≥ 1.0
 python benchmarks/run_benchmarks.py
 python benchmarks/run_benchmarks.py --tasks reduce --datasets adult housing
 python benchmarks/run_benchmarks.py --tasks expand
+python benchmarks/strategy_speedup_benchmark.py   # vectorization speedup (new in v2.4)
+python benchmarks/speed_benchmark.py              # serial vs parallel wall-clock times
 python benchmarks/reduction_denoising_benchmark.py
 python benchmarks/adaptive_kde_benchmark.py
 python benchmarks/adaptive_full_benchmark.py
@@ -784,6 +834,53 @@ HVRT(mode='reduce')
 
 # Replacement
 HVRT(reduce_params=ReduceParams(ratio=0.3))
+```
+
+The plain callable protocol for generation strategies is deprecated (v2.4).
+Custom callables still work and emit `HVRTDeprecationWarning`:
+
+```python
+# Deprecated (still works)
+def my_strategy(X_z, partition_ids, unique_partitions, budgets, random_state):
+    ...
+    return X_synthetic
+
+model.expand(n=50000, generation_strategy=my_strategy)
+
+# Replacement: implement StatefulGenerationStrategy
+from hvrt import StatefulGenerationStrategy
+
+class MyStrategy:
+    def prepare(self, X_z, partition_ids, unique_partitions):
+        ...   # return a PartitionContext (or subclass)
+    def generate(self, context, budgets, random_state):
+        ...   # return (sum(budgets), d) ndarray
+
+model.expand(n=50000, generation_strategy=MyStrategy())
+```
+
+The plain callable protocol for selection strategies is also deprecated.
+Custom callables still work and emit `HVRTDeprecationWarning`:
+
+```python
+# Deprecated (still works)
+def my_selector(X_z, partition_ids, unique_partitions, budgets, random_state):
+    ...
+    return selected_indices
+
+model.reduce(ratio=0.3, method=my_selector)
+
+# Replacement: implement StatefulSelectionStrategy
+from hvrt import StatefulSelectionStrategy
+from hvrt.reduction_strategies import _build_selection_context
+
+class MySelector:
+    def prepare(self, X_z, partition_ids, unique_partitions):
+        return _build_selection_context(X_z, partition_ids, unique_partitions)
+    def select(self, context, budgets, random_state, n_jobs=1):
+        ...   # return 1-D int64 ndarray of global indices
+
+model.reduce(ratio=0.3, method=MySelector())
 ```
 
 ---

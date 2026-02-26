@@ -42,25 +42,53 @@ from .optimizer import HVRTOptimizer
 from .legacy.sample_reduction import HVRTSampleReducer
 from .legacy.adaptive_reducer import AdaptiveHVRTReducer
 from .reduction_strategies import (
+    # Old callable protocol (kept for backward compat)
     SelectionStrategy,
+    # New stateful protocol
+    StatefulSelectionStrategy,
+    # Context dataclass
+    SelectionContext,
+    # Strategy classes
+    StratifiedStrategy,
+    VarianceOrderedStrategy,
+    CentroidFPSStrategy,
+    MedoidFPSStrategy,
+    # Module-level singletons (same names as old functions — drop-in compat)
     centroid_fps,
     medoid_fps,
     variance_ordered,
     stratified,
+    # Registry
     BUILTIN_STRATEGIES,
     get_strategy,
 )
 from .generation_strategies import (
+    # Old protocol (kept for backward compat)
     GenerationStrategy,
+    # New stateful protocol
+    StatefulGenerationStrategy,
+    # Context dataclasses
+    PartitionContext,
+    EpanechnikovContext,
+    BootstrapNoiseContext,
+    MultivariateKDEContext,
+    UnivariateCopulaContext,
+    # Strategy classes (accessible as singleton instances via module-level names)
+    EpanechnikovStrategy,
+    BootstrapNoiseStrategy,
+    MultivariateKDEStrategy,
+    UnivariateCopulaStrategy,
+    # Module-level singletons (same names as old functions — drop-in compat)
     multivariate_kde,
     univariate_kde_copula,
     bootstrap_noise,
     epanechnikov,
+    # Registry
     BUILTIN_GENERATION_STRATEGIES,
     get_generation_strategy,
 )
 
-__version__ = '2.4.0'
+__version__ = '2.5.0'
 
 __all__ = [
     # v2 primary API
@@ -75,16 +103,36 @@ __all__ = [
     'HVRTWarning',
     'HVRTFeatureWarning',
     'HVRTDeprecationWarning',
-    # Selection strategies
+    # Selection strategies — old callable protocol
     'SelectionStrategy',
+    # Selection strategies — new stateful protocol
+    'StatefulSelectionStrategy',
+    'SelectionContext',
+    'StratifiedStrategy',
+    'VarianceOrderedStrategy',
+    'CentroidFPSStrategy',
+    'MedoidFPSStrategy',
+    # Module-level singletons
     'centroid_fps',
     'medoid_fps',
     'variance_ordered',
     'stratified',
     'BUILTIN_STRATEGIES',
     'get_strategy',
-    # Generation strategies
+    # Generation strategies — old protocol
     'GenerationStrategy',
+    # Generation strategies — new stateful protocol
+    'StatefulGenerationStrategy',
+    'PartitionContext',
+    'EpanechnikovContext',
+    'BootstrapNoiseContext',
+    'MultivariateKDEContext',
+    'UnivariateCopulaContext',
+    'EpanechnikovStrategy',
+    'BootstrapNoiseStrategy',
+    'MultivariateKDEStrategy',
+    'UnivariateCopulaStrategy',
+    # Module-level singletons
     'multivariate_kde',
     'univariate_kde_copula',
     'bootstrap_noise',

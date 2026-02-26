@@ -11,12 +11,12 @@
       "correlation_fidelity": 0.9779064425986133,
       "tail_preservation": 1.230973786563867,
       "ml_utility_retention": 0.6671088130884196,
-      "train_time_seconds": 0.0946,
-      "operation_time_seconds": 0.128,
+      "train_time_seconds": 0.0761,
+      "operation_time_seconds": 0.0883,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0019
     },
-    "timestamp": "2026-02-26T01:33:30.579008+00:00"
+    "timestamp": "2026-02-26T06:16:38.100291+00:00"
   },
   {
     "task": "reduce",
@@ -30,12 +30,12 @@
       "correlation_fidelity": 0.9761428850788061,
       "tail_preservation": 1.4109710680956842,
       "ml_utility_retention": 0.6735693345994873,
-      "train_time_seconds": 0.0953,
-      "operation_time_seconds": 0.1141,
+      "train_time_seconds": 0.071,
+      "operation_time_seconds": 0.0925,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0046
     },
-    "timestamp": "2026-02-26T01:33:32.287247+00:00"
+    "timestamp": "2026-02-26T06:16:39.576649+00:00"
   },
   {
     "task": "reduce",
@@ -49,12 +49,12 @@
       "correlation_fidelity": 0.9864766580957339,
       "tail_preservation": 1.4049053960138784,
       "ml_utility_retention": 0.6704289172028619,
-      "train_time_seconds": 0.0502,
-      "operation_time_seconds": 0.1153,
+      "train_time_seconds": 0.0426,
+      "operation_time_seconds": 0.0667,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0014
     },
-    "timestamp": "2026-02-26T01:33:33.979072+00:00"
+    "timestamp": "2026-02-26T06:16:40.933603+00:00"
   },
   {
     "task": "reduce",
@@ -68,12 +68,12 @@
       "correlation_fidelity": 0.9679372121195233,
       "tail_preservation": 1.4058971474964956,
       "ml_utility_retention": 0.6689041950543356,
-      "train_time_seconds": 0.0633,
-      "operation_time_seconds": 0.0984,
+      "train_time_seconds": 0.0501,
+      "operation_time_seconds": 0.1205,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0001
     },
-    "timestamp": "2026-02-26T01:33:35.734075+00:00"
+    "timestamp": "2026-02-26T06:16:42.375405+00:00"
   },
   {
     "task": "reduce",
@@ -88,11 +88,11 @@
       "tail_preservation": 2.005700403300219,
       "ml_utility_retention": 0.6594249288475676,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.6856,
+      "operation_time_seconds": 1.5114,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0096
     },
-    "timestamp": "2026-02-26T01:33:37.945856+00:00"
+    "timestamp": "2026-02-26T06:16:44.310077+00:00"
   },
   {
     "task": "reduce",
@@ -107,11 +107,11 @@
       "tail_preservation": 1.0054400461950748,
       "ml_utility_retention": 0.6742391630591631,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0079,
+      "operation_time_seconds": 0.0063,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0052
     },
-    "timestamp": "2026-02-26T01:33:39.455040+00:00"
+    "timestamp": "2026-02-26T06:16:45.559616+00:00"
   },
   {
     "task": "reduce",
@@ -126,11 +126,11 @@
       "tail_preservation": 0.9580953533582827,
       "ml_utility_retention": 0.6618001392702705,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0016,
+      "operation_time_seconds": 0.0011,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0072
     },
-    "timestamp": "2026-02-26T01:33:40.950193+00:00"
+    "timestamp": "2026-02-26T06:16:46.836671+00:00"
   },
   {
     "task": "reduce",
@@ -149,7 +149,7 @@
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.001
     },
-    "timestamp": "2026-02-26T01:33:42.414076+00:00"
+    "timestamp": "2026-02-26T06:16:48.219353+00:00"
   },
   {
     "task": "reduce",
@@ -163,12 +163,12 @@
       "correlation_fidelity": 0.9648180437995713,
       "tail_preservation": 1.2605765554327562,
       "ml_utility_retention": 0.6759917764732858,
-      "train_time_seconds": 0.0901,
-      "operation_time_seconds": 0.0633,
+      "train_time_seconds": 0.0878,
+      "operation_time_seconds": 0.0537,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.007
     },
-    "timestamp": "2026-02-26T01:33:43.495323+00:00"
+    "timestamp": "2026-02-26T06:16:49.175742+00:00"
   },
   {
     "task": "reduce",
@@ -182,12 +182,12 @@
       "correlation_fidelity": 0.9684139234907995,
       "tail_preservation": 1.5800080197463933,
       "ml_utility_retention": 0.673519920296565,
-      "train_time_seconds": 0.0853,
-      "operation_time_seconds": 0.0702,
+      "train_time_seconds": 0.0711,
+      "operation_time_seconds": 0.0566,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0045
     },
-    "timestamp": "2026-02-26T01:33:44.580465+00:00"
+    "timestamp": "2026-02-26T06:16:50.097791+00:00"
   },
   {
     "task": "reduce",
@@ -201,12 +201,12 @@
       "correlation_fidelity": 0.9797791763635295,
       "tail_preservation": 1.6890411229394167,
       "ml_utility_retention": 0.6707967585164055,
-      "train_time_seconds": 0.0579,
-      "operation_time_seconds": 0.0557,
+      "train_time_seconds": 0.0586,
+      "operation_time_seconds": 0.0547,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0018
     },
-    "timestamp": "2026-02-26T01:33:45.564827+00:00"
+    "timestamp": "2026-02-26T06:16:50.957152+00:00"
   },
   {
     "task": "reduce",
@@ -220,12 +220,12 @@
       "correlation_fidelity": 0.9693624012206911,
       "tail_preservation": 1.707611911837128,
       "ml_utility_retention": 0.6717174120869494,
-      "train_time_seconds": 0.0484,
-      "operation_time_seconds": 0.0404,
+      "train_time_seconds": 0.0459,
+      "operation_time_seconds": 0.04,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0027
     },
-    "timestamp": "2026-02-26T01:33:46.556515+00:00"
+    "timestamp": "2026-02-26T06:16:51.771722+00:00"
   },
   {
     "task": "reduce",
@@ -240,11 +240,11 @@
       "tail_preservation": 2.6365252991522077,
       "ml_utility_retention": 0.659758966241179,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.541,
+      "operation_time_seconds": 1.3054,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0092
     },
-    "timestamp": "2026-02-26T01:33:48.469355+00:00"
+    "timestamp": "2026-02-26T06:16:53.365993+00:00"
   },
   {
     "task": "reduce",
@@ -259,11 +259,11 @@
       "tail_preservation": 1.0235244234945275,
       "ml_utility_retention": 0.6776204221090734,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0059,
+      "operation_time_seconds": 0.0078,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0086
     },
-    "timestamp": "2026-02-26T01:33:49.395840+00:00"
+    "timestamp": "2026-02-26T06:16:54.065900+00:00"
   },
   {
     "task": "reduce",
@@ -278,11 +278,11 @@
       "tail_preservation": 1.0067731733029857,
       "ml_utility_retention": 0.6647995606784589,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0008,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0042
     },
-    "timestamp": "2026-02-26T01:33:50.323460+00:00"
+    "timestamp": "2026-02-26T06:16:54.777831+00:00"
   },
   {
     "task": "reduce",
@@ -297,11 +297,11 @@
       "tail_preservation": 0.9043581260669019,
       "ml_utility_retention": 0.6649576976099689,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0008,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.004
     },
-    "timestamp": "2026-02-26T01:33:51.238226+00:00"
+    "timestamp": "2026-02-26T06:16:55.529224+00:00"
   },
   {
     "task": "reduce",
@@ -315,12 +315,12 @@
       "correlation_fidelity": 0.9585725173203492,
       "tail_preservation": 1.2948213108798912,
       "ml_utility_retention": 0.6637207106768291,
-      "train_time_seconds": 0.092,
-      "operation_time_seconds": 0.0497,
+      "train_time_seconds": 0.0855,
+      "operation_time_seconds": 0.0458,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0053
     },
-    "timestamp": "2026-02-26T01:33:52.059760+00:00"
+    "timestamp": "2026-02-26T06:16:56.157490+00:00"
   },
   {
     "task": "reduce",
@@ -334,12 +334,12 @@
       "correlation_fidelity": 0.9652351278555327,
       "tail_preservation": 1.6257412488235723,
       "ml_utility_retention": 0.6730898483607065,
-      "train_time_seconds": 0.0927,
-      "operation_time_seconds": 0.0464,
+      "train_time_seconds": 0.0721,
+      "operation_time_seconds": 0.0359,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0041
     },
-    "timestamp": "2026-02-26T01:33:52.809776+00:00"
+    "timestamp": "2026-02-26T06:16:56.774371+00:00"
   },
   {
     "task": "reduce",
@@ -353,12 +353,12 @@
       "correlation_fidelity": 0.9722742964789796,
       "tail_preservation": 2.0097162921177087,
       "ml_utility_retention": 0.6708639428711338,
-      "train_time_seconds": 0.0581,
-      "operation_time_seconds": 0.0496,
+      "train_time_seconds": 0.0561,
+      "operation_time_seconds": 0.0528,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0019
     },
-    "timestamp": "2026-02-26T01:33:53.539316+00:00"
+    "timestamp": "2026-02-26T06:16:57.392552+00:00"
   },
   {
     "task": "reduce",
@@ -372,12 +372,12 @@
       "correlation_fidelity": 0.9662247896594791,
       "tail_preservation": 1.9978561416943421,
       "ml_utility_retention": 0.6714170418872288,
-      "train_time_seconds": 0.0589,
-      "operation_time_seconds": 0.0428,
+      "train_time_seconds": 0.0602,
+      "operation_time_seconds": 0.0541,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0024
     },
-    "timestamp": "2026-02-26T01:33:54.267999+00:00"
+    "timestamp": "2026-02-26T06:16:58.084550+00:00"
   },
   {
     "task": "reduce",
@@ -392,11 +392,11 @@
       "tail_preservation": 3.2004882336145064,
       "ml_utility_retention": 0.6510945413523707,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.4106,
+      "operation_time_seconds": 1.3022,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0179
     },
-    "timestamp": "2026-02-26T01:33:55.948960+00:00"
+    "timestamp": "2026-02-26T06:16:59.581670+00:00"
   },
   {
     "task": "reduce",
@@ -415,7 +415,7 @@
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0073
     },
-    "timestamp": "2026-02-26T01:33:56.620250+00:00"
+    "timestamp": "2026-02-26T06:17:00.117765+00:00"
   },
   {
     "task": "reduce",
@@ -430,11 +430,11 @@
       "tail_preservation": 0.9778677173982013,
       "ml_utility_retention": 0.6708894372294373,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0008,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0019
     },
-    "timestamp": "2026-02-26T01:33:57.206783+00:00"
+    "timestamp": "2026-02-26T06:17:00.627644+00:00"
   },
   {
     "task": "reduce",
@@ -453,7 +453,7 @@
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0023
     },
-    "timestamp": "2026-02-26T01:33:57.726298+00:00"
+    "timestamp": "2026-02-26T06:17:01.197027+00:00"
   },
   {
     "task": "reduce",
@@ -467,12 +467,12 @@
       "correlation_fidelity": 0.9361988916152985,
       "tail_preservation": 1.225927047955869,
       "ml_utility_retention": 0.6578474591981519,
-      "train_time_seconds": 0.0761,
-      "operation_time_seconds": 0.0189,
+      "train_time_seconds": 0.0716,
+      "operation_time_seconds": 0.0332,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0112
     },
-    "timestamp": "2026-02-26T01:33:58.097626+00:00"
+    "timestamp": "2026-02-26T06:17:01.554516+00:00"
   },
   {
     "task": "reduce",
@@ -486,12 +486,12 @@
       "correlation_fidelity": 0.9453649905797111,
       "tail_preservation": 1.9148172110862212,
       "ml_utility_retention": 0.6649995874789671,
-      "train_time_seconds": 0.071,
-      "operation_time_seconds": 0.019,
+      "train_time_seconds": 0.0717,
+      "operation_time_seconds": 0.018,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.004
     },
-    "timestamp": "2026-02-26T01:33:58.489486+00:00"
+    "timestamp": "2026-02-26T06:17:01.939329+00:00"
   },
   {
     "task": "reduce",
@@ -505,12 +505,12 @@
       "correlation_fidelity": 0.9569225412747386,
       "tail_preservation": 2.938630046443816,
       "ml_utility_retention": 0.6703821932445103,
-      "train_time_seconds": 0.049,
-      "operation_time_seconds": 0.0198,
+      "train_time_seconds": 0.0479,
+      "operation_time_seconds": 0.0232,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0014
     },
-    "timestamp": "2026-02-26T01:33:58.843723+00:00"
+    "timestamp": "2026-02-26T06:17:02.273296+00:00"
   },
   {
     "task": "reduce",
@@ -524,12 +524,12 @@
       "correlation_fidelity": 0.9537085964094936,
       "tail_preservation": 2.88849280931127,
       "ml_utility_retention": 0.667166343411588,
-      "train_time_seconds": 0.0451,
-      "operation_time_seconds": 0.0191,
+      "train_time_seconds": 0.0435,
+      "operation_time_seconds": 0.0252,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0018
     },
-    "timestamp": "2026-02-26T01:33:59.201554+00:00"
+    "timestamp": "2026-02-26T06:17:02.640208+00:00"
   },
   {
     "task": "reduce",
@@ -544,11 +544,11 @@
       "tail_preservation": 4.02518132042344,
       "ml_utility_retention": 0.6531096817671493,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.1943,
+      "operation_time_seconds": 1.301,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0159
     },
-    "timestamp": "2026-02-26T01:34:00.541743+00:00"
+    "timestamp": "2026-02-26T06:17:04.093956+00:00"
   },
   {
     "task": "reduce",
@@ -563,11 +563,11 @@
       "tail_preservation": 0.29333691544781726,
       "ml_utility_retention": 0.6700593458575483,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.004,
+      "operation_time_seconds": 0.0058,
       "ml_utility_trtr": 0.669,
       "ml_delta": 0.0011
     },
-    "timestamp": "2026-02-26T01:34:00.844949+00:00"
+    "timestamp": "2026-02-26T06:17:04.369659+00:00"
   },
   {
     "task": "reduce",
@@ -582,11 +582,11 @@
       "tail_preservation": 1.0463005053263024,
       "ml_utility_retention": 0.6669357994743931,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0009,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0021
     },
-    "timestamp": "2026-02-26T01:34:01.132541+00:00"
+    "timestamp": "2026-02-26T06:17:04.652221+00:00"
   },
   {
     "task": "reduce",
@@ -601,11 +601,11 @@
       "tail_preservation": 0.27308270200079016,
       "ml_utility_retention": 0.6622356096452525,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0005,
+      "operation_time_seconds": 0.0006,
       "ml_utility_trtr": 0.669,
       "ml_delta": -0.0068
     },
-    "timestamp": "2026-02-26T01:34:01.432361+00:00"
+    "timestamp": "2026-02-26T06:17:04.936954+00:00"
   },
   {
     "task": "reduce",
@@ -619,12 +619,12 @@
       "correlation_fidelity": 0.9325147879439959,
       "tail_preservation": 1.0577663910364856,
       "ml_utility_retention": 0.9992450541223935,
-      "train_time_seconds": 0.4303,
-      "operation_time_seconds": 0.088,
+      "train_time_seconds": 0.4001,
+      "operation_time_seconds": 0.092,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0005
     },
-    "timestamp": "2026-02-26T01:34:14.225177+00:00"
+    "timestamp": "2026-02-26T06:17:17.167519+00:00"
   },
   {
     "task": "reduce",
@@ -638,12 +638,12 @@
       "correlation_fidelity": 0.7801086279002566,
       "tail_preservation": 1.1728387216153595,
       "ml_utility_retention": 0.9994978120316255,
-      "train_time_seconds": 0.4269,
-      "operation_time_seconds": 0.0771,
+      "train_time_seconds": 0.46,
+      "operation_time_seconds": 0.0983,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0002
     },
-    "timestamp": "2026-02-26T01:34:18.767252+00:00"
+    "timestamp": "2026-02-26T06:17:21.619712+00:00"
   },
   {
     "task": "reduce",
@@ -657,12 +657,12 @@
       "correlation_fidelity": 0.9310440877749905,
       "tail_preservation": 1.097265932274154,
       "ml_utility_retention": 0.9994978120316255,
-      "train_time_seconds": 0.1532,
-      "operation_time_seconds": 0.0809,
+      "train_time_seconds": 0.1269,
+      "operation_time_seconds": 0.0879,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0002
     },
-    "timestamp": "2026-02-26T01:34:22.974062+00:00"
+    "timestamp": "2026-02-26T06:17:25.659868+00:00"
   },
   {
     "task": "reduce",
@@ -676,12 +676,12 @@
       "correlation_fidelity": 0.8227166843053062,
       "tail_preservation": 1.1763509742476599,
       "ml_utility_retention": 0.9989911661603178,
-      "train_time_seconds": 0.1388,
-      "operation_time_seconds": 0.08,
+      "train_time_seconds": 0.1366,
+      "operation_time_seconds": 0.1063,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0007
     },
-    "timestamp": "2026-02-26T01:34:27.408193+00:00"
+    "timestamp": "2026-02-26T06:17:29.646358+00:00"
   },
   {
     "task": "reduce",
@@ -696,11 +696,11 @@
       "tail_preservation": 1.1183380103222433,
       "ml_utility_retention": 0.9979639907121922,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 2.59,
+      "operation_time_seconds": 2.1613,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0017
     },
-    "timestamp": "2026-02-26T01:34:31.511426+00:00"
+    "timestamp": "2026-02-26T06:17:32.921247+00:00"
   },
   {
     "task": "reduce",
@@ -715,11 +715,11 @@
       "tail_preservation": 1.0077147077052793,
       "ml_utility_retention": 0.9982225611651532,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0125,
+      "operation_time_seconds": 0.0104,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0015
     },
-    "timestamp": "2026-02-26T01:34:36.428842+00:00"
+    "timestamp": "2026-02-26T06:17:36.664635+00:00"
   },
   {
     "task": "reduce",
@@ -734,11 +734,11 @@
       "tail_preservation": 0.999488809353686,
       "ml_utility_retention": 0.9992450541223935,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0018,
+      "operation_time_seconds": 0.002,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0005
     },
-    "timestamp": "2026-02-26T01:34:41.654460+00:00"
+    "timestamp": "2026-02-26T06:17:40.755937+00:00"
   },
   {
     "task": "reduce",
@@ -753,11 +753,11 @@
       "tail_preservation": 0.9986095816805564,
       "ml_utility_retention": 0.9997494555349193,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0008,
       "ml_utility_trtr": 0.9997,
       "ml_delta": 0.0
     },
-    "timestamp": "2026-02-26T01:34:46.653822+00:00"
+    "timestamp": "2026-02-26T06:17:44.544876+00:00"
   },
   {
     "task": "reduce",
@@ -771,12 +771,12 @@
       "correlation_fidelity": 0.9056973468529108,
       "tail_preservation": 1.095912073990036,
       "ml_utility_retention": 0.9982225611651532,
-      "train_time_seconds": 0.541,
-      "operation_time_seconds": 0.0868,
+      "train_time_seconds": 0.4252,
+      "operation_time_seconds": 0.0629,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0015
     },
-    "timestamp": "2026-02-26T01:34:50.106442+00:00"
+    "timestamp": "2026-02-26T06:17:47.268299+00:00"
   },
   {
     "task": "reduce",
@@ -790,12 +790,12 @@
       "correlation_fidelity": 0.5757944280653403,
       "tail_preservation": 1.4361738031546503,
       "ml_utility_retention": 0.9994978120316255,
-      "train_time_seconds": 0.5187,
-      "operation_time_seconds": 0.0846,
+      "train_time_seconds": 0.3963,
+      "operation_time_seconds": 0.0526,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0002
     },
-    "timestamp": "2026-02-26T01:34:53.588180+00:00"
+    "timestamp": "2026-02-26T06:17:49.902259+00:00"
   },
   {
     "task": "reduce",
@@ -809,12 +809,12 @@
       "correlation_fidelity": 0.8744071720000262,
       "tail_preservation": 1.1508541361367253,
       "ml_utility_retention": 0.9997494555349193,
-      "train_time_seconds": 0.1796,
-      "operation_time_seconds": 0.0771,
+      "train_time_seconds": 0.1578,
+      "operation_time_seconds": 0.0503,
       "ml_utility_trtr": 0.9997,
       "ml_delta": 0.0
     },
-    "timestamp": "2026-02-26T01:34:56.776999+00:00"
+    "timestamp": "2026-02-26T06:17:52.305008+00:00"
   },
   {
     "task": "reduce",
@@ -828,12 +828,12 @@
       "correlation_fidelity": 0.8095168734555473,
       "tail_preservation": 1.2482802900876995,
       "ml_utility_retention": 0.9992450541223935,
-      "train_time_seconds": 0.1789,
-      "operation_time_seconds": 0.0754,
+      "train_time_seconds": 0.1293,
+      "operation_time_seconds": 0.042,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0005
     },
-    "timestamp": "2026-02-26T01:34:59.805453+00:00"
+    "timestamp": "2026-02-26T06:17:54.723045+00:00"
   },
   {
     "task": "reduce",
@@ -848,11 +848,11 @@
       "tail_preservation": 1.1832207428148998,
       "ml_utility_retention": 0.9977042075547788,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 2.7514,
+      "operation_time_seconds": 2.0333,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.002
     },
-    "timestamp": "2026-02-26T01:35:03.483379+00:00"
+    "timestamp": "2026-02-26T06:17:57.506614+00:00"
   },
   {
     "task": "reduce",
@@ -867,11 +867,11 @@
       "tail_preservation": 1.010247208965696,
       "ml_utility_retention": 0.9992450541223935,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0105,
+      "operation_time_seconds": 0.0084,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0005
     },
-    "timestamp": "2026-02-26T01:35:06.399032+00:00"
+    "timestamp": "2026-02-26T06:17:59.683819+00:00"
   },
   {
     "task": "reduce",
@@ -886,11 +886,11 @@
       "tail_preservation": 0.9987369291570098,
       "ml_utility_retention": 0.9971809329501257,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.001,
+      "operation_time_seconds": 0.0009,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0025
     },
-    "timestamp": "2026-02-26T01:35:09.244198+00:00"
+    "timestamp": "2026-02-26T06:18:01.901712+00:00"
   },
   {
     "task": "reduce",
@@ -905,11 +905,11 @@
       "tail_preservation": 0.9999889734934443,
       "ml_utility_retention": 0.9984799360556824,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0006,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0012
     },
-    "timestamp": "2026-02-26T01:35:12.145494+00:00"
+    "timestamp": "2026-02-26T06:18:04.092557+00:00"
   },
   {
     "task": "reduce",
@@ -923,12 +923,12 @@
       "correlation_fidelity": 0.8705292501836762,
       "tail_preservation": 1.1175568581463893,
       "ml_utility_retention": 0.9982225611651532,
-      "train_time_seconds": 0.529,
-      "operation_time_seconds": 0.0553,
+      "train_time_seconds": 0.382,
+      "operation_time_seconds": 0.0328,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0015
     },
-    "timestamp": "2026-02-26T01:35:14.596589+00:00"
+    "timestamp": "2026-02-26T06:18:06.110587+00:00"
   },
   {
     "task": "reduce",
@@ -942,12 +942,12 @@
       "correlation_fidelity": 0.5248212723177086,
       "tail_preservation": 1.5046688960688448,
       "ml_utility_retention": 0.9989911661603178,
-      "train_time_seconds": 0.5347,
-      "operation_time_seconds": 0.0505,
+      "train_time_seconds": 0.3863,
+      "operation_time_seconds": 0.0311,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0007
     },
-    "timestamp": "2026-02-26T01:35:17.104936+00:00"
+    "timestamp": "2026-02-26T06:18:07.947363+00:00"
   },
   {
     "task": "reduce",
@@ -961,12 +961,12 @@
       "correlation_fidelity": 0.8609300265211957,
       "tail_preservation": 1.1954337588807906,
       "ml_utility_retention": 0.9997494555349193,
-      "train_time_seconds": 0.1811,
-      "operation_time_seconds": 0.0362,
+      "train_time_seconds": 0.1344,
+      "operation_time_seconds": 0.0311,
       "ml_utility_trtr": 0.9997,
       "ml_delta": 0.0
     },
-    "timestamp": "2026-02-26T01:35:19.197829+00:00"
+    "timestamp": "2026-02-26T06:18:09.585825+00:00"
   },
   {
     "task": "reduce",
@@ -980,12 +980,12 @@
       "correlation_fidelity": 0.841888892831493,
       "tail_preservation": 1.2914189216921428,
       "ml_utility_retention": 0.9984799360556824,
-      "train_time_seconds": 0.1742,
-      "operation_time_seconds": 0.0487,
+      "train_time_seconds": 0.1478,
+      "operation_time_seconds": 0.0541,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0012
     },
-    "timestamp": "2026-02-26T01:35:21.333183+00:00"
+    "timestamp": "2026-02-26T06:18:11.417501+00:00"
   },
   {
     "task": "reduce",
@@ -1000,11 +1000,11 @@
       "tail_preservation": 1.2342245227858066,
       "ml_utility_retention": 0.9984799360556824,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 2.5834,
+      "operation_time_seconds": 2.2033,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0012
     },
-    "timestamp": "2026-02-26T01:35:24.540059+00:00"
+    "timestamp": "2026-02-26T06:18:14.152786+00:00"
   },
   {
     "task": "reduce",
@@ -1019,11 +1019,11 @@
       "tail_preservation": 1.0111324561007953,
       "ml_utility_retention": 0.9966525936747594,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0127,
+      "operation_time_seconds": 0.0075,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.003
     },
-    "timestamp": "2026-02-26T01:35:26.469648+00:00"
+    "timestamp": "2026-02-26T06:18:15.764803+00:00"
   },
   {
     "task": "reduce",
@@ -1038,11 +1038,11 @@
       "tail_preservation": 0.999454460001364,
       "ml_utility_retention": 0.9975,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.001,
+      "operation_time_seconds": 0.0011,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0022
     },
-    "timestamp": "2026-02-26T01:35:28.407236+00:00"
+    "timestamp": "2026-02-26T06:18:17.361431+00:00"
   },
   {
     "task": "reduce",
@@ -1057,11 +1057,11 @@
       "tail_preservation": 1.0006084661989028,
       "ml_utility_retention": 0.9989911661603178,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0006,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0007
     },
-    "timestamp": "2026-02-26T01:35:30.330268+00:00"
+    "timestamp": "2026-02-26T06:18:19.095048+00:00"
   },
   {
     "task": "reduce",
@@ -1075,12 +1075,12 @@
       "correlation_fidelity": 0.8299086109264762,
       "tail_preservation": 1.152026208432374,
       "ml_utility_retention": 0.9982225611651532,
-      "train_time_seconds": 0.5546,
-      "operation_time_seconds": 0.0291,
+      "train_time_seconds": 0.3993,
+      "operation_time_seconds": 0.0203,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0015
     },
-    "timestamp": "2026-02-26T01:35:31.893286+00:00"
+    "timestamp": "2026-02-26T06:18:20.302310+00:00"
   },
   {
     "task": "reduce",
@@ -1094,12 +1094,12 @@
       "correlation_fidelity": 0.5494526951658512,
       "tail_preservation": 1.5217083520735617,
       "ml_utility_retention": 0.9982225611651532,
-      "train_time_seconds": 0.5238,
-      "operation_time_seconds": 0.0281,
+      "train_time_seconds": 0.4177,
+      "operation_time_seconds": 0.0213,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0015
     },
-    "timestamp": "2026-02-26T01:35:33.399378+00:00"
+    "timestamp": "2026-02-26T06:18:21.520199+00:00"
   },
   {
     "task": "reduce",
@@ -1113,12 +1113,12 @@
       "correlation_fidelity": 0.8117125555517402,
       "tail_preservation": 1.2323386581274849,
       "ml_utility_retention": 0.9948128257779181,
-      "train_time_seconds": 0.1757,
-      "operation_time_seconds": 0.0329,
+      "train_time_seconds": 0.1608,
+      "operation_time_seconds": 0.0186,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0049
     },
-    "timestamp": "2026-02-26T01:35:34.599921+00:00"
+    "timestamp": "2026-02-26T06:18:22.531204+00:00"
   },
   {
     "task": "reduce",
@@ -1132,12 +1132,12 @@
       "correlation_fidelity": 0.873016911617783,
       "tail_preservation": 1.3425419741303863,
       "ml_utility_retention": 0.9984799360556824,
-      "train_time_seconds": 0.1767,
-      "operation_time_seconds": 0.0283,
+      "train_time_seconds": 0.1438,
+      "operation_time_seconds": 0.039,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0012
     },
-    "timestamp": "2026-02-26T01:35:35.788733+00:00"
+    "timestamp": "2026-02-26T06:18:23.531241+00:00"
   },
   {
     "task": "reduce",
@@ -1152,11 +1152,11 @@
       "tail_preservation": 1.2890544875694228,
       "ml_utility_retention": 0.9931552086216573,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 2.1047,
+      "operation_time_seconds": 2.2237,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0065
     },
-    "timestamp": "2026-02-26T01:35:38.167604+00:00"
+    "timestamp": "2026-02-26T06:18:25.992962+00:00"
   },
   {
     "task": "reduce",
@@ -1171,11 +1171,11 @@
       "tail_preservation": 1.008757855811973,
       "ml_utility_retention": 0.9949331201856082,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.011,
+      "operation_time_seconds": 0.0118,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.0048
     },
-    "timestamp": "2026-02-26T01:35:39.130956+00:00"
+    "timestamp": "2026-02-26T06:18:26.763428+00:00"
   },
   {
     "task": "reduce",
@@ -1190,11 +1190,11 @@
       "tail_preservation": 0.999742871188865,
       "ml_utility_retention": 0.9977042075547788,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0007,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.002
     },
-    "timestamp": "2026-02-26T01:35:39.808366+00:00"
+    "timestamp": "2026-02-26T06:18:27.315411+00:00"
   },
   {
     "task": "reduce",
@@ -1209,11 +1209,11 @@
       "tail_preservation": 0.9823820393487808,
       "ml_utility_retention": 0.9937447924841364,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0006,
+      "operation_time_seconds": 0.0004,
       "ml_utility_trtr": 0.9997,
       "ml_delta": -0.006
     },
-    "timestamp": "2026-02-26T01:35:40.499049+00:00"
+    "timestamp": "2026-02-26T06:18:27.868012+00:00"
   },
   {
     "task": "reduce",
@@ -1227,12 +1227,12 @@
       "correlation_fidelity": 0.9638486878073811,
       "tail_preservation": 1.0858818796460428,
       "ml_utility_retention": 0.6397707281208791,
-      "train_time_seconds": 0.139,
-      "operation_time_seconds": 0.095,
+      "train_time_seconds": 0.1064,
+      "operation_time_seconds": 0.0668,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0035
     },
-    "timestamp": "2026-02-26T01:35:46.727609+00:00"
+    "timestamp": "2026-02-26T06:18:32.871813+00:00"
   },
   {
     "task": "reduce",
@@ -1246,12 +1246,12 @@
       "correlation_fidelity": 0.9658720223140257,
       "tail_preservation": 1.1757969622715847,
       "ml_utility_retention": 0.6381528565138301,
-      "train_time_seconds": 0.1382,
-      "operation_time_seconds": 0.1151,
+      "train_time_seconds": 0.1407,
+      "operation_time_seconds": 0.1073,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0051
     },
-    "timestamp": "2026-02-26T01:35:48.964431+00:00"
+    "timestamp": "2026-02-26T06:18:34.719193+00:00"
   },
   {
     "task": "reduce",
@@ -1265,12 +1265,12 @@
       "correlation_fidelity": 0.9769663239399977,
       "tail_preservation": 1.1095583007236265,
       "ml_utility_retention": 0.6414938300962709,
-      "train_time_seconds": 0.0903,
-      "operation_time_seconds": 0.1002,
+      "train_time_seconds": 0.062,
+      "operation_time_seconds": 0.1215,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0018
     },
-    "timestamp": "2026-02-26T01:35:51.100007+00:00"
+    "timestamp": "2026-02-26T06:18:36.556914+00:00"
   },
   {
     "task": "reduce",
@@ -1284,12 +1284,12 @@
       "correlation_fidelity": 0.9574317156513223,
       "tail_preservation": 1.2016744973082925,
       "ml_utility_retention": 0.6440051753369693,
-      "train_time_seconds": 0.0849,
-      "operation_time_seconds": 0.0939,
+      "train_time_seconds": 0.0731,
+      "operation_time_seconds": 0.082,
       "ml_utility_trtr": 0.6433,
       "ml_delta": 0.0007
     },
-    "timestamp": "2026-02-26T01:35:53.208916+00:00"
+    "timestamp": "2026-02-26T06:18:38.332171+00:00"
   },
   {
     "task": "reduce",
@@ -1304,11 +1304,11 @@
       "tail_preservation": 1.1238686471080443,
       "ml_utility_retention": 0.619676028739198,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.5004,
+      "operation_time_seconds": 1.2483,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0236
     },
-    "timestamp": "2026-02-26T01:35:55.285492+00:00"
+    "timestamp": "2026-02-26T06:18:40.083413+00:00"
   },
   {
     "task": "reduce",
@@ -1323,11 +1323,11 @@
       "tail_preservation": 1.0014637936217592,
       "ml_utility_retention": 0.6318594159373381,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0053,
+      "operation_time_seconds": 0.005,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0114
     },
-    "timestamp": "2026-02-26T01:35:57.258177+00:00"
+    "timestamp": "2026-02-26T06:18:41.738992+00:00"
   },
   {
     "task": "reduce",
@@ -1342,11 +1342,11 @@
       "tail_preservation": 0.9967050779295055,
       "ml_utility_retention": 0.632127744287651,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0028,
+      "operation_time_seconds": 0.003,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0112
     },
-    "timestamp": "2026-02-26T01:35:59.257214+00:00"
+    "timestamp": "2026-02-26T06:18:43.459473+00:00"
   },
   {
     "task": "reduce",
@@ -1361,11 +1361,11 @@
       "tail_preservation": 0.9889137377292353,
       "ml_utility_retention": 0.6392886666661655,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.001,
+      "operation_time_seconds": 0.0007,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.004
     },
-    "timestamp": "2026-02-26T01:36:01.318777+00:00"
+    "timestamp": "2026-02-26T06:18:45.149160+00:00"
   },
   {
     "task": "reduce",
@@ -1379,12 +1379,12 @@
       "correlation_fidelity": 0.9428984761637139,
       "tail_preservation": 1.1434256394071207,
       "ml_utility_retention": 0.63903613213277,
-      "train_time_seconds": 0.1345,
-      "operation_time_seconds": 0.0689,
+      "train_time_seconds": 0.1106,
+      "operation_time_seconds": 0.054,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0043
     },
-    "timestamp": "2026-02-26T01:36:02.738171+00:00"
+    "timestamp": "2026-02-26T06:18:46.370683+00:00"
   },
   {
     "task": "reduce",
@@ -1398,12 +1398,12 @@
       "correlation_fidelity": 0.9682344988391233,
       "tail_preservation": 1.2358387671195856,
       "ml_utility_retention": 0.6378292563641659,
-      "train_time_seconds": 0.1387,
-      "operation_time_seconds": 0.0743,
+      "train_time_seconds": 0.1113,
+      "operation_time_seconds": 0.0452,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0055
     },
-    "timestamp": "2026-02-26T01:36:04.141639+00:00"
+    "timestamp": "2026-02-26T06:18:47.519738+00:00"
   },
   {
     "task": "reduce",
@@ -1417,12 +1417,12 @@
       "correlation_fidelity": 0.9629951516222569,
       "tail_preservation": 1.1663243082748125,
       "ml_utility_retention": 0.6370846995390274,
-      "train_time_seconds": 0.0972,
-      "operation_time_seconds": 0.0722,
+      "train_time_seconds": 0.0694,
+      "operation_time_seconds": 0.0489,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0062
     },
-    "timestamp": "2026-02-26T01:36:05.536310+00:00"
+    "timestamp": "2026-02-26T06:18:48.660142+00:00"
   },
   {
     "task": "reduce",
@@ -1436,12 +1436,12 @@
       "correlation_fidelity": 0.9646150127836554,
       "tail_preservation": 1.2731004502312142,
       "ml_utility_retention": 0.6394292721356768,
-      "train_time_seconds": 0.0933,
-      "operation_time_seconds": 0.0699,
+      "train_time_seconds": 0.0652,
+      "operation_time_seconds": 0.0391,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0039
     },
-    "timestamp": "2026-02-26T01:36:06.897500+00:00"
+    "timestamp": "2026-02-26T06:18:49.714951+00:00"
   },
   {
     "task": "reduce",
@@ -1456,11 +1456,11 @@
       "tail_preservation": 1.1980734280376462,
       "ml_utility_retention": 0.6113977281238636,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.376,
+      "operation_time_seconds": 1.0938,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0319
     },
-    "timestamp": "2026-02-26T01:36:08.674865+00:00"
+    "timestamp": "2026-02-26T06:18:51.131959+00:00"
   },
   {
     "task": "reduce",
@@ -1475,11 +1475,11 @@
       "tail_preservation": 1.012782505138924,
       "ml_utility_retention": 0.6235198307940149,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0052,
+      "operation_time_seconds": 0.0058,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0198
     },
-    "timestamp": "2026-02-26T01:36:09.916043+00:00"
+    "timestamp": "2026-02-26T06:18:52.164541+00:00"
   },
   {
     "task": "reduce",
@@ -1494,11 +1494,11 @@
       "tail_preservation": 0.9955017152866479,
       "ml_utility_retention": 0.6195920340424641,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.003,
+      "operation_time_seconds": 0.002,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0237
     },
-    "timestamp": "2026-02-26T01:36:11.111763+00:00"
+    "timestamp": "2026-02-26T06:18:53.130350+00:00"
   },
   {
     "task": "reduce",
@@ -1513,11 +1513,11 @@
       "tail_preservation": 0.9898479722678649,
       "ml_utility_retention": 0.630749840840926,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0006,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0126
     },
-    "timestamp": "2026-02-26T01:36:12.272173+00:00"
+    "timestamp": "2026-02-26T06:18:54.065127+00:00"
   },
   {
     "task": "reduce",
@@ -1531,12 +1531,12 @@
       "correlation_fidelity": 0.9318722878229895,
       "tail_preservation": 1.1787215804335474,
       "ml_utility_retention": 0.6352280657438477,
-      "train_time_seconds": 0.135,
-      "operation_time_seconds": 0.0477,
+      "train_time_seconds": 0.1126,
+      "operation_time_seconds": 0.0315,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0081
     },
-    "timestamp": "2026-02-26T01:36:13.264339+00:00"
+    "timestamp": "2026-02-26T06:18:54.882018+00:00"
   },
   {
     "task": "reduce",
@@ -1550,12 +1550,12 @@
       "correlation_fidelity": 0.9617223074102044,
       "tail_preservation": 1.272726027585005,
       "ml_utility_retention": 0.6309929335223174,
-      "train_time_seconds": 0.1393,
-      "operation_time_seconds": 0.0507,
+      "train_time_seconds": 0.1142,
+      "operation_time_seconds": 0.0278,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0123
     },
-    "timestamp": "2026-02-26T01:36:14.273501+00:00"
+    "timestamp": "2026-02-26T06:18:55.650489+00:00"
   },
   {
     "task": "reduce",
@@ -1569,12 +1569,12 @@
       "correlation_fidelity": 0.9524626363419058,
       "tail_preservation": 1.2305447094492041,
       "ml_utility_retention": 0.6299146267311659,
-      "train_time_seconds": 0.0914,
-      "operation_time_seconds": 0.0525,
+      "train_time_seconds": 0.0679,
+      "operation_time_seconds": 0.0297,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0134
     },
-    "timestamp": "2026-02-26T01:36:15.156056+00:00"
+    "timestamp": "2026-02-26T06:18:56.393901+00:00"
   },
   {
     "task": "reduce",
@@ -1588,12 +1588,12 @@
       "correlation_fidelity": 0.9650351863562593,
       "tail_preservation": 1.3434139415960384,
       "ml_utility_retention": 0.6333799983195341,
-      "train_time_seconds": 0.0782,
-      "operation_time_seconds": 0.0471,
+      "train_time_seconds": 0.0636,
+      "operation_time_seconds": 0.0324,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0099
     },
-    "timestamp": "2026-02-26T01:36:16.088531+00:00"
+    "timestamp": "2026-02-26T06:18:57.134012+00:00"
   },
   {
     "task": "reduce",
@@ -1608,11 +1608,11 @@
       "tail_preservation": 1.2596650848971742,
       "ml_utility_retention": 0.5975571515962634,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.381,
+      "operation_time_seconds": 1.0377,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0457
     },
-    "timestamp": "2026-02-26T01:36:17.753798+00:00"
+    "timestamp": "2026-02-26T06:18:58.373881+00:00"
   },
   {
     "task": "reduce",
@@ -1627,11 +1627,11 @@
       "tail_preservation": 1.0201144011861354,
       "ml_utility_retention": 0.6145416778580031,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0063,
+      "operation_time_seconds": 0.0032,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0288
     },
-    "timestamp": "2026-02-26T01:36:18.576453+00:00"
+    "timestamp": "2026-02-26T06:18:59.008298+00:00"
   },
   {
     "task": "reduce",
@@ -1646,11 +1646,11 @@
       "tail_preservation": 1.00568448063233,
       "ml_utility_retention": 0.6133039821277433,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.004,
+      "operation_time_seconds": 0.002,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.03
     },
-    "timestamp": "2026-02-26T01:36:19.400515+00:00"
+    "timestamp": "2026-02-26T06:18:59.635976+00:00"
   },
   {
     "task": "reduce",
@@ -1665,11 +1665,11 @@
       "tail_preservation": 0.996940099902274,
       "ml_utility_retention": 0.6274808024715752,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0005,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0158
     },
-    "timestamp": "2026-02-26T01:36:20.221997+00:00"
+    "timestamp": "2026-02-26T06:19:00.299062+00:00"
   },
   {
     "task": "reduce",
@@ -1683,12 +1683,12 @@
       "correlation_fidelity": 0.9186901696979006,
       "tail_preservation": 1.2582182563709443,
       "ml_utility_retention": 0.6081726404138285,
-      "train_time_seconds": 0.1447,
-      "operation_time_seconds": 0.0275,
+      "train_time_seconds": 0.1044,
+      "operation_time_seconds": 0.0169,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0351
     },
-    "timestamp": "2026-02-26T01:36:20.832627+00:00"
+    "timestamp": "2026-02-26T06:19:00.739065+00:00"
   },
   {
     "task": "reduce",
@@ -1702,12 +1702,12 @@
       "correlation_fidelity": 0.9431339248688214,
       "tail_preservation": 1.3671503349131262,
       "ml_utility_retention": 0.6154626386364036,
-      "train_time_seconds": 0.1427,
-      "operation_time_seconds": 0.0289,
+      "train_time_seconds": 0.1102,
+      "operation_time_seconds": 0.0215,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0278
     },
-    "timestamp": "2026-02-26T01:36:21.425853+00:00"
+    "timestamp": "2026-02-26T06:19:01.179054+00:00"
   },
   {
     "task": "reduce",
@@ -1721,12 +1721,12 @@
       "correlation_fidelity": 0.9381204393616497,
       "tail_preservation": 1.3764419729313293,
       "ml_utility_retention": 0.6181135144439271,
-      "train_time_seconds": 0.104,
-      "operation_time_seconds": 0.0376,
+      "train_time_seconds": 0.072,
+      "operation_time_seconds": 0.0211,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0252
     },
-    "timestamp": "2026-02-26T01:36:21.998062+00:00"
+    "timestamp": "2026-02-26T06:19:01.585833+00:00"
   },
   {
     "task": "reduce",
@@ -1740,12 +1740,12 @@
       "correlation_fidelity": 0.9497978549768141,
       "tail_preservation": 1.4791902707449915,
       "ml_utility_retention": 0.6114446718856974,
-      "train_time_seconds": 0.0973,
-      "operation_time_seconds": 0.0258,
+      "train_time_seconds": 0.0636,
+      "operation_time_seconds": 0.0194,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0319
     },
-    "timestamp": "2026-02-26T01:36:22.558093+00:00"
+    "timestamp": "2026-02-26T06:19:02.008751+00:00"
   },
   {
     "task": "reduce",
@@ -1760,11 +1760,11 @@
       "tail_preservation": 1.3751592608643788,
       "ml_utility_retention": 0.5518790804083107,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.215,
+      "operation_time_seconds": 1.0584,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0914
     },
-    "timestamp": "2026-02-26T01:36:23.947940+00:00"
+    "timestamp": "2026-02-26T06:19:03.204548+00:00"
   },
   {
     "task": "reduce",
@@ -1779,11 +1779,11 @@
       "tail_preservation": 1.014664588958251,
       "ml_utility_retention": 0.6055868226335552,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0068,
+      "operation_time_seconds": 0.0076,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0377
     },
-    "timestamp": "2026-02-26T01:36:24.408221+00:00"
+    "timestamp": "2026-02-26T06:19:03.544112+00:00"
   },
   {
     "task": "reduce",
@@ -1798,11 +1798,11 @@
       "tail_preservation": 1.0050614382066214,
       "ml_utility_retention": 0.6029820422975445,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0037,
+      "operation_time_seconds": 0.0019,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0403
     },
-    "timestamp": "2026-02-26T01:36:24.852516+00:00"
+    "timestamp": "2026-02-26T06:19:03.841819+00:00"
   },
   {
     "task": "reduce",
@@ -1817,11 +1817,11 @@
       "tail_preservation": 0.996443555438374,
       "ml_utility_retention": 0.5829445100779831,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0008,
+      "operation_time_seconds": 0.0005,
       "ml_utility_trtr": 0.6433,
       "ml_delta": -0.0604
     },
-    "timestamp": "2026-02-26T01:36:25.296593+00:00"
+    "timestamp": "2026-02-26T06:19:04.163647+00:00"
   },
   {
     "task": "reduce",
@@ -1835,12 +1835,12 @@
       "correlation_fidelity": 0.9695312102563682,
       "tail_preservation": 1.0744902554542028,
       "ml_utility_retention": 0.9786107627014129,
-      "train_time_seconds": 0.1515,
-      "operation_time_seconds": 0.1313,
+      "train_time_seconds": 0.1242,
+      "operation_time_seconds": 0.0787,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0011
     },
-    "timestamp": "2026-02-26T01:36:35.690442+00:00"
+    "timestamp": "2026-02-26T06:19:11.687696+00:00"
   },
   {
     "task": "reduce",
@@ -1854,12 +1854,12 @@
       "correlation_fidelity": 0.9341154867213572,
       "tail_preservation": 1.0868861637501337,
       "ml_utility_retention": 0.9783054182547969,
-      "train_time_seconds": 0.1388,
-      "operation_time_seconds": 0.1155,
+      "train_time_seconds": 0.1097,
+      "operation_time_seconds": 0.0611,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0008
     },
-    "timestamp": "2026-02-26T01:36:39.220467+00:00"
+    "timestamp": "2026-02-26T06:19:14.286513+00:00"
   },
   {
     "task": "reduce",
@@ -1873,12 +1873,12 @@
       "correlation_fidelity": 0.9292203485561894,
       "tail_preservation": 1.09062351569826,
       "ml_utility_retention": 0.9781857478648088,
-      "train_time_seconds": 0.1383,
-      "operation_time_seconds": 0.1486,
+      "train_time_seconds": 0.1045,
+      "operation_time_seconds": 0.0713,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0007
     },
-    "timestamp": "2026-02-26T01:36:42.983443+00:00"
+    "timestamp": "2026-02-26T06:19:16.878755+00:00"
   },
   {
     "task": "reduce",
@@ -1892,12 +1892,12 @@
       "correlation_fidelity": 0.9255001415597767,
       "tail_preservation": 1.0917692012694882,
       "ml_utility_retention": 0.9778904492842047,
-      "train_time_seconds": 0.1381,
-      "operation_time_seconds": 0.1177,
+      "train_time_seconds": 0.0872,
+      "operation_time_seconds": 0.0708,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0004
     },
-    "timestamp": "2026-02-26T01:36:46.481174+00:00"
+    "timestamp": "2026-02-26T06:19:19.468768+00:00"
   },
   {
     "task": "reduce",
@@ -1912,11 +1912,11 @@
       "tail_preservation": 1.099247601968498,
       "ml_utility_retention": 0.9768089350277183,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 2.0306,
+      "operation_time_seconds": 1.6864,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0007
     },
-    "timestamp": "2026-02-26T01:36:49.533988+00:00"
+    "timestamp": "2026-02-26T06:19:21.897639+00:00"
   },
   {
     "task": "reduce",
@@ -1935,7 +1935,7 @@
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0016
     },
-    "timestamp": "2026-02-26T01:36:52.761539+00:00"
+    "timestamp": "2026-02-26T06:19:24.356973+00:00"
   },
   {
     "task": "reduce",
@@ -1950,11 +1950,11 @@
       "tail_preservation": 0.9987773760608782,
       "ml_utility_retention": 0.97659148054698,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0041,
+      "operation_time_seconds": 0.0026,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0009
     },
-    "timestamp": "2026-02-26T01:36:55.882775+00:00"
+    "timestamp": "2026-02-26T06:19:26.744422+00:00"
   },
   {
     "task": "reduce",
@@ -1969,11 +1969,11 @@
       "tail_preservation": 1.0028307152006395,
       "ml_utility_retention": 0.9772582453407671,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.001,
+      "operation_time_seconds": 0.0008,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0002
     },
-    "timestamp": "2026-02-26T01:36:59.119931+00:00"
+    "timestamp": "2026-02-26T06:19:29.193937+00:00"
   },
   {
     "task": "reduce",
@@ -1987,12 +1987,12 @@
       "correlation_fidelity": 0.9499779577287087,
       "tail_preservation": 1.1206882408000554,
       "ml_utility_retention": 0.9783764835598362,
-      "train_time_seconds": 0.1531,
-      "operation_time_seconds": 0.0593,
+      "train_time_seconds": 0.1049,
+      "operation_time_seconds": 0.0455,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0009
     },
-    "timestamp": "2026-02-26T01:37:01.197124+00:00"
+    "timestamp": "2026-02-26T06:19:30.787585+00:00"
   },
   {
     "task": "reduce",
@@ -2006,12 +2006,12 @@
       "correlation_fidelity": 0.9213849487338683,
       "tail_preservation": 1.1354336392767705,
       "ml_utility_retention": 0.9788711972190696,
-      "train_time_seconds": 0.146,
-      "operation_time_seconds": 0.0645,
+      "train_time_seconds": 0.1296,
+      "operation_time_seconds": 0.0408,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0014
     },
-    "timestamp": "2026-02-26T01:37:03.297222+00:00"
+    "timestamp": "2026-02-26T06:19:32.388845+00:00"
   },
   {
     "task": "reduce",
@@ -2025,12 +2025,12 @@
       "correlation_fidelity": 0.9083797402990756,
       "tail_preservation": 1.1436687249794861,
       "ml_utility_retention": 0.9779147465902056,
-      "train_time_seconds": 0.1192,
-      "operation_time_seconds": 0.0569,
+      "train_time_seconds": 0.0885,
+      "operation_time_seconds": 0.0403,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0004
     },
-    "timestamp": "2026-02-26T01:37:05.355098+00:00"
+    "timestamp": "2026-02-26T06:19:33.959590+00:00"
   },
   {
     "task": "reduce",
@@ -2044,12 +2044,12 @@
       "correlation_fidelity": 0.9036509788895026,
       "tail_preservation": 1.14411933906649,
       "ml_utility_retention": 0.978592631190678,
-      "train_time_seconds": 0.1268,
-      "operation_time_seconds": 0.0674,
+      "train_time_seconds": 0.0984,
+      "operation_time_seconds": 0.0458,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0011
     },
-    "timestamp": "2026-02-26T01:37:07.418825+00:00"
+    "timestamp": "2026-02-26T06:19:35.513501+00:00"
   },
   {
     "task": "reduce",
@@ -2064,11 +2064,11 @@
       "tail_preservation": 1.1477769408426324,
       "ml_utility_retention": 0.9749003335450107,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.7731,
+      "operation_time_seconds": 1.526,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0026
     },
-    "timestamp": "2026-02-26T01:37:09.804309+00:00"
+    "timestamp": "2026-02-26T06:19:37.485546+00:00"
   },
   {
     "task": "reduce",
@@ -2083,11 +2083,11 @@
       "tail_preservation": 0.9989195277930499,
       "ml_utility_retention": 0.9751570746242405,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0091,
+      "operation_time_seconds": 0.0055,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0023
     },
-    "timestamp": "2026-02-26T01:37:11.704074+00:00"
+    "timestamp": "2026-02-26T06:19:38.912941+00:00"
   },
   {
     "task": "reduce",
@@ -2102,11 +2102,11 @@
       "tail_preservation": 0.9973394416714945,
       "ml_utility_retention": 0.9757400024905762,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.003,
+      "operation_time_seconds": 0.0034,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0018
     },
-    "timestamp": "2026-02-26T01:37:13.528608+00:00"
+    "timestamp": "2026-02-26T06:19:40.408697+00:00"
   },
   {
     "task": "reduce",
@@ -2121,11 +2121,11 @@
       "tail_preservation": 1.000862692069526,
       "ml_utility_retention": 0.9765272269924435,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.001,
+      "operation_time_seconds": 0.0006,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.001
     },
-    "timestamp": "2026-02-26T01:37:15.398835+00:00"
+    "timestamp": "2026-02-26T06:19:41.836028+00:00"
   },
   {
     "task": "reduce",
@@ -2139,12 +2139,12 @@
       "correlation_fidelity": 0.9386300913178068,
       "tail_preservation": 1.15430077097327,
       "ml_utility_retention": 0.9780304288356668,
-      "train_time_seconds": 0.1381,
-      "operation_time_seconds": 0.0473,
+      "train_time_seconds": 0.1204,
+      "operation_time_seconds": 0.0288,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0005
     },
-    "timestamp": "2026-02-26T01:37:16.853800+00:00"
+    "timestamp": "2026-02-26T06:19:42.920500+00:00"
   },
   {
     "task": "reduce",
@@ -2158,12 +2158,12 @@
       "correlation_fidelity": 0.9139452678824276,
       "tail_preservation": 1.1717959936010092,
       "ml_utility_retention": 0.9778933361011981,
-      "train_time_seconds": 0.1485,
-      "operation_time_seconds": 0.05,
+      "train_time_seconds": 0.1133,
+      "operation_time_seconds": 0.0348,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0004
     },
-    "timestamp": "2026-02-26T01:37:18.371530+00:00"
+    "timestamp": "2026-02-26T06:19:44.010707+00:00"
   },
   {
     "task": "reduce",
@@ -2177,12 +2177,12 @@
       "correlation_fidelity": 0.8935183166224118,
       "tail_preservation": 1.1842163487679054,
       "ml_utility_retention": 0.9780510027529563,
-      "train_time_seconds": 0.1291,
-      "operation_time_seconds": 0.0452,
+      "train_time_seconds": 0.0865,
+      "operation_time_seconds": 0.0303,
       "ml_utility_trtr": 0.9775,
       "ml_delta": 0.0006
     },
-    "timestamp": "2026-02-26T01:37:19.811703+00:00"
+    "timestamp": "2026-02-26T06:19:45.067530+00:00"
   },
   {
     "task": "reduce",
@@ -2196,12 +2196,12 @@
       "correlation_fidelity": 0.8913692552109246,
       "tail_preservation": 1.182374354497586,
       "ml_utility_retention": 0.977161733666546,
-      "train_time_seconds": 0.1236,
-      "operation_time_seconds": 0.0526,
+      "train_time_seconds": 0.0874,
+      "operation_time_seconds": 0.0363,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0003
     },
-    "timestamp": "2026-02-26T01:37:21.227853+00:00"
+    "timestamp": "2026-02-26T06:19:46.105984+00:00"
   },
   {
     "task": "reduce",
@@ -2216,11 +2216,11 @@
       "tail_preservation": 1.177755980058023,
       "ml_utility_retention": 0.9721054987486597,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.6943,
+      "operation_time_seconds": 1.4602,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0054
     },
-    "timestamp": "2026-02-26T01:37:23.338723+00:00"
+    "timestamp": "2026-02-26T06:19:47.890988+00:00"
   },
   {
     "task": "reduce",
@@ -2235,11 +2235,11 @@
       "tail_preservation": 1.0055794934362146,
       "ml_utility_retention": 0.9748572979267313,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0078,
+      "operation_time_seconds": 0.0054,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0026
     },
-    "timestamp": "2026-02-26T01:37:24.581833+00:00"
+    "timestamp": "2026-02-26T06:19:48.889443+00:00"
   },
   {
     "task": "reduce",
@@ -2254,11 +2254,11 @@
       "tail_preservation": 0.9942942539218389,
       "ml_utility_retention": 0.975229565480643,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0029,
+      "operation_time_seconds": 0.0032,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0023
     },
-    "timestamp": "2026-02-26T01:37:25.828533+00:00"
+    "timestamp": "2026-02-26T06:19:49.941224+00:00"
   },
   {
     "task": "reduce",
@@ -2273,11 +2273,11 @@
       "tail_preservation": 1.003101763350207,
       "ml_utility_retention": 0.9758890469217136,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0007,
+      "operation_time_seconds": 0.0005,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0016
     },
-    "timestamp": "2026-02-26T01:37:27.075290+00:00"
+    "timestamp": "2026-02-26T06:19:50.941764+00:00"
   },
   {
     "task": "reduce",
@@ -2291,12 +2291,12 @@
       "correlation_fidelity": 0.9188192792155407,
       "tail_preservation": 1.207858258018311,
       "ml_utility_retention": 0.9754423374217421,
-      "train_time_seconds": 0.1462,
-      "operation_time_seconds": 0.0267,
+      "train_time_seconds": 0.0987,
+      "operation_time_seconds": 0.0171,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0021
     },
-    "timestamp": "2026-02-26T01:37:27.885447+00:00"
+    "timestamp": "2026-02-26T06:19:51.545830+00:00"
   },
   {
     "task": "reduce",
@@ -2310,12 +2310,12 @@
       "correlation_fidelity": 0.8950731141950421,
       "tail_preservation": 1.226889927364308,
       "ml_utility_retention": 0.9758470256139299,
-      "train_time_seconds": 0.1484,
-      "operation_time_seconds": 0.0275,
+      "train_time_seconds": 0.1071,
+      "operation_time_seconds": 0.0165,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0017
     },
-    "timestamp": "2026-02-26T01:37:28.708755+00:00"
+    "timestamp": "2026-02-26T06:19:52.194629+00:00"
   },
   {
     "task": "reduce",
@@ -2329,12 +2329,12 @@
       "correlation_fidelity": 0.8754710691116832,
       "tail_preservation": 1.2362917338310262,
       "ml_utility_retention": 0.974597752708499,
-      "train_time_seconds": 0.1221,
-      "operation_time_seconds": 0.0285,
+      "train_time_seconds": 0.0919,
+      "operation_time_seconds": 0.0266,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0029
     },
-    "timestamp": "2026-02-26T01:37:29.518293+00:00"
+    "timestamp": "2026-02-26T06:19:52.814453+00:00"
   },
   {
     "task": "reduce",
@@ -2348,12 +2348,12 @@
       "correlation_fidelity": 0.8755605943823956,
       "tail_preservation": 1.2396047304540694,
       "ml_utility_retention": 0.9736599129332131,
-      "train_time_seconds": 0.1246,
-      "operation_time_seconds": 0.0317,
+      "train_time_seconds": 0.1054,
+      "operation_time_seconds": 0.0192,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0038
     },
-    "timestamp": "2026-02-26T01:37:30.329786+00:00"
+    "timestamp": "2026-02-26T06:19:53.416756+00:00"
   },
   {
     "task": "reduce",
@@ -2368,11 +2368,11 @@
       "tail_preservation": 1.2414514616147252,
       "ml_utility_retention": 0.9719802271983357,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.6356,
+      "operation_time_seconds": 1.4497,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0055
     },
-    "timestamp": "2026-02-26T01:37:32.207971+00:00"
+    "timestamp": "2026-02-26T06:19:55.045701+00:00"
   },
   {
     "task": "reduce",
@@ -2387,11 +2387,11 @@
       "tail_preservation": 1.0072878731798478,
       "ml_utility_retention": 0.9729448750529481,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0052,
+      "operation_time_seconds": 0.0074,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0046
     },
-    "timestamp": "2026-02-26T01:37:32.775758+00:00"
+    "timestamp": "2026-02-26T06:19:55.507434+00:00"
   },
   {
     "task": "reduce",
@@ -2406,11 +2406,11 @@
       "tail_preservation": 0.9903534057842796,
       "ml_utility_retention": 0.9734803983776571,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0021,
+      "operation_time_seconds": 0.0018,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.004
     },
-    "timestamp": "2026-02-26T01:37:33.403502+00:00"
+    "timestamp": "2026-02-26T06:19:56.005241+00:00"
   },
   {
     "task": "reduce",
@@ -2425,11 +2425,11 @@
       "tail_preservation": 1.0048815916793175,
       "ml_utility_retention": 0.9731011972442538,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0006,
+      "operation_time_seconds": 0.0005,
       "ml_utility_trtr": 0.9775,
       "ml_delta": -0.0044
     },
-    "timestamp": "2026-02-26T01:37:34.053344+00:00"
+    "timestamp": "2026-02-26T06:19:56.466574+00:00"
   },
   {
     "task": "reduce",
@@ -2444,12 +2444,12 @@
       "tail_preservation": 1.104169802606511,
       "ml_utility_retention": 0.9084188082921099,
       "emergence_score": 0.55,
-      "train_time_seconds": 0.0384,
-      "operation_time_seconds": 0.0504,
+      "train_time_seconds": 0.027,
+      "operation_time_seconds": 0.0288,
       "ml_utility_trtr": 0.9079,
       "ml_delta": 0.0005
     },
-    "timestamp": "2026-02-26T01:37:36.602402+00:00"
+    "timestamp": "2026-02-26T06:19:58.415637+00:00"
   },
   {
     "task": "reduce",
@@ -2464,12 +2464,12 @@
       "tail_preservation": 1.1195239724856993,
       "ml_utility_retention": 0.903440192384527,
       "emergence_score": 0.491375,
-      "train_time_seconds": 0.0391,
-      "operation_time_seconds": 0.0468,
+      "train_time_seconds": 0.0271,
+      "operation_time_seconds": 0.0321,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0045
     },
-    "timestamp": "2026-02-26T01:37:37.519803+00:00"
+    "timestamp": "2026-02-26T06:19:59.120758+00:00"
   },
   {
     "task": "reduce",
@@ -2484,12 +2484,12 @@
       "tail_preservation": 1.129138489625029,
       "ml_utility_retention": 0.9069086607634677,
       "emergence_score": 0.51,
-      "train_time_seconds": 0.0286,
-      "operation_time_seconds": 0.0513,
+      "train_time_seconds": 0.0192,
+      "operation_time_seconds": 0.0255,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.001
     },
-    "timestamp": "2026-02-26T01:37:38.429303+00:00"
+    "timestamp": "2026-02-26T06:19:59.773034+00:00"
   },
   {
     "task": "reduce",
@@ -2504,12 +2504,12 @@
       "tail_preservation": 1.1324040030474964,
       "ml_utility_retention": 0.9117157245044589,
       "emergence_score": 0.531375,
-      "train_time_seconds": 0.0261,
-      "operation_time_seconds": 0.0537,
+      "train_time_seconds": 0.0217,
+      "operation_time_seconds": 0.0614,
       "ml_utility_trtr": 0.9079,
       "ml_delta": 0.0038
     },
-    "timestamp": "2026-02-26T01:37:39.340287+00:00"
+    "timestamp": "2026-02-26T06:20:00.483986+00:00"
   },
   {
     "task": "reduce",
@@ -2525,11 +2525,11 @@
       "ml_utility_retention": 0.9180507361570466,
       "emergence_score": 0.594,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.3251,
+      "operation_time_seconds": 0.9849,
       "ml_utility_trtr": 0.9079,
       "ml_delta": 0.0102
     },
-    "timestamp": "2026-02-26T01:37:41.220087+00:00"
+    "timestamp": "2026-02-26T06:20:01.898833+00:00"
   },
   {
     "task": "reduce",
@@ -2545,11 +2545,11 @@
       "ml_utility_retention": 0.9077851604607765,
       "emergence_score": 0.744125,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0037,
+      "operation_time_seconds": 0.004,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0001
     },
-    "timestamp": "2026-02-26T01:37:42.070325+00:00"
+    "timestamp": "2026-02-26T06:20:02.544721+00:00"
   },
   {
     "task": "reduce",
@@ -2565,11 +2565,11 @@
       "ml_utility_retention": 0.8946293295673905,
       "emergence_score": 0.703375,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0018,
+      "operation_time_seconds": 0.0014,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0133
     },
-    "timestamp": "2026-02-26T01:37:42.905690+00:00"
+    "timestamp": "2026-02-26T06:20:03.184691+00:00"
   },
   {
     "task": "reduce",
@@ -2585,11 +2585,11 @@
       "ml_utility_retention": 0.9068388554342994,
       "emergence_score": 0.72925,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0005,
+      "operation_time_seconds": 0.0004,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0011
     },
-    "timestamp": "2026-02-26T01:37:43.733285+00:00"
+    "timestamp": "2026-02-26T06:20:03.899826+00:00"
   },
   {
     "task": "reduce",
@@ -2604,12 +2604,12 @@
       "tail_preservation": 1.1656626922907702,
       "ml_utility_retention": 0.9047969049684444,
       "emergence_score": 0.4865,
-      "train_time_seconds": 0.0437,
-      "operation_time_seconds": 0.0291,
+      "train_time_seconds": 0.0315,
+      "operation_time_seconds": 0.0174,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0031
     },
-    "timestamp": "2026-02-26T01:37:44.312351+00:00"
+    "timestamp": "2026-02-26T06:20:04.370615+00:00"
   },
   {
     "task": "reduce",
@@ -2624,12 +2624,12 @@
       "tail_preservation": 1.1806784640368708,
       "ml_utility_retention": 0.9052806896857937,
       "emergence_score": 0.418375,
-      "train_time_seconds": 0.0388,
-      "operation_time_seconds": 0.0387,
+      "train_time_seconds": 0.0275,
+      "operation_time_seconds": 0.0208,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0026
     },
-    "timestamp": "2026-02-26T01:37:44.925487+00:00"
+    "timestamp": "2026-02-26T06:20:04.814507+00:00"
   },
   {
     "task": "reduce",
@@ -2644,12 +2644,12 @@
       "tail_preservation": 1.2108110147970355,
       "ml_utility_retention": 0.9018617818669645,
       "emergence_score": 0.434125,
-      "train_time_seconds": 0.0292,
-      "operation_time_seconds": 0.0267,
+      "train_time_seconds": 0.0229,
+      "operation_time_seconds": 0.0342,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.006
     },
-    "timestamp": "2026-02-26T01:37:45.502222+00:00"
+    "timestamp": "2026-02-26T06:20:05.257438+00:00"
   },
   {
     "task": "reduce",
@@ -2664,12 +2664,12 @@
       "tail_preservation": 1.2149959504858943,
       "ml_utility_retention": 0.9090392675780327,
       "emergence_score": 0.425125,
-      "train_time_seconds": 0.0258,
-      "operation_time_seconds": 0.0358,
+      "train_time_seconds": 0.0194,
+      "operation_time_seconds": 0.0177,
       "ml_utility_trtr": 0.9079,
       "ml_delta": 0.0011
     },
-    "timestamp": "2026-02-26T01:37:46.064695+00:00"
+    "timestamp": "2026-02-26T06:20:05.682245+00:00"
   },
   {
     "task": "reduce",
@@ -2685,11 +2685,11 @@
       "ml_utility_retention": 0.9067871148175821,
       "emergence_score": 0.119625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.2205,
+      "operation_time_seconds": 0.9446,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0011
     },
-    "timestamp": "2026-02-26T01:37:47.648363+00:00"
+    "timestamp": "2026-02-26T06:20:06.908295+00:00"
   },
   {
     "task": "reduce",
@@ -2709,7 +2709,7 @@
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0154
     },
-    "timestamp": "2026-02-26T01:37:48.159890+00:00"
+    "timestamp": "2026-02-26T06:20:07.298231+00:00"
   },
   {
     "task": "reduce",
@@ -2725,11 +2725,11 @@
       "ml_utility_retention": 0.8966108763854261,
       "emergence_score": 0.633875,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0022,
+      "operation_time_seconds": 0.0012,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0113
     },
-    "timestamp": "2026-02-26T01:37:48.673491+00:00"
+    "timestamp": "2026-02-26T06:20:07.733671+00:00"
   },
   {
     "task": "reduce",
@@ -2745,11 +2745,11 @@
       "ml_utility_retention": 0.892233859081618,
       "emergence_score": 0.34575,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
+      "operation_time_seconds": 0.0003,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0157
     },
-    "timestamp": "2026-02-26T01:37:49.205710+00:00"
+    "timestamp": "2026-02-26T06:20:08.153958+00:00"
   },
   {
     "task": "reduce",
@@ -2764,12 +2764,12 @@
       "tail_preservation": 1.2214608744498396,
       "ml_utility_retention": 0.8941143463639828,
       "emergence_score": 0.00475,
-      "train_time_seconds": 0.0361,
-      "operation_time_seconds": 0.0131,
+      "train_time_seconds": 0.027,
+      "operation_time_seconds": 0.0125,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0138
     },
-    "timestamp": "2026-02-26T01:37:49.629439+00:00"
+    "timestamp": "2026-02-26T06:20:08.504214+00:00"
   },
   {
     "task": "reduce",
@@ -2784,12 +2784,12 @@
       "tail_preservation": 1.2303317230039892,
       "ml_utility_retention": 0.9009767214553582,
       "emergence_score": 0.00475,
-      "train_time_seconds": 0.036,
-      "operation_time_seconds": 0.0199,
+      "train_time_seconds": 0.0342,
+      "operation_time_seconds": 0.0129,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0069
     },
-    "timestamp": "2026-02-26T01:37:50.031760+00:00"
+    "timestamp": "2026-02-26T06:20:08.832584+00:00"
   },
   {
     "task": "reduce",
@@ -2804,12 +2804,12 @@
       "tail_preservation": 1.2766192195750374,
       "ml_utility_retention": 0.9041258194907614,
       "emergence_score": 0.402125,
-      "train_time_seconds": 0.031,
-      "operation_time_seconds": 0.0244,
+      "train_time_seconds": 0.028,
+      "operation_time_seconds": 0.0205,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0038
     },
-    "timestamp": "2026-02-26T01:37:50.438830+00:00"
+    "timestamp": "2026-02-26T06:20:09.164446+00:00"
   },
   {
     "task": "reduce",
@@ -2824,12 +2824,12 @@
       "tail_preservation": 1.281329979110529,
       "ml_utility_retention": 0.9041918441903001,
       "emergence_score": 0.37825,
-      "train_time_seconds": 0.0267,
-      "operation_time_seconds": 0.0227,
+      "train_time_seconds": 0.0195,
+      "operation_time_seconds": 0.0146,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0037
     },
-    "timestamp": "2026-02-26T01:37:50.854631+00:00"
+    "timestamp": "2026-02-26T06:20:09.474186+00:00"
   },
   {
     "task": "reduce",
@@ -2845,11 +2845,11 @@
       "ml_utility_retention": 0.9089563659687789,
       "emergence_score": 0.107125,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.1243,
+      "operation_time_seconds": 0.8949,
       "ml_utility_trtr": 0.9079,
       "ml_delta": 0.0011
     },
-    "timestamp": "2026-02-26T01:37:52.230533+00:00"
+    "timestamp": "2026-02-26T06:20:10.550352+00:00"
   },
   {
     "task": "reduce",
@@ -2865,11 +2865,11 @@
       "ml_utility_retention": 0.8758285928011278,
       "emergence_score": 0.687375,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0039,
+      "operation_time_seconds": 0.0021,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0321
     },
-    "timestamp": "2026-02-26T01:37:52.594635+00:00"
+    "timestamp": "2026-02-26T06:20:10.819606+00:00"
   },
   {
     "task": "reduce",
@@ -2885,11 +2885,11 @@
       "ml_utility_retention": 0.871871539907515,
       "emergence_score": 0.2955,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0023,
+      "operation_time_seconds": 0.0012,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.036
     },
-    "timestamp": "2026-02-26T01:37:52.954301+00:00"
+    "timestamp": "2026-02-26T06:20:11.105550+00:00"
   },
   {
     "task": "reduce",
@@ -2905,11 +2905,11 @@
       "ml_utility_retention": 0.8952097422913097,
       "emergence_score": 0.35075,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
+      "operation_time_seconds": 0.0003,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0127
     },
-    "timestamp": "2026-02-26T01:37:53.312035+00:00"
+    "timestamp": "2026-02-26T06:20:11.366456+00:00"
   },
   {
     "task": "reduce",
@@ -2924,12 +2924,12 @@
       "tail_preservation": 1.3314169758793162,
       "ml_utility_retention": 0.8905789803607147,
       "emergence_score": 0.113875,
-      "train_time_seconds": 0.0365,
-      "operation_time_seconds": 0.011,
+      "train_time_seconds": 0.0266,
+      "operation_time_seconds": 0.0068,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0173
     },
-    "timestamp": "2026-02-26T01:37:53.576130+00:00"
+    "timestamp": "2026-02-26T06:20:11.553522+00:00"
   },
   {
     "task": "reduce",
@@ -2944,12 +2944,12 @@
       "tail_preservation": 1.3392167595736713,
       "ml_utility_retention": 0.8799591988595228,
       "emergence_score": 0.114125,
-      "train_time_seconds": 0.0381,
-      "operation_time_seconds": 0.0107,
+      "train_time_seconds": 0.0306,
+      "operation_time_seconds": 0.0072,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0279
     },
-    "timestamp": "2026-02-26T01:37:53.829707+00:00"
+    "timestamp": "2026-02-26T06:20:11.748924+00:00"
   },
   {
     "task": "reduce",
@@ -2964,12 +2964,12 @@
       "tail_preservation": 1.4191860524916955,
       "ml_utility_retention": 0.874749617219734,
       "emergence_score": 0.005125,
-      "train_time_seconds": 0.0279,
-      "operation_time_seconds": 0.0109,
+      "train_time_seconds": 0.019,
+      "operation_time_seconds": 0.01,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0332
     },
-    "timestamp": "2026-02-26T01:37:54.073783+00:00"
+    "timestamp": "2026-02-26T06:20:11.961629+00:00"
   },
   {
     "task": "reduce",
@@ -2984,12 +2984,12 @@
       "tail_preservation": 1.4218974771628357,
       "ml_utility_retention": 0.8630716062198542,
       "emergence_score": 0.004375,
-      "train_time_seconds": 0.0259,
-      "operation_time_seconds": 0.0106,
+      "train_time_seconds": 0.0234,
+      "operation_time_seconds": 0.0076,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0448
     },
-    "timestamp": "2026-02-26T01:37:54.322617+00:00"
+    "timestamp": "2026-02-26T06:20:12.143498+00:00"
   },
   {
     "task": "reduce",
@@ -3005,11 +3005,11 @@
       "ml_utility_retention": 0.8840203253167457,
       "emergence_score": 0.304375,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.0494,
+      "operation_time_seconds": 0.8397,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0239
     },
-    "timestamp": "2026-02-26T01:37:55.524882+00:00"
+    "timestamp": "2026-02-26T06:20:13.094344+00:00"
   },
   {
     "task": "reduce",
@@ -3025,11 +3025,11 @@
       "ml_utility_retention": 0.8660611076861696,
       "emergence_score": 0.218625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0041,
+      "operation_time_seconds": 0.0019,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0418
     },
-    "timestamp": "2026-02-26T01:37:55.738659+00:00"
+    "timestamp": "2026-02-26T06:20:13.243573+00:00"
   },
   {
     "task": "reduce",
@@ -3045,11 +3045,11 @@
       "ml_utility_retention": 0.8523462808302013,
       "emergence_score": 0.217375,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0011,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0556
     },
-    "timestamp": "2026-02-26T01:37:55.959860+00:00"
+    "timestamp": "2026-02-26T06:20:13.409723+00:00"
   },
   {
     "task": "reduce",
@@ -3065,11 +3065,11 @@
       "ml_utility_retention": 0.8474734283046164,
       "emergence_score": 0.352625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
+      "operation_time_seconds": 0.0003,
       "ml_utility_trtr": 0.9079,
       "ml_delta": -0.0604
     },
-    "timestamp": "2026-02-26T01:37:56.169092+00:00"
+    "timestamp": "2026-02-26T06:20:13.560446+00:00"
   },
   {
     "task": "reduce",
@@ -3084,12 +3084,12 @@
       "tail_preservation": 1.104169802606511,
       "ml_utility_retention": 0.9650055104957411,
       "emergence_score": 0.001125,
-      "train_time_seconds": 0.0431,
-      "operation_time_seconds": 0.0492,
+      "train_time_seconds": 0.031,
+      "operation_time_seconds": 0.0287,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0002
     },
-    "timestamp": "2026-02-26T01:37:58.666803+00:00"
+    "timestamp": "2026-02-26T06:20:15.557010+00:00"
   },
   {
     "task": "reduce",
@@ -3104,12 +3104,12 @@
       "tail_preservation": 1.1195239724856993,
       "ml_utility_retention": 0.9647816025501189,
       "emergence_score": 0.89325,
-      "train_time_seconds": 0.0429,
-      "operation_time_seconds": 0.0464,
+      "train_time_seconds": 0.0302,
+      "operation_time_seconds": 0.0303,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0
     },
-    "timestamp": "2026-02-26T01:37:59.585442+00:00"
+    "timestamp": "2026-02-26T06:20:16.295647+00:00"
   },
   {
     "task": "reduce",
@@ -3124,12 +3124,12 @@
       "tail_preservation": 1.129138489625029,
       "ml_utility_retention": 0.9651213156687635,
       "emergence_score": 0.903875,
-      "train_time_seconds": 0.0265,
-      "operation_time_seconds": 0.0635,
+      "train_time_seconds": 0.0184,
+      "operation_time_seconds": 0.0266,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0003
     },
-    "timestamp": "2026-02-26T01:38:00.529225+00:00"
+    "timestamp": "2026-02-26T06:20:16.979757+00:00"
   },
   {
     "task": "reduce",
@@ -3144,12 +3144,12 @@
       "tail_preservation": 1.1324040030474964,
       "ml_utility_retention": 0.9647789153532884,
       "emergence_score": 0.892875,
-      "train_time_seconds": 0.0269,
-      "operation_time_seconds": 0.044,
+      "train_time_seconds": 0.0192,
+      "operation_time_seconds": 0.0289,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0
     },
-    "timestamp": "2026-02-26T01:38:01.424168+00:00"
+    "timestamp": "2026-02-26T06:20:17.671422+00:00"
   },
   {
     "task": "reduce",
@@ -3165,11 +3165,11 @@
       "ml_utility_retention": 0.9611379783458964,
       "emergence_score": 0.834625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.4232,
+      "operation_time_seconds": 0.9967,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0037
     },
-    "timestamp": "2026-02-26T01:38:03.425348+00:00"
+    "timestamp": "2026-02-26T06:20:19.061046+00:00"
   },
   {
     "task": "reduce",
@@ -3185,11 +3185,11 @@
       "ml_utility_retention": 0.9552444321133997,
       "emergence_score": 0.880625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0027,
+      "operation_time_seconds": 0.0024,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0096
     },
-    "timestamp": "2026-02-26T01:38:04.293047+00:00"
+    "timestamp": "2026-02-26T06:20:19.715235+00:00"
   },
   {
     "task": "reduce",
@@ -3205,11 +3205,11 @@
       "ml_utility_retention": 0.9560980544587364,
       "emergence_score": 0.005125,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0017,
+      "operation_time_seconds": 0.0013,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0087
     },
-    "timestamp": "2026-02-26T01:38:05.167855+00:00"
+    "timestamp": "2026-02-26T06:20:20.396939+00:00"
   },
   {
     "task": "reduce",
@@ -3225,11 +3225,11 @@
       "ml_utility_retention": 0.9522728589154856,
       "emergence_score": 0.77675,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0005,
+      "operation_time_seconds": 0.0004,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0125
     },
-    "timestamp": "2026-02-26T01:38:06.059651+00:00"
+    "timestamp": "2026-02-26T06:20:21.025330+00:00"
   },
   {
     "task": "reduce",
@@ -3244,12 +3244,12 @@
       "tail_preservation": 1.1656626922907702,
       "ml_utility_retention": 0.9655391088704284,
       "emergence_score": 0.015,
-      "train_time_seconds": 0.0417,
-      "operation_time_seconds": 0.0427,
+      "train_time_seconds": 0.0269,
+      "operation_time_seconds": 0.0161,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0007
     },
-    "timestamp": "2026-02-26T01:38:06.707865+00:00"
+    "timestamp": "2026-02-26T06:20:21.456861+00:00"
   },
   {
     "task": "reduce",
@@ -3264,12 +3264,12 @@
       "tail_preservation": 1.1806784640368708,
       "ml_utility_retention": 0.9654046934358936,
       "emergence_score": 0.01475,
-      "train_time_seconds": 0.0413,
-      "operation_time_seconds": 0.0446,
+      "train_time_seconds": 0.0274,
+      "operation_time_seconds": 0.0162,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0006
     },
-    "timestamp": "2026-02-26T01:38:07.346067+00:00"
+    "timestamp": "2026-02-26T06:20:21.892164+00:00"
   },
   {
     "task": "reduce",
@@ -3284,12 +3284,12 @@
       "tail_preservation": 1.2108110147970355,
       "ml_utility_retention": 0.9650581495683982,
       "emergence_score": 0.004625,
-      "train_time_seconds": 0.0307,
-      "operation_time_seconds": 0.0332,
+      "train_time_seconds": 0.0228,
+      "operation_time_seconds": 0.0194,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0003
     },
-    "timestamp": "2026-02-26T01:38:07.958199+00:00"
+    "timestamp": "2026-02-26T06:20:22.337191+00:00"
   },
   {
     "task": "reduce",
@@ -3304,12 +3304,12 @@
       "tail_preservation": 1.2149959504858943,
       "ml_utility_retention": 0.962922811567533,
       "emergence_score": 0.0045,
-      "train_time_seconds": 0.0299,
-      "operation_time_seconds": 0.0319,
+      "train_time_seconds": 0.0235,
+      "operation_time_seconds": 0.0199,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0019
     },
-    "timestamp": "2026-02-26T01:38:08.569183+00:00"
+    "timestamp": "2026-02-26T06:20:22.782489+00:00"
   },
   {
     "task": "reduce",
@@ -3325,11 +3325,11 @@
       "ml_utility_retention": 0.9618763016303882,
       "emergence_score": 0.826625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.3375,
+      "operation_time_seconds": 0.9199,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0029
     },
-    "timestamp": "2026-02-26T01:38:10.277438+00:00"
+    "timestamp": "2026-02-26T06:20:23.997185+00:00"
   },
   {
     "task": "reduce",
@@ -3345,11 +3345,11 @@
       "ml_utility_retention": 0.9489927446856685,
       "emergence_score": 0.71675,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0028,
+      "operation_time_seconds": 0.0062,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0158
     },
-    "timestamp": "2026-02-26T01:38:10.841380+00:00"
+    "timestamp": "2026-02-26T06:20:24.403940+00:00"
   },
   {
     "task": "reduce",
@@ -3365,11 +3365,11 @@
       "ml_utility_retention": 0.9475435519202847,
       "emergence_score": 0.792,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0021,
+      "operation_time_seconds": 0.0012,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0173
     },
-    "timestamp": "2026-02-26T01:38:11.388769+00:00"
+    "timestamp": "2026-02-26T06:20:24.801963+00:00"
   },
   {
     "task": "reduce",
@@ -3385,11 +3385,11 @@
       "ml_utility_retention": 0.9522570832831845,
       "emergence_score": 0.85925,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0005,
+      "operation_time_seconds": 0.0003,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0125
     },
-    "timestamp": "2026-02-26T01:38:11.952330+00:00"
+    "timestamp": "2026-02-26T06:20:25.199261+00:00"
   },
   {
     "task": "reduce",
@@ -3404,12 +3404,12 @@
       "tail_preservation": 1.2214608744498396,
       "ml_utility_retention": 0.9650744964917617,
       "emergence_score": 0.008625,
-      "train_time_seconds": 0.0444,
-      "operation_time_seconds": 0.0301,
+      "train_time_seconds": 0.0344,
+      "operation_time_seconds": 0.0115,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0003
     },
-    "timestamp": "2026-02-26T01:38:12.423851+00:00"
+    "timestamp": "2026-02-26T06:20:25.517485+00:00"
   },
   {
     "task": "reduce",
@@ -3424,12 +3424,12 @@
       "tail_preservation": 1.2303317230039892,
       "ml_utility_retention": 0.9662066630686764,
       "emergence_score": 0.015,
-      "train_time_seconds": 0.0428,
-      "operation_time_seconds": 0.0204,
+      "train_time_seconds": 0.0261,
+      "operation_time_seconds": 0.0114,
       "ml_utility_trtr": 0.9648,
       "ml_delta": 0.0014
     },
-    "timestamp": "2026-02-26T01:38:12.857853+00:00"
+    "timestamp": "2026-02-26T06:20:25.854426+00:00"
   },
   {
     "task": "reduce",
@@ -3444,12 +3444,12 @@
       "tail_preservation": 1.2766192195750374,
       "ml_utility_retention": 0.9603131789250742,
       "emergence_score": 0.008,
-      "train_time_seconds": 0.0283,
-      "operation_time_seconds": 0.026,
+      "train_time_seconds": 0.0237,
+      "operation_time_seconds": 0.0198,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0045
     },
-    "timestamp": "2026-02-26T01:38:13.302191+00:00"
+    "timestamp": "2026-02-26T06:20:26.167441+00:00"
   },
   {
     "task": "reduce",
@@ -3464,12 +3464,12 @@
       "tail_preservation": 1.281329979110529,
       "ml_utility_retention": 0.9556697680279899,
       "emergence_score": 0.00575,
-      "train_time_seconds": 0.0298,
-      "operation_time_seconds": 0.0293,
+      "train_time_seconds": 0.0183,
+      "operation_time_seconds": 0.0111,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0091
     },
-    "timestamp": "2026-02-26T01:38:13.752809+00:00"
+    "timestamp": "2026-02-26T06:20:26.458993+00:00"
   },
   {
     "task": "reduce",
@@ -3485,11 +3485,11 @@
       "ml_utility_retention": 0.9535281080872112,
       "emergence_score": 0.815875,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.2987,
+      "operation_time_seconds": 0.906,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0113
     },
-    "timestamp": "2026-02-26T01:38:15.331009+00:00"
+    "timestamp": "2026-02-26T06:20:27.550754+00:00"
   },
   {
     "task": "reduce",
@@ -3505,11 +3505,11 @@
       "ml_utility_retention": 0.9443667717176845,
       "emergence_score": 0.7365,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0025,
+      "operation_time_seconds": 0.0021,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0204
     },
-    "timestamp": "2026-02-26T01:38:15.718890+00:00"
+    "timestamp": "2026-02-26T06:20:27.839839+00:00"
   },
   {
     "task": "reduce",
@@ -3525,11 +3525,11 @@
       "ml_utility_retention": 0.9428852269410657,
       "emergence_score": 0.750625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0021,
+      "operation_time_seconds": 0.0023,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0219
     },
-    "timestamp": "2026-02-26T01:38:16.101631+00:00"
+    "timestamp": "2026-02-26T06:20:28.134957+00:00"
   },
   {
     "task": "reduce",
@@ -3545,11 +3545,11 @@
       "ml_utility_retention": 0.9368646587425342,
       "emergence_score": 0.734625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0005,
+      "operation_time_seconds": 0.0003,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0279
     },
-    "timestamp": "2026-02-26T01:38:16.484851+00:00"
+    "timestamp": "2026-02-26T06:20:28.399272+00:00"
   },
   {
     "task": "reduce",
@@ -3564,12 +3564,12 @@
       "tail_preservation": 1.3314169758793162,
       "ml_utility_retention": 0.9613306831783537,
       "emergence_score": 0.017,
-      "train_time_seconds": 0.0404,
-      "operation_time_seconds": 0.0177,
+      "train_time_seconds": 0.0281,
+      "operation_time_seconds": 0.0094,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0035
     },
-    "timestamp": "2026-02-26T01:38:16.775337+00:00"
+    "timestamp": "2026-02-26T06:20:28.598501+00:00"
   },
   {
     "task": "reduce",
@@ -3584,12 +3584,12 @@
       "tail_preservation": 1.3392167595736713,
       "ml_utility_retention": 0.9590332154924149,
       "emergence_score": 0.015,
-      "train_time_seconds": 0.0403,
-      "operation_time_seconds": 0.0136,
+      "train_time_seconds": 0.0362,
+      "operation_time_seconds": 0.0072,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0058
     },
-    "timestamp": "2026-02-26T01:38:17.058932+00:00"
+    "timestamp": "2026-02-26T06:20:28.804320+00:00"
   },
   {
     "task": "reduce",
@@ -3604,12 +3604,12 @@
       "tail_preservation": 1.4191860524916955,
       "ml_utility_retention": 0.9436041350438674,
       "emergence_score": 0.122375,
-      "train_time_seconds": 0.0294,
-      "operation_time_seconds": 0.0168,
+      "train_time_seconds": 0.0269,
+      "operation_time_seconds": 0.0109,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0212
     },
-    "timestamp": "2026-02-26T01:38:17.327253+00:00"
+    "timestamp": "2026-02-26T06:20:29.013752+00:00"
   },
   {
     "task": "reduce",
@@ -3624,12 +3624,12 @@
       "tail_preservation": 1.4218974771628357,
       "ml_utility_retention": 0.9429905920493322,
       "emergence_score": 0.0025,
-      "train_time_seconds": 0.0307,
-      "operation_time_seconds": 0.0179,
+      "train_time_seconds": 0.0201,
+      "operation_time_seconds": 0.007,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0218
     },
-    "timestamp": "2026-02-26T01:38:17.600465+00:00"
+    "timestamp": "2026-02-26T06:20:29.199980+00:00"
   },
   {
     "task": "reduce",
@@ -3645,11 +3645,11 @@
       "ml_utility_retention": 0.9177502993614364,
       "emergence_score": 0.6555,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.1698,
+      "operation_time_seconds": 0.8825,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.047
     },
-    "timestamp": "2026-02-26T01:38:18.938988+00:00"
+    "timestamp": "2026-02-26T06:20:30.197513+00:00"
   },
   {
     "task": "reduce",
@@ -3665,11 +3665,11 @@
       "ml_utility_retention": 0.9335263738809003,
       "emergence_score": 0.562125,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0033,
+      "operation_time_seconds": 0.002,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0313
     },
-    "timestamp": "2026-02-26T01:38:19.173843+00:00"
+    "timestamp": "2026-02-26T06:20:30.351971+00:00"
   },
   {
     "task": "reduce",
@@ -3685,11 +3685,11 @@
       "ml_utility_retention": 0.9233730180628348,
       "emergence_score": 0.012625,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.002,
+      "operation_time_seconds": 0.0012,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0414
     },
-    "timestamp": "2026-02-26T01:38:19.404334+00:00"
+    "timestamp": "2026-02-26T06:20:30.520084+00:00"
   },
   {
     "task": "reduce",
@@ -3705,2640 +3705,10 @@
       "ml_utility_retention": 0.9329216357428501,
       "emergence_score": 0.619125,
       "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
+      "operation_time_seconds": 0.0003,
       "ml_utility_trtr": 0.9648,
       "ml_delta": -0.0319
     },
-    "timestamp": "2026-02-26T01:38:19.618194+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9244666936277383,
-      "correlation_fidelity": 0.9155179560812192,
-      "tail_preservation": 2.166387045613264,
-      "discriminator_accuracy": 0.48376090037828656,
-      "privacy_dcr": 1.4848303190660044,
-      "novelty_min": 13.233364830712713,
-      "ml_utility_tstr": 0.5850940170940171,
-      "train_time_seconds": 0.0036,
-      "operation_time_seconds": 0.009,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0051
-    },
-    "timestamp": "2026-02-26T01:38:20.003517+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9109178891043187,
-      "correlation_fidelity": 0.8524812676801048,
-      "tail_preservation": 2.3483019427956737,
-      "discriminator_accuracy": 0.5099734354613125,
-      "privacy_dcr": 2.0757328668351844,
-      "novelty_min": 15.362142826682271,
-      "ml_utility_tstr": 0.5827692307692308,
-      "train_time_seconds": 0.0031,
-      "operation_time_seconds": 0.0089,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0028
-    },
-    "timestamp": "2026-02-26T01:38:20.222090+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8944465067945324,
-      "correlation_fidelity": 0.810187166989948,
-      "tail_preservation": 1.9936239079929599,
-      "discriminator_accuracy": 0.4837655937596801,
-      "privacy_dcr": 10.743172519112163,
-      "novelty_min": 14.016937785537745,
-      "ml_utility_tstr": 0.5893603313391624,
-      "train_time_seconds": 0.0017,
-      "operation_time_seconds": 0.0049,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0094
-    },
-    "timestamp": "2026-02-26T01:38:20.443495+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.894225032115332,
-      "correlation_fidelity": 0.7976180827427518,
-      "tail_preservation": 2.2605475195994966,
-      "discriminator_accuracy": 0.4937671895093539,
-      "privacy_dcr": 12.438355594426643,
-      "novelty_min": 28.269994943549,
-      "ml_utility_tstr": 0.551900459191231,
-      "train_time_seconds": 0.002,
-      "operation_time_seconds": 0.0078,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.0281
-    },
-    "timestamp": "2026-02-26T01:38:20.667026+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.7369075767639454,
-      "correlation_fidelity": 0.8743678308301034,
-      "tail_preservation": 2.9494192635031893,
-      "discriminator_accuracy": 0.5012719063576544,
-      "privacy_dcr": 180.21179062433933,
-      "novelty_min": 2403.2752970580423,
-      "ml_utility_tstr": 0.6538609842719432,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 1.8124,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0739
-    },
-    "timestamp": "2026-02-26T01:38:22.759460+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9263159703008348,
-      "correlation_fidelity": 0.8468461233334518,
-      "tail_preservation": 0.08118376040821407,
-      "discriminator_accuracy": 0.5174828456910064,
-      "privacy_dcr": 0.32834775067027966,
-      "novelty_min": 5.24819513166917,
-      "ml_utility_tstr": 0.6183288409703505,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0042,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0383
-    },
-    "timestamp": "2026-02-26T01:38:23.017289+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.902043581201553,
-      "correlation_fidelity": 0.8514964054237483,
-      "tail_preservation": 2.2929049916151576,
-      "discriminator_accuracy": 0.5074718631785456,
-      "privacy_dcr": 163.56137849062256,
-      "novelty_min": 1826.2994020058325,
-      "ml_utility_tstr": 0.626070686070686,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0461
-    },
-    "timestamp": "2026-02-26T01:38:23.306341+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8654532930250441,
-      "correlation_fidelity": 0.8722944345706332,
-      "tail_preservation": 0.7763203236545243,
-      "discriminator_accuracy": 0.5137844611528822,
-      "privacy_dcr": 0.3828503309433343,
-      "novelty_min": 0.06731318937825591,
-      "ml_utility_tstr": 0.6116331096196868,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.3573,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0316
-    },
-    "timestamp": "2026-02-26T01:38:23.945989+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.5505333094694614,
-      "correlation_fidelity": 0.7765921991384495,
-      "tail_preservation": 2.145469854126506,
-      "discriminator_accuracy": 0.8375104427736005,
-      "privacy_dcr": 390.0708152961691,
-      "novelty_min": 321.2495998416656,
-      "ml_utility_tstr": 0.5886842105263158,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 15.7421,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0087
-    },
-    "timestamp": "2026-02-26T01:38:39.996526+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.5869098640005096,
-      "correlation_fidelity": 0.7553340051017117,
-      "tail_preservation": 1.146169192446039,
-      "discriminator_accuracy": 0.8049900030976317,
-      "privacy_dcr": 65.59491215276469,
-      "novelty_min": 330.0647324812223,
-      "ml_utility_tstr": 0.589440715883669,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 7.8502,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0094
-    },
-    "timestamp": "2026-02-26T01:38:48.162354+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9499791167057975,
-      "correlation_fidelity": 0.9059563674704739,
-      "tail_preservation": 2.1694668575078837,
-      "discriminator_accuracy": 0.4899843241061455,
-      "privacy_dcr": 1.453551456019424,
-      "novelty_min": 4.519159020411227,
-      "ml_utility_tstr": 0.58,
-      "train_time_seconds": 0.0036,
-      "operation_time_seconds": 0.0099,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:38:48.524831+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.91118467914531,
-      "correlation_fidelity": 0.8909168346832392,
-      "tail_preservation": 2.347660020066074,
-      "discriminator_accuracy": 0.5099969023682803,
-      "privacy_dcr": 2.081195551957975,
-      "novelty_min": 4.519159020411227,
-      "ml_utility_tstr": 0.5951190476190477,
-      "train_time_seconds": 0.0034,
-      "operation_time_seconds": 0.0091,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0151
-    },
-    "timestamp": "2026-02-26T01:38:48.889827+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9155260837631019,
-      "correlation_fidelity": 0.8617811047270912,
-      "tail_preservation": 2.142463460534312,
-      "discriminator_accuracy": 0.5200360451691025,
-      "privacy_dcr": 11.187896487352795,
-      "novelty_min": 30.134114104874236,
-      "ml_utility_tstr": 0.557270955165692,
-      "train_time_seconds": 0.0024,
-      "operation_time_seconds": 0.0079,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.0227
-    },
-    "timestamp": "2026-02-26T01:38:49.259950+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.902935138143559,
-      "correlation_fidelity": 0.8175919632004132,
-      "tail_preservation": 2.2252106757727934,
-      "discriminator_accuracy": 0.5074953300855135,
-      "privacy_dcr": 11.295753010407761,
-      "novelty_min": 26.6455221788731,
-      "ml_utility_tstr": 0.5695104895104895,
-      "train_time_seconds": 0.002,
-      "operation_time_seconds": 0.0087,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.0105
-    },
-    "timestamp": "2026-02-26T01:38:49.641935+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.7510837022163224,
-      "correlation_fidelity": 0.9293494519940296,
-      "tail_preservation": 3.0176265981760286,
-      "discriminator_accuracy": 0.4725906526616166,
-      "privacy_dcr": 164.67084366864702,
-      "novelty_min": 1965.9256766669048,
-      "ml_utility_tstr": 0.6416,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.012,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0616
-    },
-    "timestamp": "2026-02-26T01:38:50.124657+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9364025862921843,
-      "correlation_fidelity": 0.8711904215011228,
-      "tail_preservation": 0.0807443857086907,
-      "discriminator_accuracy": 0.4999953066186064,
-      "privacy_dcr": 0.3422980580721449,
-      "novelty_min": 5.24819513166917,
-      "ml_utility_tstr": 0.567326230339929,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0052,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.0127
-    },
-    "timestamp": "2026-02-26T01:38:50.475615+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9287573962845386,
-      "correlation_fidelity": 0.9004997159097625,
-      "tail_preservation": 2.3705458471206278,
-      "discriminator_accuracy": 0.4912421503196193,
-      "privacy_dcr": 177.3463863690298,
-      "novelty_min": 841.8443349772803,
-      "ml_utility_tstr": 0.6416,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0007,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0616
-    },
-    "timestamp": "2026-02-26T01:38:50.902159+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8703777791170948,
-      "correlation_fidelity": 0.9278754240561611,
-      "tail_preservation": 0.8227335768601334,
-      "discriminator_accuracy": 0.5174593787840388,
-      "privacy_dcr": 0.4209318335307689,
-      "novelty_min": 0.23104889762020814,
-      "ml_utility_tstr": 0.6055238095238095,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.004,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0255
-    },
-    "timestamp": "2026-02-26T01:38:51.202350+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.5543522298387173,
-      "correlation_fidelity": 0.7521090993895049,
-      "tail_preservation": 2.3480406467070907,
-      "discriminator_accuracy": 0.793763434804239,
-      "privacy_dcr": 276.1530493515799,
-      "novelty_min": 144.12453470929682,
-      "ml_utility_tstr": 0.6041627246925261,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 10.7034,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0242
-    },
-    "timestamp": "2026-02-26T01:39:02.317889+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.6171994564673997,
-      "correlation_fidelity": 0.7810915226348286,
-      "tail_preservation": 1.1681944031458482,
-      "discriminator_accuracy": 0.7737414697793171,
-      "privacy_dcr": 67.43430739676273,
-      "novelty_min": 222.7010844493233,
-      "ml_utility_tstr": 0.5965190604543704,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 6.6712,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0165
-    },
-    "timestamp": "2026-02-26T01:39:09.386023+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9552989815706346,
-      "correlation_fidelity": 0.964154685979278,
-      "tail_preservation": 2.173044401562488,
-      "discriminator_accuracy": 0.4749936639351187,
-      "privacy_dcr": 1.5024045219698159,
-      "novelty_min": 4.519159020411226,
-      "ml_utility_tstr": 0.564,
-      "train_time_seconds": 0.0029,
-      "operation_time_seconds": 0.0067,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.016
-    },
-    "timestamp": "2026-02-26T01:39:10.104021+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.926565009351011,
-      "correlation_fidelity": 0.9387319615077407,
-      "tail_preservation": 2.315070678861138,
-      "discriminator_accuracy": 0.5312438399369209,
-      "privacy_dcr": 1.7954297735349245,
-      "novelty_min": 4.5191590204146355,
-      "ml_utility_tstr": 0.5969244685662596,
-      "train_time_seconds": 0.0029,
-      "operation_time_seconds": 0.0063,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0169
-    },
-    "timestamp": "2026-02-26T01:39:10.794186+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9258010357813737,
-      "correlation_fidelity": 0.8494953691057054,
-      "tail_preservation": 2.1418269740205753,
-      "discriminator_accuracy": 0.4862718594238405,
-      "privacy_dcr": 11.787038536035732,
-      "novelty_min": 15.391501507238411,
-      "ml_utility_tstr": 0.5513935340022297,
-      "train_time_seconds": 0.0018,
-      "operation_time_seconds": 0.006,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.0286
-    },
-    "timestamp": "2026-02-26T01:39:11.511103+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9057204455158103,
-      "correlation_fidelity": 0.8415149678746592,
-      "tail_preservation": 2.310555087332925,
-      "discriminator_accuracy": 0.5050078379469273,
-      "privacy_dcr": 12.58973914117962,
-      "novelty_min": 19.360258065136826,
-      "ml_utility_tstr": 0.576122055991705,
-      "train_time_seconds": 0.0014,
-      "operation_time_seconds": 0.0086,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": -0.0039
-    },
-    "timestamp": "2026-02-26T01:39:12.231760+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.7603017625988828,
-      "correlation_fidelity": 0.9394909902039679,
-      "tail_preservation": 3.054273058616064,
-      "discriminator_accuracy": 0.47498427717233155,
-      "privacy_dcr": 162.88451952656763,
-      "novelty_min": 1715.9122930963772,
-      "ml_utility_tstr": 0.6590476190476191,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0119,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.079
-    },
-    "timestamp": "2026-02-26T01:39:13.005824+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9523123057358313,
-      "correlation_fidelity": 0.8827744476293299,
-      "tail_preservation": 0.08178218537970985,
-      "discriminator_accuracy": 0.5137422207203403,
-      "privacy_dcr": 0.35785350691452,
-      "novelty_min": 4.312003144458429,
-      "ml_utility_tstr": 0.5965190604543704,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0029,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0165
-    },
-    "timestamp": "2026-02-26T01:39:13.527845+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9291537316058858,
-      "correlation_fidelity": 0.9436947749804088,
-      "tail_preservation": 2.371392633182608,
-      "discriminator_accuracy": 0.4974796541916589,
-      "privacy_dcr": 172.90836778941042,
-      "novelty_min": 707.5573705938444,
-      "ml_utility_tstr": 0.626070686070686,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0008,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0461
-    },
-    "timestamp": "2026-02-26T01:39:14.279991+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.887778807290461,
-      "correlation_fidelity": 0.9331361863964763,
-      "tail_preservation": 0.8879603193337048,
-      "discriminator_accuracy": 0.5075234903738748,
-      "privacy_dcr": 0.43129399150961106,
-      "novelty_min": 0.04866709481534901,
-      "ml_utility_tstr": 0.6377380952380952,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0028,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0577
-    },
-    "timestamp": "2026-02-26T01:39:14.880392+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.6535399573191394,
-      "correlation_fidelity": 0.8547549646883158,
-      "tail_preservation": 3.1521148879159755,
-      "discriminator_accuracy": 0.6937568640702881,
-      "privacy_dcr": 188.23696220572813,
-      "novelty_min": 509.33616537930345,
-      "ml_utility_tstr": 0.6496894409937889,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 12.6327,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0697
-    },
-    "timestamp": "2026-02-26T01:39:28.558584+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "adult",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.6387645120316332,
-      "correlation_fidelity": 0.7565084856365069,
-      "tail_preservation": 1.1273731047883004,
-      "discriminator_accuracy": 0.7887462100945246,
-      "privacy_dcr": 66.8660254681456,
-      "novelty_min": 129.71751538404433,
-      "ml_utility_tstr": 0.5865232974910394,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 9.1412,
-      "ml_utility_trtr": 0.58,
-      "ml_delta": 0.0065
-    },
-    "timestamp": "2026-02-26T01:39:38.754496+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9280703434232245,
-      "correlation_fidelity": 0.7406444043833366,
-      "tail_preservation": 1.0552156140329443,
-      "discriminator_accuracy": 0.41748566171984275,
-      "privacy_dcr": 0.4517695901548418,
-      "novelty_min": 0.40664656829773566,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.007,
-      "operation_time_seconds": 0.0052,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:39:39.304300+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8857786688344074,
-      "correlation_fidelity": 0.7609562875898506,
-      "tail_preservation": 1.1426400657751798,
-      "discriminator_accuracy": 0.473745224484432,
-      "privacy_dcr": 0.457493381376681,
-      "novelty_min": 0.5680742204555204,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0071,
-      "operation_time_seconds": 0.005,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:39:39.614730+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9287789744372308,
-      "correlation_fidelity": 0.8239050000096952,
-      "tail_preservation": 1.0283144371866195,
-      "discriminator_accuracy": 0.4662733613058864,
-      "privacy_dcr": 0.44932443549520273,
-      "novelty_min": 0.6033314704040846,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0038,
-      "operation_time_seconds": 0.0071,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:39:39.937853+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8717455747555463,
-      "correlation_fidelity": 0.8279299457269564,
-      "tail_preservation": 1.122893946331758,
-      "discriminator_accuracy": 0.4975265880055945,
-      "privacy_dcr": 0.4691498640756783,
-      "novelty_min": 0.5592112420615566,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.006,
-      "operation_time_seconds": 0.0108,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:39:40.235534+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9074060812572009,
-      "correlation_fidelity": 0.7454976459679479,
-      "tail_preservation": 1.0072938488058303,
-      "discriminator_accuracy": 0.5087531562989872,
-      "privacy_dcr": 0.9856083450087817,
-      "novelty_min": 0.9747226494618593,
-      "ml_utility_tstr": 0.9776041666666667,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0433,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0224
-    },
-    "timestamp": "2026-02-26T01:39:40.679514+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.931611666575032,
-      "correlation_fidelity": 0.703988054762638,
-      "tail_preservation": 0.9786379757458014,
-      "discriminator_accuracy": 0.4775374766504276,
-      "privacy_dcr": 1.0266836473092196,
-      "novelty_min": 1.318005602173556,
-      "ml_utility_tstr": 0.9256410256410257,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0097,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0744
-    },
-    "timestamp": "2026-02-26T01:39:41.016541+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.903589442694669,
-      "correlation_fidelity": 0.7604717758264081,
-      "tail_preservation": 0.9426203367779267,
-      "discriminator_accuracy": 0.49004533806426176,
-      "privacy_dcr": 0.15834261615240833,
-      "novelty_min": 0.1956483688197525,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0009,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:39:41.458808+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9096858111310333,
-      "correlation_fidelity": 0.7736673661756334,
-      "tail_preservation": 0.9130844033026255,
-      "discriminator_accuracy": 0.47501243746069294,
-      "privacy_dcr": 0.2626154897193007,
-      "novelty_min": 0.0008050406620088459,
-      "ml_utility_tstr": 0.9894706224549157,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0056,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0105
-    },
-    "timestamp": "2026-02-26T01:39:41.874608+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9329101295316271,
-      "correlation_fidelity": 0.8800190044863805,
-      "tail_preservation": 1.0701335439618034,
-      "discriminator_accuracy": 0.4637577088789389,
-      "privacy_dcr": 0.45531016224005766,
-      "novelty_min": 0.43289064381847964,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0075,
-      "operation_time_seconds": 0.0064,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:16.743850+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8953319305768517,
-      "correlation_fidelity": 0.8511703378075917,
-      "tail_preservation": 1.1437597273096651,
-      "discriminator_accuracy": 0.4612608299775656,
-      "privacy_dcr": 0.4654672896320802,
-      "novelty_min": 0.4695382969655509,
-      "ml_utility_tstr": 0.9894706224549157,
-      "train_time_seconds": 0.0071,
-      "operation_time_seconds": 0.0066,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0105
-    },
-    "timestamp": "2026-02-26T01:40:17.367794+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9438232072769072,
-      "correlation_fidelity": 0.8481872284559289,
-      "tail_preservation": 1.0453517790626836,
-      "discriminator_accuracy": 0.44629363671350664,
-      "privacy_dcr": 0.4557366085404079,
-      "novelty_min": 0.5541426898000406,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.004,
-      "operation_time_seconds": 0.0063,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:17.798618+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8912868319629289,
-      "correlation_fidelity": 0.8405019258493309,
-      "tail_preservation": 1.151896157909597,
-      "discriminator_accuracy": 0.49126092384519354,
-      "privacy_dcr": 0.47328953401635104,
-      "novelty_min": 0.3474272638966366,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0037,
-      "operation_time_seconds": 0.0044,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:18.223455+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.932002994080511,
-      "correlation_fidelity": 0.8847556682799358,
-      "tail_preservation": 0.9888683693915168,
-      "discriminator_accuracy": 0.450034261684173,
-      "privacy_dcr": 0.9817400554496581,
-      "novelty_min": 1.2589124752043197,
-      "ml_utility_tstr": 0.9638045891931902,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0365,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0362
-    },
-    "timestamp": "2026-02-26T01:40:18.796916+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9542229960942773,
-      "correlation_fidelity": 0.682788775798268,
-      "tail_preservation": 0.9997273047536965,
-      "discriminator_accuracy": 0.45628115231899974,
-      "privacy_dcr": 1.032473728438419,
-      "novelty_min": 1.318005602173556,
-      "ml_utility_tstr": 0.9256410256410257,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0095,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0744
-    },
-    "timestamp": "2026-02-26T01:40:19.148950+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9345916513197863,
-      "correlation_fidelity": 0.8133324572349802,
-      "tail_preservation": 1.0001607126353327,
-      "discriminator_accuracy": 0.4850046464475796,
-      "privacy_dcr": 0.1589274769226688,
-      "novelty_min": 0.17053821630481908,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0007,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:19.701622+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9051499362467985,
-      "correlation_fidelity": 0.8352157809916271,
-      "tail_preservation": 0.8867083061735204,
-      "discriminator_accuracy": 0.4474951423502576,
-      "privacy_dcr": 0.26192960359357237,
-      "novelty_min": 0.0008785021123777938,
-      "ml_utility_tstr": 0.9894706224549157,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0059,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0105
-    },
-    "timestamp": "2026-02-26T01:40:20.255102+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.11372008168905967,
-      "correlation_fidelity": 0.31908157484927535,
-      "tail_preservation": 1.4627299428967508,
-      "discriminator_accuracy": 0.9312701228727249,
-      "privacy_dcr": 1.9067051042218193,
-      "novelty_min": 1.95169022174455,
-      "ml_utility_tstr": 0.9256410256410257,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 16.9447,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0744
-    },
-    "timestamp": "2026-02-26T01:40:37.452074+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.753095032457535,
-      "correlation_fidelity": 0.5016318872175543,
-      "tail_preservation": 0.7385666032527686,
-      "discriminator_accuracy": 0.6237597739667521,
-      "privacy_dcr": 0.8792524969900435,
-      "novelty_min": 0.9460867071268697,
-      "ml_utility_tstr": 0.9256410256410257,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 7.6097,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0744
-    },
-    "timestamp": "2026-02-26T01:40:45.313300+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9465957165273897,
-      "correlation_fidelity": 0.9062917659462361,
-      "tail_preservation": 1.0638869186045918,
-      "discriminator_accuracy": 0.5000469338139356,
-      "privacy_dcr": 0.4491405579418775,
-      "novelty_min": 0.49237771121276325,
-      "ml_utility_tstr": 0.9894706224549157,
-      "train_time_seconds": 0.0056,
-      "operation_time_seconds": 0.0045,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0105
-    },
-    "timestamp": "2026-02-26T01:40:46.433059+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8978939169409564,
-      "correlation_fidelity": 0.8609077674825296,
-      "tail_preservation": 1.1627128208234483,
-      "discriminator_accuracy": 0.5075798109505975,
-      "privacy_dcr": 0.4585476813937892,
-      "novelty_min": 0.45174858083109315,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.005,
-      "operation_time_seconds": 0.0038,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:47.599986+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9486696943857439,
-      "correlation_fidelity": 0.9092934042955801,
-      "tail_preservation": 1.0688781789581028,
-      "discriminator_accuracy": 0.4612702167403528,
-      "privacy_dcr": 0.4570899588244273,
-      "novelty_min": 0.510069669747445,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0035,
-      "operation_time_seconds": 0.0054,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:48.877171+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8852746107961255,
-      "correlation_fidelity": 0.8158584318385861,
-      "tail_preservation": 1.1596641087577348,
-      "discriminator_accuracy": 0.5237578966141946,
-      "privacy_dcr": 0.4765719279836812,
-      "novelty_min": 0.40692814321098286,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0032,
-      "operation_time_seconds": 0.0052,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:50.123680+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9437927820368961,
-      "correlation_fidelity": 0.8985949569047728,
-      "tail_preservation": 0.9932378839308535,
-      "discriminator_accuracy": 0.4562436052678513,
-      "privacy_dcr": 0.9862882296597291,
-      "novelty_min": 1.1568375982813779,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0376,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:51.550131+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9650303159124081,
-      "correlation_fidelity": 0.6836335177406201,
-      "tail_preservation": 0.9899991125030267,
-      "discriminator_accuracy": 0.44125763847821803,
-      "privacy_dcr": 1.029042551959444,
-      "novelty_min": 1.1235139047247251,
-      "ml_utility_tstr": 0.9470790378006874,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0069,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0529
-    },
-    "timestamp": "2026-02-26T01:40:52.728119+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9611622158003186,
-      "correlation_fidelity": 0.874173732315044,
-      "tail_preservation": 1.003469072270612,
-      "discriminator_accuracy": 0.4825030741648128,
-      "privacy_dcr": 0.15766587215968375,
-      "novelty_min": 0.17043849228528818,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0012,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:40:53.626716+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8954527004696591,
-      "correlation_fidelity": 0.8559072241351391,
-      "tail_preservation": 0.8645529287148854,
-      "discriminator_accuracy": 0.4525170604413655,
-      "privacy_dcr": 0.2709891655693221,
-      "novelty_min": 0.0004951450333733272,
-      "ml_utility_tstr": 0.9894706224549157,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0056,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0105
-    },
-    "timestamp": "2026-02-26T01:40:54.585942+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.2299074247734122,
-      "correlation_fidelity": 0.31726224890350485,
-      "tail_preservation": 1.4480195709019528,
-      "discriminator_accuracy": 0.9337529216299174,
-      "privacy_dcr": 1.868655625885479,
-      "novelty_min": 1.696236963078627,
-      "ml_utility_tstr": 0.9256410256410257,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 19.4552,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": -0.0744
-    },
-    "timestamp": "2026-02-26T01:41:15.342406+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "fraud",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.755226492918971,
-      "correlation_fidelity": 0.4959747000326429,
-      "tail_preservation": 0.7498132238327602,
-      "discriminator_accuracy": 0.6200426159030535,
-      "privacy_dcr": 0.8860803714358364,
-      "novelty_min": 0.9713067202999124,
-      "ml_utility_tstr": 1.0,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 9.9483,
-      "ml_utility_trtr": 1.0,
-      "ml_delta": 0.0
-    },
-    "timestamp": "2026-02-26T01:41:25.800594+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9465042001794224,
-      "correlation_fidelity": 0.9075178287232342,
-      "tail_preservation": 0.9939713439747543,
-      "discriminator_accuracy": 0.4812734082397004,
-      "privacy_dcr": 0.7736381145853382,
-      "novelty_min": 14.258582947415709,
-      "ml_utility_tstr": 0.5922495176886352,
-      "train_time_seconds": 0.0032,
-      "operation_time_seconds": 0.0063,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": 0.0194
-    },
-    "timestamp": "2026-02-26T01:41:26.075147+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9455826541970598,
-      "correlation_fidelity": 0.8988696704338962,
-      "tail_preservation": 1.0445759227062017,
-      "discriminator_accuracy": 0.4737217575774642,
-      "privacy_dcr": 0.7469675837111298,
-      "novelty_min": 44.34614145660071,
-      "ml_utility_tstr": 0.6399249590312222,
-      "train_time_seconds": 0.0041,
-      "operation_time_seconds": 0.0099,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": 0.0671
-    },
-    "timestamp": "2026-02-26T01:41:26.225230+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9251603949270442,
-      "correlation_fidelity": 0.8934142647004069,
-      "tail_preservation": 1.0334896037639194,
-      "discriminator_accuracy": 0.5062891310673688,
-      "privacy_dcr": 0.6795527774918527,
-      "novelty_min": 49.81407495012266,
-      "ml_utility_tstr": 0.4630366064185425,
-      "train_time_seconds": 0.0027,
-      "operation_time_seconds": 0.0064,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.1098
-    },
-    "timestamp": "2026-02-26T01:41:26.366381+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9137223771275098,
-      "correlation_fidelity": 0.8878903502187763,
-      "tail_preservation": 1.0569445774758373,
-      "discriminator_accuracy": 0.5299672401978729,
-      "privacy_dcr": 0.7223037704385532,
-      "novelty_min": 49.81407495012285,
-      "ml_utility_tstr": 0.5414230829745166,
-      "train_time_seconds": 0.0022,
-      "operation_time_seconds": 0.0059,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0314
-    },
-    "timestamp": "2026-02-26T01:41:26.505107+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8435810961155816,
-      "correlation_fidelity": 0.9169863561959303,
-      "tail_preservation": 1.0670158926017386,
-      "discriminator_accuracy": 0.4624623356143167,
-      "privacy_dcr": 1.3221559669923417,
-      "novelty_min": 178.9466054177343,
-      "ml_utility_tstr": 0.533500443967944,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.023,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0393
-    },
-    "timestamp": "2026-02-26T01:41:26.715965+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9290308927287885,
-      "correlation_fidelity": 0.8767682729026499,
-      "tail_preservation": 0.9907479811419123,
-      "discriminator_accuracy": 0.4974702674288718,
-      "privacy_dcr": 0.9444142387379251,
-      "novelty_min": 46.087001520956335,
-      "ml_utility_tstr": 0.5522917568045905,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0021,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0205
-    },
-    "timestamp": "2026-02-26T01:41:26.912927+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9381512354109851,
-      "correlation_fidelity": 0.8612764327936349,
-      "tail_preservation": 0.972287874100118,
-      "discriminator_accuracy": 0.4874874452047722,
-      "privacy_dcr": 0.8031570224344491,
-      "novelty_min": 74.06747257690313,
-      "ml_utility_tstr": 0.5606860078519305,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0003,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0121
-    },
-    "timestamp": "2026-02-26T01:41:27.109233+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8961482110878938,
-      "correlation_fidelity": 0.8924094309944912,
-      "tail_preservation": 0.8427916476467983,
-      "discriminator_accuracy": 0.48125463471412616,
-      "privacy_dcr": 0.36218298185957165,
-      "novelty_min": 0.2551512238052031,
-      "ml_utility_tstr": 0.5515280213564113,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.002,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0213
-    },
-    "timestamp": "2026-02-26T01:41:27.301314+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.49002943619814665,
-      "correlation_fidelity": 0.808747751876117,
-      "tail_preservation": 0.9596673346180011,
-      "discriminator_accuracy": 0.7737086161095622,
-      "privacy_dcr": 1.6528053251299937,
-      "novelty_min": 152.2355070515765,
-      "ml_utility_tstr": 0.513743305754907,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 9.673,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0591
-    },
-    "timestamp": "2026-02-26T01:41:37.167964+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.49391713016708805,
-      "correlation_fidelity": 0.6988155462943713,
-      "tail_preservation": 0.44222386683388343,
-      "discriminator_accuracy": 0.8225150892211803,
-      "privacy_dcr": 0.7594040320850486,
-      "novelty_min": 44.07405506020822,
-      "ml_utility_tstr": 0.4636242840387762,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 5.2652,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.1092
-    },
-    "timestamp": "2026-02-26T01:41:42.637442+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9627774938182201,
-      "correlation_fidelity": 0.9482826552366754,
-      "tail_preservation": 1.0117214336988254,
-      "discriminator_accuracy": 0.48249368740202564,
-      "privacy_dcr": 0.7634023375142223,
-      "novelty_min": 14.258582947408906,
-      "ml_utility_tstr": 0.6066997708612795,
-      "train_time_seconds": 0.0034,
-      "operation_time_seconds": 0.0065,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": 0.0339
-    },
-    "timestamp": "2026-02-26T01:41:42.868912+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9388401862474545,
-      "correlation_fidelity": 0.9130087371199763,
-      "tail_preservation": 1.0756576732359964,
-      "discriminator_accuracy": 0.46999521275097855,
-      "privacy_dcr": 0.7980375200903888,
-      "novelty_min": 14.258582947408971,
-      "ml_utility_tstr": 0.5502959653733217,
-      "train_time_seconds": 0.0035,
-      "operation_time_seconds": 0.0076,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0225
-    },
-    "timestamp": "2026-02-26T01:41:43.098518+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9616348853871501,
-      "correlation_fidelity": 0.9525271328179153,
-      "tail_preservation": 1.0520470584296429,
-      "discriminator_accuracy": 0.47876714257554,
-      "privacy_dcr": 0.661796545253953,
-      "novelty_min": 23.630285233770156,
-      "ml_utility_tstr": 0.5310148408793517,
-      "train_time_seconds": 0.0022,
-      "operation_time_seconds": 0.007,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0418
-    },
-    "timestamp": "2026-02-26T01:41:43.317987+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9431965020844566,
-      "correlation_fidelity": 0.899725113052453,
-      "tail_preservation": 1.047837130584273,
-      "discriminator_accuracy": 0.4975125078614138,
-      "privacy_dcr": 0.7025389376520494,
-      "novelty_min": 23.630285233767488,
-      "ml_utility_tstr": 0.5616380817320907,
-      "train_time_seconds": 0.002,
-      "operation_time_seconds": 0.0116,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0112
-    },
-    "timestamp": "2026-02-26T01:41:43.568423+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8417835749422585,
-      "correlation_fidelity": 0.9213446342335864,
-      "tail_preservation": 1.0570275067283823,
-      "discriminator_accuracy": 0.5025156524269475,
-      "privacy_dcr": 1.336112922421863,
-      "novelty_min": 162.03930887988605,
-      "ml_utility_tstr": 0.5586052635978523,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0244,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0142
-    },
-    "timestamp": "2026-02-26T01:41:43.877243+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9517534320642395,
-      "correlation_fidelity": 0.9063073028748894,
-      "tail_preservation": 0.9992414966605766,
-      "discriminator_accuracy": 0.5349375310936516,
-      "privacy_dcr": 0.9981539834349318,
-      "novelty_min": 46.087001520956335,
-      "ml_utility_tstr": 0.5402409600382727,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.003,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0326
-    },
-    "timestamp": "2026-02-26T01:41:44.158913+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9542389373503205,
-      "correlation_fidelity": 0.9033062938041762,
-      "tail_preservation": 1.0084594382252887,
-      "discriminator_accuracy": 0.47499835731651224,
-      "privacy_dcr": 0.8769524242133202,
-      "novelty_min": 70.09436379582057,
-      "ml_utility_tstr": 0.5728926498210383,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0005,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": 0.0001
-    },
-    "timestamp": "2026-02-26T01:41:44.449747+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8998184365114066,
-      "correlation_fidelity": 0.9212859486360968,
-      "tail_preservation": 0.8453096950122339,
-      "discriminator_accuracy": 0.5012390526878995,
-      "privacy_dcr": 0.35839756269094397,
-      "novelty_min": 0.6433786710659651,
-      "ml_utility_tstr": 0.5481377257850555,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0028,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0247
-    },
-    "timestamp": "2026-02-26T01:41:44.735634+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.4758783074390436,
-      "correlation_fidelity": 0.9008697789310363,
-      "tail_preservation": 1.255241977270264,
-      "discriminator_accuracy": 0.732510114236903,
-      "privacy_dcr": 1.4209736501562342,
-      "novelty_min": 101.1129159078729,
-      "ml_utility_tstr": 0.5346536161431317,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 10.1297,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0381
-    },
-    "timestamp": "2026-02-26T01:41:55.159594+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.5452682697118234,
-      "correlation_fidelity": 0.6704105741893248,
-      "tail_preservation": 0.4536251077755229,
-      "discriminator_accuracy": 0.8049946964790253,
-      "privacy_dcr": 0.7863084830070267,
-      "novelty_min": 80.50933016880094,
-      "ml_utility_tstr": 0.4196544664124213,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 6.0543,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.1531
-    },
-    "timestamp": "2026-02-26T01:42:01.494827+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9757406859692558,
-      "correlation_fidelity": 0.9656993677763429,
-      "tail_preservation": 1.0261898122494104,
-      "discriminator_accuracy": 0.48995616381778423,
-      "privacy_dcr": 0.7690351571162666,
-      "novelty_min": 14.258582947415812,
-      "ml_utility_tstr": 0.559430998786252,
-      "train_time_seconds": 0.0023,
-      "operation_time_seconds": 0.0043,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0134
-    },
-    "timestamp": "2026-02-26T01:42:01.916193+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9543277442964142,
-      "correlation_fidelity": 0.9463830229159317,
-      "tail_preservation": 1.0514689357518945,
-      "discriminator_accuracy": 0.4824889940206321,
-      "privacy_dcr": 0.7689630294686772,
-      "novelty_min": 14.258582947408765,
-      "ml_utility_tstr": 0.5462812432122455,
-      "train_time_seconds": 0.0032,
-      "operation_time_seconds": 0.0067,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0265
-    },
-    "timestamp": "2026-02-26T01:42:02.399712+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9712184247637645,
-      "correlation_fidelity": 0.9384897702606465,
-      "tail_preservation": 1.0031270930150615,
-      "discriminator_accuracy": 0.49501562896004053,
-      "privacy_dcr": 0.7043029164056446,
-      "novelty_min": 23.63028523376736,
-      "ml_utility_tstr": 0.43324001825398606,
-      "train_time_seconds": 0.0027,
-      "operation_time_seconds": 0.0066,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.1396
-    },
-    "timestamp": "2026-02-26T01:42:02.937469+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9443367714474223,
-      "correlation_fidelity": 0.9464630604084286,
-      "tail_preservation": 1.0685296919489984,
-      "discriminator_accuracy": 0.508734382773413,
-      "privacy_dcr": 0.728169420844676,
-      "novelty_min": 23.630285233765328,
-      "ml_utility_tstr": 0.5429332444670825,
-      "train_time_seconds": 0.0024,
-      "operation_time_seconds": 0.0077,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0299
-    },
-    "timestamp": "2026-02-26T01:42:03.464280+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8345863618692108,
-      "correlation_fidelity": 0.9406590814922678,
-      "tail_preservation": 1.0775097790648185,
-      "discriminator_accuracy": 0.501276599739048,
-      "privacy_dcr": 1.3093259159120332,
-      "novelty_min": 53.90904203251948,
-      "ml_utility_tstr": 0.5609151814160507,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0289,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0119
-    },
-    "timestamp": "2026-02-26T01:42:04.062315+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9713939463698337,
-      "correlation_fidelity": 0.9098845371803014,
-      "tail_preservation": 0.9974492838658484,
-      "discriminator_accuracy": 0.48498587292200535,
-      "privacy_dcr": 1.0112523612192779,
-      "novelty_min": 46.087001520956335,
-      "ml_utility_tstr": 0.538462476690823,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0033,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0343
-    },
-    "timestamp": "2026-02-26T01:42:04.630255+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9648134034465555,
-      "correlation_fidelity": 0.9612353089031238,
-      "tail_preservation": 1.0136978718523595,
-      "discriminator_accuracy": 0.4762421033858053,
-      "privacy_dcr": 0.8461651656164775,
-      "novelty_min": 18.55724916516793,
-      "ml_utility_tstr": 0.5066234983442927,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0006,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0662
-    },
-    "timestamp": "2026-02-26T01:42:05.214368+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8959281884992581,
-      "correlation_fidelity": 0.9334379344863541,
-      "tail_preservation": 0.8583289996000234,
-      "discriminator_accuracy": 0.5261984549388452,
-      "privacy_dcr": 0.37183565763111864,
-      "novelty_min": 0.17301360153669326,
-      "ml_utility_tstr": 0.5427509154823286,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0023,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.03
-    },
-    "timestamp": "2026-02-26T01:42:05.809956+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.5041316079902172,
-      "correlation_fidelity": 0.8694832094856797,
-      "tail_preservation": 1.3363478944177027,
-      "discriminator_accuracy": 0.7212694657993298,
-      "privacy_dcr": 1.6979355653191264,
-      "novelty_min": 120.81557947893722,
-      "ml_utility_tstr": 0.5655748499011555,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 10.4648,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0072
-    },
-    "timestamp": "2026-02-26T01:42:16.867226+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "housing",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.5360530936326215,
-      "correlation_fidelity": 0.6862121881631847,
-      "tail_preservation": 0.4529394186900996,
-      "discriminator_accuracy": 0.8024978175776519,
-      "privacy_dcr": 0.7775334981543133,
-      "novelty_min": 56.38189730316693,
-      "ml_utility_tstr": 0.494231235991912,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 6.0217,
-      "ml_utility_trtr": 0.5728,
-      "ml_delta": -0.0786
-    },
-    "timestamp": "2026-02-26T01:42:23.478094+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9576616146550223,
-      "correlation_fidelity": 0.891071119897513,
-      "tail_preservation": 1.0198111218934758,
-      "discriminator_accuracy": 0.45000140801441807,
-      "privacy_dcr": 0.1370357880026484,
-      "novelty_min": 0.10504173975719504,
-      "ml_utility_tstr": 0.9574393797939816,
-      "train_time_seconds": 0.0038,
-      "operation_time_seconds": 0.0091,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0082
-    },
-    "timestamp": "2026-02-26T01:42:23.856918+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9300849615535077,
-      "correlation_fidelity": 0.8593631807432484,
-      "tail_preservation": 1.015784876157911,
-      "discriminator_accuracy": 0.4975078144800203,
-      "privacy_dcr": 0.13650821399359597,
-      "novelty_min": 0.08048202489039873,
-      "ml_utility_tstr": 0.9584378350442813,
-      "train_time_seconds": 0.0037,
-      "operation_time_seconds": 0.0058,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0072
-    },
-    "timestamp": "2026-02-26T01:42:24.063803+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9527622915660664,
-      "correlation_fidelity": 0.9223607516386579,
-      "tail_preservation": 0.9926837683872759,
-      "discriminator_accuracy": 0.4812874883838811,
-      "privacy_dcr": 0.15094161305539974,
-      "novelty_min": 0.08234398538995644,
-      "ml_utility_tstr": 0.9520001324545825,
-      "train_time_seconds": 0.0025,
-      "operation_time_seconds": 0.0057,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0136
-    },
-    "timestamp": "2026-02-26T01:42:24.257725+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.926430285849161,
-      "correlation_fidelity": 0.8407500670657184,
-      "tail_preservation": 1.0088793921577177,
-      "discriminator_accuracy": 0.4974937343358396,
-      "privacy_dcr": 0.14819377354435032,
-      "novelty_min": 0.08234398538995649,
-      "ml_utility_tstr": 0.9664654619505719,
-      "train_time_seconds": 0.0023,
-      "operation_time_seconds": 0.0057,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": 0.0009
-    },
-    "timestamp": "2026-02-26T01:42:24.462279+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8838125734800454,
-      "correlation_fidelity": 0.9073480443670573,
-      "tail_preservation": 1.03125593340349,
-      "discriminator_accuracy": 0.4737405311030385,
-      "privacy_dcr": 1.1926572268988118,
-      "novelty_min": 1.081824298439301,
-      "ml_utility_tstr": 0.9479576553059209,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0183,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0176
-    },
-    "timestamp": "2026-02-26T01:42:24.770307+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9508791018670562,
-      "correlation_fidelity": 0.7632560304057334,
-      "tail_preservation": 0.9802598284107018,
-      "discriminator_accuracy": 0.4687702402072597,
-      "privacy_dcr": 1.5382906896021291,
-      "novelty_min": 0.793634854713071,
-      "ml_utility_tstr": 0.9399179300115659,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0033,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0257
-    },
-    "timestamp": "2026-02-26T01:42:25.061972+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9413985806035842,
-      "correlation_fidelity": 0.8346568621808403,
-      "tail_preservation": 0.9976114093811479,
-      "discriminator_accuracy": 0.4987562539307069,
-      "privacy_dcr": 0.26146583545644525,
-      "novelty_min": 0.24809103588829626,
-      "ml_utility_tstr": 0.9386039115419724,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.027
-    },
-    "timestamp": "2026-02-26T01:42:25.352335+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8987169332452665,
-      "correlation_fidelity": 0.8713300926953387,
-      "tail_preservation": 0.9124166031016675,
-      "discriminator_accuracy": 0.5125313283208021,
-      "privacy_dcr": 0.26092409198020505,
-      "novelty_min": 0.0004995762304360747,
-      "ml_utility_tstr": 0.9443039866561291,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0028,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0213
-    },
-    "timestamp": "2026-02-26T01:42:25.634836+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.35100544117256294,
-      "correlation_fidelity": 0.3398461964210505,
-      "tail_preservation": 1.1929736990478295,
-      "discriminator_accuracy": 0.871260548374682,
-      "privacy_dcr": 2.2531851144426565,
-      "novelty_min": 1.6181285278256927,
-      "ml_utility_tstr": 0.9388429739403066,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 12.3437,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0268
-    },
-    "timestamp": "2026-02-26T01:42:38.248123+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 1.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.7536929571275188,
-      "correlation_fidelity": 0.795145037135275,
-      "tail_preservation": 0.9041173504859877,
-      "discriminator_accuracy": 0.6987553152544281,
-      "privacy_dcr": 1.011446395170648,
-      "novelty_min": 0.8030868826872035,
-      "ml_utility_tstr": 0.9411495565864471,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 5.8096,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0245
-    },
-    "timestamp": "2026-02-26T01:42:44.246167+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9638123405152637,
-      "correlation_fidelity": 0.9267341679470994,
-      "tail_preservation": 0.9990741570790372,
-      "discriminator_accuracy": 0.47501243746069294,
-      "privacy_dcr": 0.13846693212889685,
-      "novelty_min": 0.0804820248903989,
-      "ml_utility_tstr": 0.960161222433903,
-      "train_time_seconds": 0.0026,
-      "operation_time_seconds": 0.0044,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0054
-    },
-    "timestamp": "2026-02-26T01:42:44.474712+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9361004040619247,
-      "correlation_fidelity": 0.9099011193336177,
-      "tail_preservation": 1.010669568708731,
-      "discriminator_accuracy": 0.5087907033501357,
-      "privacy_dcr": 0.13824140545199162,
-      "novelty_min": 0.08048202489039895,
-      "ml_utility_tstr": 0.9599149459667013,
-      "train_time_seconds": 0.0029,
-      "operation_time_seconds": 0.0039,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0057
-    },
-    "timestamp": "2026-02-26T01:42:44.710632+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9610824932750968,
-      "correlation_fidelity": 0.9298853739064837,
-      "tail_preservation": 1.0030137209256003,
-      "discriminator_accuracy": 0.4825359278345676,
-      "privacy_dcr": 0.15444998552161676,
-      "novelty_min": 0.08234398538995677,
-      "ml_utility_tstr": 0.9595288569411132,
-      "train_time_seconds": 0.0017,
-      "operation_time_seconds": 0.004,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0061
-    },
-    "timestamp": "2026-02-26T01:42:44.944113+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9417376463159134,
-      "correlation_fidelity": 0.9032087598715721,
-      "tail_preservation": 1.0069203215665823,
-      "discriminator_accuracy": 0.47878591610111426,
-      "privacy_dcr": 0.15094161305539977,
-      "novelty_min": 0.0823439853899568,
-      "ml_utility_tstr": 0.9587826428781656,
-      "train_time_seconds": 0.0021,
-      "operation_time_seconds": 0.0037,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0068
-    },
-    "timestamp": "2026-02-26T01:42:45.178702+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.894820868561072,
-      "correlation_fidelity": 0.9149735099502514,
-      "tail_preservation": 1.0304293448081892,
-      "discriminator_accuracy": 0.4750030506979059,
-      "privacy_dcr": 1.1949339380195587,
-      "novelty_min": 1.081824298439301,
-      "ml_utility_tstr": 0.9493349460765079,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0099,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0163
-    },
-    "timestamp": "2026-02-26T01:42:45.503722+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9643213456564137,
-      "correlation_fidelity": 0.7907877554186326,
-      "tail_preservation": 0.9904830258100986,
-      "discriminator_accuracy": 0.49374841598377966,
-      "privacy_dcr": 1.6029124996308077,
-      "novelty_min": 0.793634854713071,
-      "ml_utility_tstr": 0.9412501258886754,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0031,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0243
-    },
-    "timestamp": "2026-02-26T01:42:45.792639+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9524359152349448,
-      "correlation_fidelity": 0.9174111159195216,
-      "tail_preservation": 1.0090759177710544,
-      "discriminator_accuracy": 0.49001248439450684,
-      "privacy_dcr": 0.2665240924244144,
-      "novelty_min": 0.15655789127039868,
-      "ml_utility_tstr": 0.9441659958471574,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0004,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0214
-    },
-    "timestamp": "2026-02-26T01:42:46.093809+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9147278953627302,
-      "correlation_fidelity": 0.9015843310963748,
-      "tail_preservation": 0.9267544748757912,
-      "discriminator_accuracy": 0.5025344259525217,
-      "privacy_dcr": 0.2815434967966268,
-      "novelty_min": 0.0005946962202637245,
-      "ml_utility_tstr": 0.9438130563785718,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0019,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0218
-    },
-    "timestamp": "2026-02-26T01:42:46.383526+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.3346520333144347,
-      "correlation_fidelity": 0.3732459970199332,
-      "tail_preservation": 1.2897217475874239,
-      "discriminator_accuracy": 0.8250025813597665,
-      "privacy_dcr": 2.479238708382819,
-      "novelty_min": 1.7893927555240634,
-      "ml_utility_tstr": 0.9328545349701267,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 8.6185,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0327
-    },
-    "timestamp": "2026-02-26T01:42:55.279838+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 2.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.7690481871590712,
-      "correlation_fidelity": 0.7872320603102696,
-      "tail_preservation": 0.8895107914882202,
-      "discriminator_accuracy": 0.6712755671951415,
-      "privacy_dcr": 1.0066847905151437,
-      "novelty_min": 1.0512492544407899,
-      "ml_utility_tstr": 0.9412429888920434,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 5.2555,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0244
-    },
-    "timestamp": "2026-02-26T01:43:00.822831+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "HVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9728014837553061,
-      "correlation_fidelity": 0.9469830061241816,
-      "tail_preservation": 1.0011544032865167,
-      "discriminator_accuracy": 0.4837749805224672,
-      "privacy_dcr": 0.13827690387843422,
-      "novelty_min": 0.08048202489039873,
-      "ml_utility_tstr": 0.962231837932773,
-      "train_time_seconds": 0.0026,
-      "operation_time_seconds": 0.0041,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0034
-    },
-    "timestamp": "2026-02-26T01:43:01.380018+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "HVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.933820104759467,
-      "correlation_fidelity": 0.9344625105385895,
-      "tail_preservation": 1.034007383432741,
-      "discriminator_accuracy": 0.5012859865018351,
-      "privacy_dcr": 0.136382559987599,
-      "novelty_min": 0.08048202489039895,
-      "ml_utility_tstr": 0.9622264025969928,
-      "train_time_seconds": 0.0028,
-      "operation_time_seconds": 0.0064,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0034
-    },
-    "timestamp": "2026-02-26T01:43:01.952204+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "FastHVRT-size",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9695335400502221,
-      "correlation_fidelity": 0.9548029531794844,
-      "tail_preservation": 1.0256886551668898,
-      "discriminator_accuracy": 0.4887828184693945,
-      "privacy_dcr": 0.15101975559896832,
-      "novelty_min": 0.08234398538995674,
-      "ml_utility_tstr": 0.9574011743425119,
-      "train_time_seconds": 0.0017,
-      "operation_time_seconds": 0.0041,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0082
-    },
-    "timestamp": "2026-02-26T01:43:02.495135+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "FastHVRT-var",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9491433171406444,
-      "correlation_fidelity": 0.9092681915963289,
-      "tail_preservation": 1.016258457157407,
-      "discriminator_accuracy": 0.5000469338139356,
-      "privacy_dcr": 0.14675896254923454,
-      "novelty_min": 0.08234398538995652,
-      "ml_utility_tstr": 0.9647296464976876,
-      "train_time_seconds": 0.0018,
-      "operation_time_seconds": 0.0049,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0009
-    },
-    "timestamp": "2026-02-26T01:43:03.074864+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "GMM",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.8991133763375365,
-      "correlation_fidelity": 0.9495917179646215,
-      "tail_preservation": 1.0306457969625566,
-      "discriminator_accuracy": 0.5312438399369209,
-      "privacy_dcr": 1.1867296141220336,
-      "novelty_min": 0.954729167389466,
-      "ml_utility_tstr": 0.9459844794946792,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0118,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0196
-    },
-    "timestamp": "2026-02-26T01:43:03.696926+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "Gaussian-Copula",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9727867647298241,
-      "correlation_fidelity": 0.8136637344626575,
-      "tail_preservation": 0.9984397152615198,
-      "discriminator_accuracy": 0.4687937071142276,
-      "privacy_dcr": 1.5369278721461743,
-      "novelty_min": 0.793634854713071,
-      "ml_utility_tstr": 0.9431352187546849,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0034,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0225
-    },
-    "timestamp": "2026-02-26T01:43:04.307891+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "Bootstrap-Noise",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9680994435766586,
-      "correlation_fidelity": 0.9380663239588656,
-      "tail_preservation": 1.0216222584541392,
-      "discriminator_accuracy": 0.5000046933813936,
-      "privacy_dcr": 0.26272235199887406,
-      "novelty_min": 0.1680840276094509,
-      "ml_utility_tstr": 0.9450847349157199,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.0006,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0205
-    },
-    "timestamp": "2026-02-26T01:43:04.915662+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "SMOTE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.9251834870090672,
-      "correlation_fidelity": 0.9312081912775553,
-      "tail_preservation": 0.9235874225402191,
-      "discriminator_accuracy": 0.518764138811448,
-      "privacy_dcr": 0.28392813534826,
-      "novelty_min": 0.0004252521581049825,
-      "ml_utility_tstr": 0.9426720691059348,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 0.002,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0229
-    },
-    "timestamp": "2026-02-26T01:43:05.511928+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "CTGAN",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.41852072434278575,
-      "correlation_fidelity": 0.39308303051838445,
-      "tail_preservation": 1.2164766483152936,
-      "discriminator_accuracy": 0.8325119915894605,
-      "privacy_dcr": 2.2791677816736486,
-      "novelty_min": 1.4977237064254267,
-      "ml_utility_tstr": 0.9468005117499768,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 9.7226,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0188
-    },
-    "timestamp": "2026-02-26T01:43:15.819668+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "multimodal",
-    "method": "TVAE",
-    "params": {
-      "expansion_ratio": 5.0
-    },
-    "metrics": {
-      "marginal_fidelity": 0.7605711234684622,
-      "correlation_fidelity": 0.7954866486581087,
-      "tail_preservation": 0.8821977563977479,
-      "discriminator_accuracy": 0.6587723991627007,
-      "privacy_dcr": 0.9957100228215461,
-      "novelty_min": 1.011785796138044,
-      "ml_utility_tstr": 0.9429566160232309,
-      "train_time_seconds": 0.0,
-      "operation_time_seconds": 4.8787,
-      "ml_utility_trtr": 0.9656,
-      "ml_delta": -0.0226
-    },
-    "timestamp": "2026-02-26T01:43:21.286161+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "published_benchmark",
-    "method": "TabDDPM\u2020",
-    "params": {
-      "expansion_ratio": null
-    },
-    "metrics": {
-      "marginal_fidelity": 0.96,
-      "discriminator_accuracy": 0.52,
-      "tail_preservation": 0.7,
-      "correlation_fidelity": 0.97
-    },
-    "note": "Kotelnikov et al. 2023 \u2014 not run locally",
-    "published_only": true,
-    "timestamp": "2026-02-26T01:43:21.286205+00:00"
-  },
-  {
-    "task": "expand",
-    "dataset": "published_benchmark",
-    "method": "MOSTLY AI\u2020",
-    "params": {
-      "expansion_ratio": null
-    },
-    "metrics": {
-      "marginal_fidelity": 0.975,
-      "discriminator_accuracy": 0.51,
-      "tail_preservation": 0.85,
-      "correlation_fidelity": 0.98
-    },
-    "note": "MOSTLY AI evaluation 2024 \u2014 commercial service, not run locally",
-    "published_only": true,
-    "timestamp": "2026-02-26T01:43:21.286205+00:00"
+    "timestamp": "2026-02-26T06:20:30.675699+00:00"
   }
 ]

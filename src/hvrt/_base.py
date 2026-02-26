@@ -226,6 +226,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self.n_partitions_ = len(self.unique_partitions_)
         self._kdes_ = None
         self._cat_partition_freqs_ = None
+        self._strategy_context_cache_ = {}
 
     # ------------------------------------------------------------------
     # fit
@@ -262,6 +263,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
 
         self._kdes_ = None
         self._cat_partition_freqs_ = None
+        self._strategy_context_cache_ = {}
         self._tree_max_leaf_ = None
         self._tree_min_leaf_ = None
 
@@ -274,6 +276,39 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             and self.augment_params is None
         )
         self._fit_tree(self.X_z_, self._last_target_, is_reduction=_is_reduction)
+
+        # Eager context preparation: if a stateful strategy is declared in
+        # expand_params, precompute and cache its context now so the first
+        # expand() call pays no preparation overhead.
+        n_cont = int(self.continuous_mask_.sum())
+        if (
+            n_cont > 0
+            and self.expand_params is not None
+            and self.expand_params.generation_strategy is not None
+        ):
+            from .generation_strategies import StatefulGenerationStrategy
+            strat = self._resolve_strategy(self.expand_params.generation_strategy)
+            if isinstance(strat, StatefulGenerationStrategy):
+                X_z_cont = self.X_z_[:, :n_cont]
+                self._get_strategy_context(
+                    strat, X_z_cont,
+                    self.partition_ids_, self.unique_partitions_,
+                    cacheable=True,
+                )
+
+        # Eager context preparation: selection strategy declared in reduce_params.
+        if (
+            self.reduce_params is not None
+            and self.reduce_params.method is not None
+        ):
+            from .reduction_strategies import StatefulSelectionStrategy
+            sel_strat = self._resolve_selection_strategy(self.reduce_params.method)
+            if isinstance(sel_strat, StatefulSelectionStrategy):
+                self._get_strategy_context(
+                    sel_strat, self.X_z_,
+                    self.partition_ids_, self.unique_partitions_,
+                    cacheable=True,
+                )
 
         return self
 
@@ -344,11 +379,31 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             n_target, self.min_samples_per_partition,
             variance_weighted, X_z_src,
         )
-        indices = select_from_partitions(
-            X_z_src, partition_ids_src, unique_partitions_src,
-            budgets, method, self.random_state,
-            n_jobs=self.n_jobs,
-        )
+
+        strategy_fn = self._resolve_selection_strategy(method)
+        is_cacheable = (X is None and n_partitions is None)
+
+        from .reduction_strategies import StatefulSelectionStrategy
+        if isinstance(strategy_fn, StatefulSelectionStrategy):
+            ctx = self._get_strategy_context(
+                strategy_fn, X_z_src,
+                partition_ids_src, unique_partitions_src,
+                cacheable=is_cacheable,
+            )
+            indices = strategy_fn.select(ctx, budgets, self.random_state, n_jobs=self.n_jobs)
+        else:
+            # Old-style callable: pass through the existing helper
+            warnings.warn(
+                "Passing a plain callable as method is deprecated. "
+                "Implement StatefulSelectionStrategy (prepare + select) instead.",
+                HVRTDeprecationWarning,
+                stacklevel=2,
+            )
+            indices = select_from_partitions(
+                X_z_src, partition_ids_src, unique_partitions_src,
+                budgets, strategy_fn, self.random_state,
+                n_jobs=self.n_jobs,
+            )
 
         X_reduced = X_src[indices]
         if return_indices:
@@ -455,14 +510,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             n, variance_weighted, X_z_src,
         )
 
-        if generation_strategy is not None:
-            if isinstance(generation_strategy, str):
-                from .generation_strategies import get_generation_strategy
-                strategy_fn = get_generation_strategy(generation_strategy)
-            else:
-                strategy_fn = generation_strategy
-        else:
-            strategy_fn = None
+        strategy_fn = self._resolve_strategy(generation_strategy)
 
         if adaptive_bandwidth and n_cont > 0 and strategy_fn is None:
             bw_per_partition = self._adaptive_bandwidths(
@@ -479,11 +527,27 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         if n_cont > 0:
             X_z_cont = X_z_src[:, :n_cont]
             if strategy_fn is not None:
-                X_synth_cont_z = self._call_strategy(
-                    strategy_fn,
-                    X_z_cont, partition_ids_src, unique_partitions_src,
-                    budgets, self.random_state,
-                )
+                from .generation_strategies import StatefulGenerationStrategy
+                is_cacheable = (X is None and n_partitions is None)
+                if isinstance(strategy_fn, StatefulGenerationStrategy):
+                    ctx = self._get_strategy_context(
+                        strategy_fn, X_z_cont,
+                        partition_ids_src, unique_partitions_src,
+                        cacheable=is_cacheable,
+                    )
+                    X_synth_cont_z = strategy_fn.generate(ctx, budgets, self.random_state)
+                else:
+                    warnings.warn(
+                        "Passing a plain callable as generation_strategy is deprecated. "
+                        "Implement StatefulGenerationStrategy (prepare + generate) instead.",
+                        HVRTDeprecationWarning,
+                        stacklevel=2,
+                    )
+                    X_synth_cont_z = self._call_strategy(
+                        strategy_fn,
+                        X_z_cont, partition_ids_src, unique_partitions_src,
+                        budgets, self.random_state,
+                    )
             else:
                 X_synth_cont_z = sample_from_kdes(
                     kdes, unique_partitions_src, budgets,
@@ -685,6 +749,69 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _resolve_strategy(self, generation_strategy):
+        """
+        Resolve a generation strategy string or object to a callable / StatefulGenerationStrategy.
+
+        Parameters
+        ----------
+        generation_strategy : str, callable, or None
+
+        Returns
+        -------
+        strategy : StatefulGenerationStrategy, callable, or None
+        """
+        if generation_strategy is None:
+            return None
+        if isinstance(generation_strategy, str):
+            from .generation_strategies import get_generation_strategy
+            return get_generation_strategy(generation_strategy)
+        return generation_strategy
+
+    def _resolve_selection_strategy(self, method):
+        """
+        Resolve a selection method string or object to a StatefulSelectionStrategy
+        (or legacy callable).
+
+        Parameters
+        ----------
+        method : str or callable
+
+        Returns
+        -------
+        strategy : StatefulSelectionStrategy or callable
+        """
+        if isinstance(method, str):
+            from .reduction_strategies import get_strategy
+            return get_strategy(method)
+        return method
+
+    def _get_strategy_context(self, strategy, X_z_cont, partition_ids, unique_partitions, cacheable):
+        """
+        Return the prepared context for ``strategy``, fetching from cache when
+        possible.
+
+        Parameters
+        ----------
+        strategy : StatefulGenerationStrategy
+        X_z_cont : ndarray (n_samples, n_cont)
+        partition_ids, unique_partitions : ndarray
+        cacheable : bool
+            True only when using training-data partitions (X=None, n_partitions=None).
+
+        Returns
+        -------
+        context : PartitionContext
+        """
+        if not cacheable:
+            return strategy.prepare(X_z_cont, partition_ids, unique_partitions)
+        key = id(strategy)
+        if key not in self._strategy_context_cache_:
+            self._strategy_context_cache_[key] = strategy.prepare(
+                X_z_cont, partition_ids, unique_partitions
+            )
+        return self._strategy_context_cache_[key]
 
     def _call_strategy(self, strategy_fn, X_z, partition_ids, unique_partitions, budgets, random_state):
         """
