@@ -4,6 +4,77 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.6.0] — 2026-02-26
+
+### Added
+- **Optional Numba-compiled kernels** (`pip install hvrt[fast]` installs `numba>=0.56`).
+  Three performance-critical paths are now accelerated by LLVM-compiled native code:
+  - **`_pairwise_target_nb`** — fused synthetic target computation in `HVRT.fit()`.
+    Three sequential passes per feature pair (mean, variance, z-score accumulation)
+    compiled into a single native loop. Peak memory drops from O(n·d) (block-wise
+    NumPy) to O(n) (no intermediate arrays). Speedup: **3–11×** depending on (n, d).
+  - **`_centroid_fps_core_nb`** — greedy Furthest Point Sampling loop for
+    `reduce(method='centroid_fps')`. Eliminates Python-loop and NumPy-call overhead
+    for each greedy step. Speedup: **4–13×** (largest at small partition sizes,
+    typical of default HVRT settings).
+  - **`_medoid_fps_core_nb`** — medoid-seeded FPS for `reduce(method='medoid_fps')`.
+    Dispatches to exact O(n²·d) medoid for n≤200 and approximate O(n·d) for n>200,
+    matching the pure-Python threshold exactly. Speedup: **4–7×**.
+  - `@njit(cache=True)` — compiled bitcode is persisted to `__pycache__`; JIT cost
+    (~1 s per kernel) is paid only once per installation, not per session.
+  - **No-op fallback** — when numba is absent, all kernels remain callable as plain
+    Python/NumPy functions. `_NUMBA_AVAILABLE` flag controls dispatch at call-time.
+    Zero behaviour change for users who do not install `[fast]`.
+
+- **`src/hvrt/_kernels.py`** — central kernel module exporting `_NUMBA_AVAILABLE`,
+  `_pairwise_target_nb`, `_pairwise_target_numpy`, `_centroid_fps_core_nb`,
+  `_medoid_fps_core_nb`, `_exact_medoid_nb`, `_approx_medoid_nb`,
+  `_MEDOID_EXACT_THRESHOLD_NB`.
+
+- **`tests/test_kernels.py`** — 65 new tests covering:
+  - Shape, dtype, and determinism of all kernels.
+  - Numerical equivalence of Numba vs NumPy paths (`atol=1e-7`).
+  - Exact integer-index equality for FPS kernels on non-degenerate data.
+  - Threshold constant sync (`_MEDOID_EXACT_THRESHOLD_NB == 200`).
+  - Dispatch verification (`_NUMBA_AVAILABLE` consistent with `import numba`).
+  - C-contiguity and float32 input promotion.
+  - End-to-end `fit → reduce → expand` pipeline smoke test.
+
+- **`benchmarks/results/numba_speed_benchmark.md`** — detailed micro-benchmark report
+  with per-kernel speedup tables, GeoXGB context analysis, and JIT warm-start costs.
+
+### Changed
+- **`HVRT._compute_x_component`** rewrites the synthetic target computation.
+  Replaced `sklearn.preprocessing.PolynomialFeatures` (O(n·d²) intermediate matrix,
+  sklearn overhead) with a block-wise NumPy loop (O(n·d) peak memory) as the default
+  fallback, and the Numba fused kernel (O(n)) when `[fast]` is installed.
+  Numerical output is identical to the old PolynomialFeatures path to within ~1e-7
+  on z-scored data — well below any decision-tree split threshold.
+- **`reduction_strategies._centroid_fps_core`** and **`_medoid_fps_core`** now
+  delegate to compiled Numba kernels when available, retaining the pure-Python/NumPy
+  implementation as the fallback. The public `Strategy` API and `SelectionContext`
+  are unchanged.
+
+### Performance
+Benchmark on a 32-core machine (Numba warm — `cache=True` bitcode loaded from
+`__pycache__`):
+
+| Kernel | (n, d) or (n_part, d) | NumPy (ms) | Numba (ms) | Speedup |
+|---|---|---|---|---|
+| `_pairwise_target` | n=1k, d=10 | 1.4 | 0.13 | **10.9×** |
+| `_pairwise_target` | n=5k, d=15 | 19.6 | 2.8 | **7.0×** |
+| `_pairwise_target` | n=50k, d=20 | 782 | 267 | **2.9×** |
+| `_centroid_fps_core` | n=50, d=6 | 0.48 | 0.036 | **13.4×** |
+| `_centroid_fps_core` | n=500, d=10 | 40 | 6.6 | **6.1×** |
+| `_centroid_fps_core` | n=2000, d=20 | 786 | 206 | **3.8×** |
+| `_medoid_fps_core` | n=50, d=6 | 1.8 | 0.25 | **7.1×** |
+| `_medoid_fps_core` | n=500, d=10 | 156 | 23.8 | **6.6×** |
+| `fit()` end-to-end | n=50k, d=20 | 825ms | 245ms | **3.4×** |
+
+Full results: [`benchmarks/results/numba_speed_benchmark.md`](benchmarks/results/numba_speed_benchmark.md)
+
+---
+
 ## [2.5.0] — 2026-02-26
 
 ### Added

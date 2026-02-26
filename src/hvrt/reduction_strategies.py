@@ -39,6 +39,11 @@ from typing import Protocol, runtime_checkable
 from scipy.spatial.distance import cdist
 
 from ._budgets import _iter_partitions, _partition_pos
+from ._kernels import (
+    _NUMBA_AVAILABLE,
+    _centroid_fps_core_nb,
+    _medoid_fps_core_nb,
+)
 from ._warnings import HVRTDeprecationWarning
 
 
@@ -211,7 +216,19 @@ def _build_selection_context(
 # ---------------------------------------------------------------------------
 
 def _centroid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
-    """Centroid-seeded FPS on a single partition; returns local indices."""
+    """
+    Centroid-seeded FPS on a single partition; returns local indices.
+
+    Dispatches to the Numba-compiled kernel when ``numba`` is installed
+    (``pip install hvrt[fast]``), otherwise runs the pure-NumPy path.
+    Both paths are algorithmically identical and produce the same indices
+    on non-degenerate data.
+    """
+    if _NUMBA_AVAILABLE:
+        return _centroid_fps_core_nb(
+            np.ascontiguousarray(X_part, dtype=np.float64), int(budget)
+        )
+    # --- pure-NumPy fallback ---
     n_points = len(X_part)
     centroid = X_part.mean(axis=0)
     diff = X_part - centroid
@@ -271,7 +288,18 @@ def _approximate_medoid_idx(X_part: np.ndarray) -> int:
 
 
 def _medoid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
-    """Medoid-seeded FPS on a single partition; returns local indices."""
+    """
+    Medoid-seeded FPS on a single partition; returns local indices.
+
+    Dispatches to the Numba-compiled kernel when ``numba`` is installed
+    (``pip install hvrt[fast]``), otherwise runs the pure-NumPy/scipy path.
+    Both paths use the same threshold (200) for exact vs approximate medoid.
+    """
+    if _NUMBA_AVAILABLE:
+        return _medoid_fps_core_nb(
+            np.ascontiguousarray(X_part, dtype=np.float64), int(budget)
+        )
+    # --- pure-NumPy/scipy fallback ---
     n_points = len(X_part)
 
     if n_points <= _MEDOID_EXACT_THRESHOLD:

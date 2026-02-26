@@ -12,9 +12,9 @@ Preferred for sample *reduction*; comparable to FastHVRT for expansion.
 """
 
 import numpy as np
-from sklearn.preprocessing import PolynomialFeatures
 
 from .._base import _HVRTBase
+from .._kernels import _NUMBA_AVAILABLE, _pairwise_target_nb, _pairwise_target_numpy
 
 
 class HVRT(_HVRTBase):
@@ -66,7 +66,7 @@ class HVRT(_HVRTBase):
 
     def _compute_x_component(self, X_z):
         """
-        Pairwise feature interaction synthetic target (O(d²)).
+        Pairwise feature interaction synthetic target (O(d²) ops, O(n·d) peak memory).
 
         For all feature pairs (i, j), i < j:
           1. Compute element-wise product X_z[:,i] ⊙ X_z[:,j]
@@ -75,19 +75,16 @@ class HVRT(_HVRTBase):
 
         High |score| indicates samples where many feature pairs are jointly
         extreme — the defining characteristic of structural outliers.
+
+        Implementation
+        --------------
+        When ``numba`` is installed (``pip install hvrt[fast]``), delegates to
+        ``_pairwise_target_nb`` — a fused LLVM-compiled kernel with O(n) peak
+        memory (no intermediate arrays).  Falls back to a block-wise NumPy loop
+        (O(n·d) peak memory) otherwise.  Both paths are numerically equivalent
+        to within ~1e-8 on z-scored data.
         """
-        n_samples, n_features = X_z.shape
-
-        poly = PolynomialFeatures(degree=2, interaction_only=True, include_bias=False)
-        interactions_all = poly.fit_transform(X_z)
-        interactions = interactions_all[:, n_features:]  # drop original columns
-
-        means = interactions.mean(axis=0)
-        stds = interactions.std(axis=0)
-        stds_safe = np.where(stds > 1e-10, stds, 1.0)
-
-        interactions_z = (interactions - means) / stds_safe
-        # Zero out constant interactions (no variance information)
-        interactions_z = np.where(stds[None, :] > 1e-10, interactions_z, 0.0)
-
-        return interactions_z.sum(axis=1)
+        X_z = np.ascontiguousarray(X_z, dtype=np.float64)
+        if _NUMBA_AVAILABLE:
+            return _pairwise_target_nb(X_z)
+        return _pairwise_target_numpy(X_z)
