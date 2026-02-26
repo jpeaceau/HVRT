@@ -13,10 +13,13 @@ check ``_NUMBA_AVAILABLE`` and select the appropriate backend automatically.
 
 Design principles
 -----------------
-* ``@njit(cache=True)`` — compiled bitcode is persisted to ``__pycache__``
-  so the ~1-2 s JIT cost occurs only on the *first ever* process run.
-  Subsequent calls (including the 2 000+ FPS invocations in a GeoXGB
-  training run) pay zero JIT overhead.
+* ``@njit(cache=True, fastmath=True)`` — compiled bitcode is persisted to
+  ``__pycache__`` so the ~1-2 s JIT cost occurs only on the *first ever*
+  process run.  Subsequent calls (including the 2 000+ FPS invocations in a
+  GeoXGB training run) pay zero JIT overhead.  ``fastmath=True`` allows LLVM
+  to use FMA instructions and reorder FP operations; safe here because all
+  inputs are z-scored (values in [-6, 6]) and squared-distance accumulations
+  have bounded magnitude.
 * No-op fallback — when numba is absent, ``njit`` is replaced by a
   decorator that returns the function unchanged.  All Numba-decorated
   functions therefore remain callable as ordinary Python.
@@ -69,7 +72,7 @@ except ImportError:  # pragma: no cover
 # Pairwise interaction target kernel
 # ---------------------------------------------------------------------------
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _pairwise_target_nb(X_z):
     """
     Fused pairwise-interaction synthetic target (O(n) peak memory).
@@ -158,7 +161,7 @@ def _pairwise_target_numpy(X_z):
 # Centroid-seeded FPS kernel
 # ---------------------------------------------------------------------------
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _centroid_fps_core_nb(X_part, budget):
     """
     Centroid-seeded Furthest Point Sampling — compiled greedy loop.
@@ -234,7 +237,7 @@ def _centroid_fps_core_nb(X_part, budget):
 # Medoid helpers
 # ---------------------------------------------------------------------------
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _exact_medoid_nb(X_part):
     """
     Exact O(n²·d) medoid: minimise sum of squared distances to all others.
@@ -259,7 +262,7 @@ def _exact_medoid_nb(X_part):
     return best_idx
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _approx_medoid_nb(X_part, k):
     """
     Approximate O(n·d) medoid via centroid-nearest k candidates.
@@ -323,7 +326,7 @@ def _approx_medoid_nb(X_part, k):
 _MEDOID_EXACT_THRESHOLD_NB = 200
 
 
-@njit(cache=True)
+@njit(cache=True, fastmath=True)
 def _medoid_fps_core_nb(X_part, budget):
     """
     Medoid-seeded Furthest Point Sampling — compiled greedy loop.

@@ -88,6 +88,14 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
 
         Individual expand() calls may override this per-call.
     random_state : int, default=42
+    tree_splitter : {'best', 'random'}, default 'best'
+        Splitting strategy passed to ``DecisionTreeRegressor``.  ``'best'``
+        evaluates every (feature, threshold) pair and picks the globally
+        optimal split — maximally informative partitions, but O(n·d·n_splits)
+        per node.  ``'random'`` picks a random threshold per feature and
+        selects the best feature — 10–50× faster on large datasets at a
+        small cost in split-boundary precision.  Recommended for GeoXGB
+        workloads where ``fit()`` is called at every refit interval.
     reduce_params : ReduceParams or None
         Operation parameters for fit_transform() pipeline use.
         When set, fit_transform() calls reduce(**vars(reduce_params)).
@@ -114,6 +122,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         n_jobs=1,
         bandwidth='auto',
         random_state=42,
+        tree_splitter='best',
         reduce_params=None,
         expand_params=None,
         augment_params=None,
@@ -128,6 +137,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self.n_jobs = n_jobs
         self.bandwidth = bandwidth
         self.random_state = random_state
+        self.tree_splitter = tree_splitter
         self.reduce_params = reduce_params
         self.expand_params = expand_params
         self.augment_params = augment_params
@@ -218,6 +228,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self.tree_ = fit_hvrt_tree(
             X_z, self._last_target_,
             max_leaf, min_leaf, self.max_depth, self.random_state,
+            splitter=self.tree_splitter,
         )
         self._tree_max_leaf_ = max_leaf
         self._tree_min_leaf_ = min_leaf

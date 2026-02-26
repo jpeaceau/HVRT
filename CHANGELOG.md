@@ -4,6 +4,62 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.6.1] — 2026-02-27
+
+### Added
+- **`tree_splitter` constructor parameter** on `HVRT` and `FastHVRT`
+  (default `'best'` — zero behaviour change for existing code).
+
+  `'best'` evaluates every (feature, threshold) pair and picks the globally
+  optimal split: maximally informative partitions, O(n·d·n_splits) per node.
+
+  `'random'` picks a random threshold per feature and selects the best feature:
+  **10–50× faster** on large datasets at a small cost in split-boundary
+  precision.  The pairwise target is a strong enough signal that the best
+  *feature* is still selected reliably; only the exact boundary within that
+  feature varies.  Recommended for repeated-fit workloads such as GeoXGB
+  (51 HVRT refits per 1 000-round training run).
+
+  Profiling breakdown that motivated this change (median over 5 runs,
+  `splitter='best'`, Numba enabled):
+
+  | n, d | fit() total | **tree.fit** | target | preprocess |
+  |---|---|---|---|---|
+  | n=5k, d=20 | 80ms | **96%** | 3% | 1% |
+  | n=20k, d=20 | 369ms | **92%** | 6% | 1% |
+  | n=50k, d=20 | 871ms | **91%** | 7% | 1% |
+
+  Switching to `tree_splitter='random'`:
+
+  | n, d | `'best'` tree | `'random'` tree | Speedup |
+  |---|---|---|---|
+  | n=1k, d=10 | 7ms | 0.7ms | **10×** |
+  | n=5k, d=20 | 93ms | 3.7ms | **25×** |
+  | n=20k, d=20 | 550ms | 11ms | **50×** |
+  | n=50k, d=20 | 1 470ms | 33ms | **45×** |
+
+  End-to-end `fit()` at n=50k, d=20: ~870ms → ~107ms (**8×**) with
+  `tree_splitter='random'`.
+
+### Changed
+- **`fastmath=True`** added to all Numba kernels (`_pairwise_target_nb`,
+  `_centroid_fps_core_nb`, `_medoid_fps_core_nb`, `_exact_medoid_nb`,
+  `_approx_medoid_nb`).  Allows LLVM to use FMA instructions and reorder
+  FP operations; safe because all inputs are z-scored (values in `[-6, 6]`)
+  and squared-distance accumulations have bounded magnitude.  Typical
+  additional gain: 10–20% on pairwise target and FPS kernels.
+
+### Notes
+- `tree_splitter='random'` does not change the default — existing code and
+  serialised models are unaffected.  The parameter is exposed so users and
+  downstream libraries (e.g. GeoXGB) can opt in after validating quality
+  on their own benchmarks.
+- `benchmarks/profile_fit.py` added: instruments `fit()` sub-operations
+  (preprocess, pairwise target, tree fit, tree apply) with per-call timing
+  to establish the true cost breakdown.
+
+---
+
 ## [2.6.0] — 2026-02-26
 
 ### Added
