@@ -4,6 +4,62 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.5.0] — 2026-02-26
+
+### Added
+- **Two-stage stateful generation strategies** (`StatefulGenerationStrategy` protocol).
+  All four built-in strategies (`epanechnikov`, `bootstrap_noise`, `multivariate_kde`,
+  `univariate_kde_copula`) now implement `prepare(X_z, partition_ids, unique_partitions)`
+  (called once at fit-time, result cached) and `generate(context, budgets, random_state)`
+  (called per expand, no recomputation of partition metadata).
+  - `EpanechnikovStrategy`, `BootstrapNoiseStrategy`, `MultivariateKDEStrategy`,
+    `UnivariateCopulaStrategy` classes exported from `hvrt`.
+  - Frozen context dataclasses: `PartitionContext`, `EpanechnikovContext`,
+    `BootstrapNoiseContext`, `MultivariateKDEContext`, `UnivariateCopulaContext`.
+  - Generation internals fully vectorised — per-partition Python loops replaced with
+    batch NumPy/linalg ops (`np.linalg.cholesky` on stacked covariance matrices,
+    batch matmul for Cholesky noise, single RNG block per expand call).
+  - Speedup vs old protocol: bootstrap 2–5×, multivariate KDE 1.5–4×,
+    epanechnikov 1.3–3× (small-to-medium n).
+
+- **Two-stage stateful selection strategies** (`StatefulSelectionStrategy` protocol).
+  All four built-in strategies implement `prepare(X_z, partition_ids, unique_partitions)`
+  and `select(context, budgets, random_state, n_jobs=1)`.
+  - `StratifiedStrategy`, `VarianceOrderedStrategy`, `CentroidFPSStrategy`,
+    `MedoidFPSStrategy` classes exported from `hvrt`.
+  - `SelectionContext` frozen dataclass exported from `hvrt`.
+  - `StratifiedStrategy` fully vectorised via `np.lexsort` — eliminates per-partition
+    Python loop entirely. Consistent **2.5–3× speedup** across all dataset sizes.
+  - FPS and `VarianceOrderedStrategy` retain joblib parallelism (`n_jobs`) alongside
+    the two-stage protocol; both paths are active simultaneously.
+
+- **Context caching** in `_HVRTBase`. Prepared contexts are cached per strategy
+  instance (keyed by `id(strategy)`) and reused across repeated `expand()` /
+  `reduce()` calls with the same data. Cache is invalidated on `fit()` / `_fit_tree()`.
+  Eager preparation at the end of `fit()` when `expand_params` or `reduce_params`
+  carry a strategy at construction time.
+
+- **`HVRTOptimizer.objective` callable parameter** (default `None`).
+  Accepts a per-fold scoring function that receives a metrics dict
+  (`tstr`, `trtr`, `tstr_delta`, `X_synth`, `X_real`, `y_synth`, `y_real`,
+  `fold`, `n_synth`) and must return a float to maximise. Enables weighted
+  combinations of ML utility and privacy metrics. Defaults to TSTR Δ
+  when `None` (no behavioural change for existing code).
+
+### Changed
+- Module-level strategy singletons (`epanechnikov`, `bootstrap_noise`,
+  `multivariate_kde`, `univariate_kde_copula`, `centroid_fps`, `medoid_fps`,
+  `variance_ordered`, `stratified`) are now instances of the corresponding
+  strategy classes rather than plain functions.
+
+### Deprecated
+- Passing a **plain callable** as `generation_strategy` or `method` to
+  `expand()` / `reduce()` now emits `HVRTDeprecationWarning`. Implement
+  `StatefulGenerationStrategy` or `StatefulSelectionStrategy` instead.
+  Plain callables remain fully functional; no removal planned for the v2.x line.
+
+---
+
 ## [2.4.0] — 2026-02-25
 
 ### Changed
