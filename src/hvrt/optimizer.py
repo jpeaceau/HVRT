@@ -159,8 +159,10 @@ class HVRTOptimizer:
     Optuna-backed hyperparameter optimiser for HVRT.
 
     Searches over ``n_partitions``, ``min_samples_leaf``, ``y_weight``,
-    kernel / bandwidth, and ``variance_weighted`` to maximise mean TSTR Δ
-    (train-on-synthetic minus train-on-real) across CV folds.
+    kernel / bandwidth, and ``variance_weighted`` to maximise a per-fold
+    score across CV folds.  By default the score is TSTR Δ (train-on-synthetic
+    minus train-on-real).  Pass a custom ``objective`` callable to use any
+    combination of metrics — e.g. a weighted mix of privacy and ML utility.
 
     After fitting, exposes ``expand()`` and ``augment()`` that delegate to
     the best fitted model with the best expansion parameters.
@@ -182,6 +184,45 @@ class HVRTOptimizer:
         One of ``'auto'``, ``'regression'``, ``'classification'``.
         ``'auto'`` infers from the number of unique y values
         (≤ 20 unique → classification, else regression).
+    objective : callable or None, default=None
+        Custom per-fold scoring function.  When ``None``, the default TSTR Δ
+        objective is used.
+
+        The callable receives a single ``dict`` with the following keys and
+        must return a **float to maximise**:
+
+        .. code-block:: python
+
+            {
+                'tstr':       float | None,   # downstream score trained on synthetic
+                'trtr':       float | None,   # downstream score trained on real
+                'tstr_delta': float | None,   # tstr - trtr
+                'X_synth':    ndarray,        # synthetic features (n_synth, n_features)
+                'X_real':     ndarray,        # real fold train features
+                'y_synth':    ndarray | None, # synthetic targets (None if y not provided)
+                'y_real':     ndarray | None, # real fold train targets
+                'fold':       int,            # fold index (0..cv-1)
+                'n_synth':    int,            # number of synthetic samples generated
+            }
+
+        ``tstr``, ``trtr``, ``tstr_delta``, ``y_synth``, and ``y_real`` are
+        ``None`` when ``y`` is not passed to ``fit()``.  The callable is
+        called once per fold; its return values are averaged across folds to
+        produce the trial score.
+
+        Return higher values for better configurations.  To penalise something
+        (e.g. privacy risk), subtract it from the return value::
+
+            def privacy_utility(m):
+                dcr = compute_dcr(m['X_synth'], m['X_real'])
+                # DCR in [0, 2]: higher = more private; cap at 1 to avoid
+                # rewarding samples that are more spread than real data
+                privacy = min(dcr, 1.0)
+                return 0.6 * m['tstr_delta'] + 0.4 * privacy
+
+            opt = HVRTOptimizer(objective=privacy_utility, n_trials=50)
+            opt.fit(X, y)
+
     timeout : float or None, default=None
         Wall-clock timeout for the Optuna study (seconds).
     random_state : int or None, default=None
@@ -191,7 +232,8 @@ class HVRTOptimizer:
     Attributes
     ----------
     best_score_ : float
-        Best mean TSTR Δ across CV folds.
+        Best mean per-fold score across CV folds (TSTR Δ by default, or the
+        value returned by ``objective`` when a custom callable is provided).
     best_params_ : dict
         Best constructor kwargs (n_partitions, min_samples_leaf,
         y_weight, bandwidth).
@@ -220,6 +262,7 @@ class HVRTOptimizer:
         cv: int = 3,
         expansion_ratio: float = 5.0,
         task: str = 'auto',
+        objective=None,
         timeout: Optional[float] = None,
         random_state: Optional[int] = None,
         verbose: int = 0,
@@ -229,6 +272,7 @@ class HVRTOptimizer:
         self.cv = cv
         self.expansion_ratio = expansion_ratio
         self.task = task
+        self.objective = objective
         self.timeout = timeout
         self.random_state = random_state
         self.verbose = verbose
@@ -327,7 +371,7 @@ class HVRTOptimizer:
             constructor_kw, expand_kw = _decode_params(raw_params)
             seed = seed_base + trial.number
 
-            fold_deltas = []
+            fold_scores = []
             for fold_i, (tr_idx, te_idx) in enumerate(splits):
                 X_tr, X_te = X[tr_idx], X[te_idx]
                 try:
@@ -355,16 +399,44 @@ class HVRTOptimizer:
                         tstr = _downstream_score(
                             task_, X_s, y_s, X_te, y[te_idx], seed + fold_i
                         )
-                        fold_deltas.append(tstr - trtr_per_fold[fold_i])
+                        if self.objective is not None:
+                            metrics = {
+                                'tstr':       tstr,
+                                'trtr':       trtr_per_fold[fold_i],
+                                'tstr_delta': tstr - trtr_per_fold[fold_i],
+                                'X_synth':    X_s,
+                                'X_real':     X_tr,
+                                'y_synth':    y_s,
+                                'y_real':     y_tr,
+                                'fold':       fold_i,
+                                'n_synth':    n_synth,
+                            }
+                            fold_scores.append(float(self.objective(metrics)))
+                        else:
+                            fold_scores.append(tstr - trtr_per_fold[fold_i])
                     else:
                         model = HVRT(random_state=seed, **constructor_kw).fit(X_tr)
                         n_synth = max(4, int(len(X_tr) * self.expansion_ratio))
-                        model.expand(n=n_synth, **expand_kw)
-                        fold_deltas.append(0.0)
+                        X_s = model.expand(n=n_synth, **expand_kw)
+                        if self.objective is not None:
+                            metrics = {
+                                'tstr':       None,
+                                'trtr':       None,
+                                'tstr_delta': None,
+                                'X_synth':    X_s,
+                                'X_real':     X_tr,
+                                'y_synth':    None,
+                                'y_real':     None,
+                                'fold':       fold_i,
+                                'n_synth':    n_synth,
+                            }
+                            fold_scores.append(float(self.objective(metrics)))
+                        else:
+                            fold_scores.append(0.0)
                 except Exception:
                     return float('-inf')
 
-            return float(np.mean(fold_deltas))
+            return float(np.mean(fold_scores))
 
         # ------------------------------------------------------------------
         # Optuna study
