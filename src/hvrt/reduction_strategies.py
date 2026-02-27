@@ -5,8 +5,8 @@ Partition-aware selection strategies.  Each strategy owns the full
 iteration loop across all partitions and returns global indices into
 the original dataset.
 
-Two-stage stateful protocol (recommended)
------------------------------------------
+Two-stage stateful protocol
+---------------------------
 Each strategy implements ``StatefulSelectionStrategy``:
 
 - ``prepare(X_z, partition_ids, unique_partitions) -> SelectionContext``
@@ -19,18 +19,7 @@ Each strategy implements ``StatefulSelectionStrategy``:
 - ``select(context, budgets, random_state, n_jobs=1) -> ndarray[int]``
   Called per reduce() invocation.  Uses the cached context to perform the
   selection.  ``n_jobs`` is forwarded from the model's constructor parameter.
-
-Old callable protocol (deprecated)
------------------------------------
-Calling a strategy instance as ``centroid_fps(X_z, ...)`` still works
-(via ``__call__``) for backward compatibility, but emits
-``HVRTDeprecationWarning``.
-
-The legacy per-partition API (used by ``HVRTSampleReducer``) lives in
-``legacy/selection_strategies.py``.
 """
-
-import warnings
 
 import numpy as np
 from dataclasses import dataclass
@@ -44,7 +33,6 @@ from ._kernels import (
     _centroid_fps_core_nb,
     _medoid_fps_core_nb,
 )
-from ._warnings import HVRTDeprecationWarning
 
 
 # ---------------------------------------------------------------------------
@@ -128,48 +116,6 @@ class StatefulSelectionStrategy(Protocol):
         budgets : ndarray of int, shape (n_parts,)
         random_state : int
         n_jobs : int, default 1
-
-        Returns
-        -------
-        indices : ndarray of int64
-        """
-        ...
-
-
-# ---------------------------------------------------------------------------
-# Old callable protocol (kept for backward compatibility)
-# ---------------------------------------------------------------------------
-
-@runtime_checkable
-class SelectionStrategy(Protocol):
-    """
-    Legacy callable protocol for partition-aware selection strategies.
-
-    .. deprecated::
-        Use :class:`StatefulSelectionStrategy` instead.  The built-in
-        strategies are now class instances that implement both protocols;
-        calling them directly (old protocol) emits
-        :class:`HVRTDeprecationWarning`.
-    """
-
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-    ) -> np.ndarray:
-        """
-        Select samples across all partitions.
-
-        Parameters
-        ----------
-        X_z : ndarray (n_samples, n_features)
-        partition_ids : ndarray (n_samples,)
-        unique_partitions : ndarray
-        budgets : ndarray of int
-        random_state : int
 
         Returns
         -------
@@ -418,12 +364,6 @@ def _run_parallel(fn, tasks, n_jobs):
 # Strategy classes — StatefulSelectionStrategy implementations
 # ---------------------------------------------------------------------------
 
-_DEPRECATION_MSG = (
-    "Calling a selection strategy instance as a function is deprecated. "
-    "Pass it directly to HVRT.reduce(method=...) instead; the two-stage "
-    "StatefulSelectionStrategy protocol (prepare/select) is used automatically."
-)
-
 
 class StratifiedStrategy:
     """
@@ -486,19 +426,6 @@ class StratifiedStrategy:
 
         return order[mask]
 
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(_DEPRECATION_MSG, HVRTDeprecationWarning, stacklevel=2)
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.select(ctx, budgets, random_state, n_jobs=n_jobs)
-
 
 class VarianceOrderedStrategy:
     """
@@ -554,19 +481,6 @@ class VarianceOrderedStrategy:
             return np.array([], dtype=np.int64)
         return np.concatenate(results).astype(np.int64)
 
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(_DEPRECATION_MSG, HVRTDeprecationWarning, stacklevel=2)
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.select(ctx, budgets, random_state, n_jobs=n_jobs)
-
 
 class CentroidFPSStrategy:
     """
@@ -618,19 +532,6 @@ class CentroidFPSStrategy:
             return np.array([], dtype=np.int64)
         return np.concatenate(results).astype(np.int64)
 
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(_DEPRECATION_MSG, HVRTDeprecationWarning, stacklevel=2)
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.select(ctx, budgets, random_state, n_jobs=n_jobs)
-
 
 class MedoidFPSStrategy:
     """
@@ -680,27 +581,10 @@ class MedoidFPSStrategy:
             return np.array([], dtype=np.int64)
         return np.concatenate(results).astype(np.int64)
 
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(_DEPRECATION_MSG, HVRTDeprecationWarning, stacklevel=2)
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.select(ctx, budgets, random_state, n_jobs=n_jobs)
-
 
 # ---------------------------------------------------------------------------
-# Module-level singletons (replace old functions)
+# Module-level singletons
 # ---------------------------------------------------------------------------
-# These instances implement both StatefulSelectionStrategy (new protocol)
-# and SelectionStrategy (old callable protocol via __call__).
-# Pass them directly to HVRT.reduce(method=...) to use the new protocol
-# without deprecation warnings.
 
 #: Centroid-seeded FPS (default strategy).  Alias: ``'fps'``, ``'centroid_fps'``.
 centroid_fps = CentroidFPSStrategy()

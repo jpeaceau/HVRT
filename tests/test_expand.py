@@ -1,13 +1,13 @@
 """
 Tests for expansion and augmentation behaviour.
 
-Covers multivariate KDE generation, min_novelty enforcement, DCR ratio,
-all four HVRT-family expand combinations, and augment semantics.
+Covers multivariate KDE generation, DCR ratio, all four HVRT-family
+expand combinations, and augment semantics.
 """
 
 import pytest
 import numpy as np
-from hvrt import HVRT, FastHVRT, HVRTDeprecationWarning
+from hvrt import HVRT, FastHVRT
 
 
 # ---------------------------------------------------------------------------
@@ -65,44 +65,6 @@ class TestAllExpandCombinations:
 
 
 # ---------------------------------------------------------------------------
-# min_novelty
-# ---------------------------------------------------------------------------
-
-class TestMinNovelty:
-    def test_zero_novelty_no_crash(self, simple_data):
-        model = HVRT(random_state=0).fit(simple_data)
-        X_synth = model.expand(n=100, min_novelty=0.0)
-        assert X_synth.shape[0] == 100
-
-    def test_nonzero_novelty_enforced(self, correlated_data):
-        """With a strict novelty constraint the min distance should be ≥ threshold."""
-        X = correlated_data
-        model = HVRT(random_state=0).fit(X)
-        threshold = 0.5
-        # Use a wide bandwidth so the KDE can actually generate samples far
-        # enough from training points to satisfy the novelty threshold.
-        # (The default bandwidth=0.1 is intentionally tight and would make
-        # novelty filtering impossible by design — samples land within ~0.1σ
-        # of training points, which is well below the 0.25 threshold.)
-        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
-            X_synth = model.expand(n=100, min_novelty=threshold, bandwidth=0.5)
-        # Check a sample of points
-        from scipy.spatial.distance import cdist
-        # Normalize to z-score space for comparison (model stores X_z_)
-        X_synth_z = model._to_z(X_synth)
-        min_dists = cdist(X_synth_z[:20], model.X_z_, 'euclidean').min(axis=1)
-        # Allow some slack for the fallback path
-        assert np.mean(min_dists >= threshold * 0.5) > 0.5
-
-    def test_high_novelty_still_returns_n(self, simple_data):
-        """Should return the requested number even if novelty is hard to meet."""
-        model = HVRT(random_state=0).fit(simple_data)
-        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
-            X_synth = model.expand(n=50, min_novelty=0.5)
-        assert X_synth.shape[0] == 50
-
-
-# ---------------------------------------------------------------------------
 # Distribution fidelity
 # ---------------------------------------------------------------------------
 
@@ -153,11 +115,6 @@ class TestAugment:
         X_aug = model.augment(n=n_target)
         assert X_aug.shape == (n_target, simple_data.shape[1])
 
-    def test_augment_with_min_novelty(self, simple_data):
-        model = HVRT(random_state=0).fit(simple_data)
-        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
-            X_aug = model.augment(n=500, min_novelty=0.1)
-        assert X_aug.shape[0] == 500
 
 
 # ---------------------------------------------------------------------------

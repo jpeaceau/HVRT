@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hvrt"
-version = "2.6.1"
+version = "2.7.0"
 description = "Hierarchical Variance-Retaining Transformer (HVRT) — variance-aware sample transformation for tabular data"
 readme = "README.md"
 requires-python = ">=3.8"

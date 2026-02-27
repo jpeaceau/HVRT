@@ -1,14 +1,13 @@
 """
 Tests for reduction-specific behaviour.
 
-Covers variance-weighted vs size-weighted budget allocation, method parity
-with v1 HVRTSampleReducer, and edge cases.
+Covers variance-weighted vs size-weighted budget allocation and edge cases.
 """
 
 import warnings
 import pytest
 import numpy as np
-from hvrt import HVRT, FastHVRT, HVRTSampleReducer, HVRTFeatureWarning
+from hvrt import HVRT, FastHVRT, HVRTFeatureWarning
 
 
 # ---------------------------------------------------------------------------
@@ -82,23 +81,6 @@ class TestAllReduceCombinations:
         model = Cls(random_state=0).fit(X, y)
         X_red, idx = model.reduce(n=100, variance_weighted=vw, return_indices=True)
         np.testing.assert_array_equal(X_red, X[idx])
-
-
-# ---------------------------------------------------------------------------
-# v1 parity
-# ---------------------------------------------------------------------------
-
-class TestV1Parity:
-    def test_v1_still_importable(self):
-        from hvrt import HVRTSampleReducer
-        assert HVRTSampleReducer is not None
-
-    def test_v1_still_functional(self, data):
-        X, y = data
-        reducer = HVRTSampleReducer(reduction_ratio=0.3, random_state=42)
-        X_red, y_red = reducer.fit_transform(X, y)
-        assert X_red.shape[1] == X.shape[1]
-        assert len(X_red) < len(X)
 
 
 # ---------------------------------------------------------------------------

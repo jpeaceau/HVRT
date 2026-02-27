@@ -18,7 +18,6 @@ only, without a separate ``fit()`` call.
 
 from __future__ import annotations
 
-import inspect
 import warnings
 from typing import Callable, Literal, Optional, Union
 
@@ -34,7 +33,7 @@ from ._preprocessing import (
     build_cat_partition_freqs,
 )
 from ._partitioning import auto_tune_tree_params, fit_hvrt_tree, resolve_tree_params
-from .reduce import compute_partition_budgets, select_from_partitions
+from .reduce import compute_partition_budgets
 from .expand import (
     fit_partition_kdes,
     compute_expansion_budgets,
@@ -105,10 +104,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     augment_params : AugmentParams or None
         Operation parameters for fit_transform() pipeline use.
         When set, fit_transform() calls augment(**vars(augment_params)).
-    mode : str or None
-        Deprecated.  Use reduce_params / expand_params / augment_params
-        instead.  Kept for backward compatibility; emits
-        HVRTDeprecationWarning when fit_transform() is called.
     """
 
     def __init__(
@@ -126,7 +121,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         reduce_params=None,
         expand_params=None,
         augment_params=None,
-        mode=None,
     ):
         self.n_partitions = n_partitions
         self.min_samples_leaf = min_samples_leaf
@@ -141,7 +135,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self.reduce_params = reduce_params
         self.expand_params = expand_params
         self.augment_params = augment_params
-        self.mode = mode
 
     # ------------------------------------------------------------------
     # Subclass interface
@@ -395,26 +388,12 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         is_cacheable = (X is None and n_partitions is None)
 
         from .reduction_strategies import StatefulSelectionStrategy
-        if isinstance(strategy_fn, StatefulSelectionStrategy):
-            ctx = self._get_strategy_context(
-                strategy_fn, X_z_src,
-                partition_ids_src, unique_partitions_src,
-                cacheable=is_cacheable,
-            )
-            indices = strategy_fn.select(ctx, budgets, self.random_state, n_jobs=self.n_jobs)
-        else:
-            # Old-style callable: pass through the existing helper
-            warnings.warn(
-                "Passing a plain callable as method is deprecated. "
-                "Implement StatefulSelectionStrategy (prepare + select) instead.",
-                HVRTDeprecationWarning,
-                stacklevel=2,
-            )
-            indices = select_from_partitions(
-                X_z_src, partition_ids_src, unique_partitions_src,
-                budgets, strategy_fn, self.random_state,
-                n_jobs=self.n_jobs,
-            )
+        ctx = self._get_strategy_context(
+            strategy_fn, X_z_src,
+            partition_ids_src, unique_partitions_src,
+            cacheable=is_cacheable,
+        )
+        indices = strategy_fn.select(ctx, budgets, self.random_state, n_jobs=self.n_jobs)
 
         X_reduced = X_src[indices]
         if return_indices:
@@ -428,7 +407,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     def expand(
         self,
         n: int,
-        min_novelty: float = 0.0,
         variance_weighted: bool = False,
         bandwidth: Union[float, str, None] = None,
         adaptive_bandwidth: bool = False,
@@ -449,8 +427,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         ----------
         n : int
             Number of synthetic samples to generate.
-        min_novelty : float, default 0.0
-            Deprecated.
         variance_weighted : bool, default False
         bandwidth : float or str, optional
             KDE bandwidth scalar or selector.  ``None`` uses ``self.bandwidth``.
@@ -468,15 +444,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         stats : dict — only when return_novelty_stats=True
         """
         self._check_fitted()
-
-        if min_novelty > 0.0:
-            warnings.warn(
-                "min_novelty is deprecated and will be removed in a future release. "
-                "Benchmarking shows KDE-generated samples are naturally novel; "
-                "the filter is rarely effective.",
-                HVRTDeprecationWarning,
-                stacklevel=2,
-            )
 
         if n_partitions is not None:
             self._fit_tree(self.X_z_, self._last_target_, n_partitions, is_reduction=False)
@@ -547,23 +514,11 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
                         cacheable=is_cacheable,
                     )
                     X_synth_cont_z = strategy_fn.generate(ctx, budgets, self.random_state)
-                else:
-                    warnings.warn(
-                        "Passing a plain callable as generation_strategy is deprecated. "
-                        "Implement StatefulGenerationStrategy (prepare + generate) instead.",
-                        HVRTDeprecationWarning,
-                        stacklevel=2,
-                    )
-                    X_synth_cont_z = self._call_strategy(
-                        strategy_fn,
-                        X_z_cont, partition_ids_src, unique_partitions_src,
-                        budgets, self.random_state,
-                    )
             else:
                 X_synth_cont_z = sample_from_kdes(
                     kdes, unique_partitions_src, budgets,
                     X_z_cont, partition_ids_src,
-                    self.random_state, min_novelty=min_novelty,
+                    self.random_state,
                     n_jobs=self.n_jobs,
                 )
             X_synth_cont = self.scaler_.inverse_transform(X_synth_cont_z)
@@ -599,7 +554,7 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
     # augment
     # ------------------------------------------------------------------
 
-    def augment(self, n, min_novelty=0.0, variance_weighted=False, n_partitions=None):
+    def augment(self, n, variance_weighted=False, n_partitions=None):
         """
         Return original X concatenated with (n - len(X)) synthetic samples.
 
@@ -607,8 +562,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         ----------
         n : int
             Total output size.  Must be strictly greater than len(X).
-        min_novelty : float, default=0.0
-            Deprecated.
         variance_weighted : bool, default=False
         n_partitions : int or None
 
@@ -617,14 +570,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         X_augmented : ndarray (n, n_features)
         """
         self._check_fitted()
-        if min_novelty > 0.0:
-            warnings.warn(
-                "min_novelty is deprecated and will be removed in a future release. "
-                "Benchmarking shows KDE-generated samples are naturally novel; "
-                "the filter is rarely effective.",
-                HVRTDeprecationWarning,
-                stacklevel=2,
-            )
         n_orig = len(self.X_)
         if n <= n_orig:
             raise ValueError(
@@ -646,11 +591,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         """
         Fit and transform in a single step for sklearn pipeline use.
 
-        Dispatch order:
-        1. reduce_params / expand_params / augment_params set at construction
-           (kwargs override individual fields).
-        2. mode (deprecated) — emits HVRTDeprecationWarning.
-
         Examples
         --------
         >>> pipe = Pipeline([('hvrt', HVRT(reduce_params=ReduceParams(ratio=0.3)))])
@@ -667,26 +607,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             return self.expand(**{**vars(self.expand_params), **kwargs})
         if self.augment_params is not None:
             return self.augment(**{**vars(self.augment_params), **kwargs})
-
-        # Deprecated mode-based dispatch
-        if self.mode is not None:
-            warnings.warn(
-                "The 'mode' parameter is deprecated and will be removed in a future "
-                "release. Use reduce_params, expand_params, or augment_params instead: "
-                "HVRT(reduce_params=ReduceParams(ratio=0.3))",
-                HVRTDeprecationWarning,
-                stacklevel=2,
-            )
-            if self.mode == 'reduce':
-                return self.reduce(**kwargs)
-            elif self.mode == 'expand':
-                return self.expand(**kwargs)
-            elif self.mode == 'augment':
-                return self.augment(**kwargs)
-            else:
-                raise ValueError(
-                    f"Unknown mode {self.mode!r}. Use 'reduce', 'expand', or 'augment'."
-                )
 
         raise ValueError(
             "fit_transform() requires reduce_params, expand_params, or augment_params "
@@ -823,23 +743,6 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
                 X_z_cont, partition_ids, unique_partitions
             )
         return self._strategy_context_cache_[key]
-
-    def _call_strategy(self, strategy_fn, X_z, partition_ids, unique_partitions, budgets, random_state):
-        """
-        Call a generation strategy, passing ``n_jobs`` only when the strategy
-        declares it.  Built-in strategies declare ``n_jobs``; custom strategies
-        with the standard 5-arg signature are called without it.
-        """
-        try:
-            sig = inspect.signature(strategy_fn)
-            if 'n_jobs' in sig.parameters:
-                return strategy_fn(
-                    X_z, partition_ids, unique_partitions, budgets, random_state,
-                    n_jobs=self.n_jobs,
-                )
-        except (ValueError, TypeError):
-            pass
-        return strategy_fn(X_z, partition_ids, unique_partitions, budgets, random_state)
 
     def _coerce_external_X(self, X):
         """

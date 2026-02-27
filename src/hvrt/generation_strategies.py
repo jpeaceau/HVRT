@@ -2,10 +2,10 @@
 Generation Strategies for HVRT Expansion
 ==========================================
 
-Partition-aware generation strategies.  Two protocols are supported:
+Partition-aware generation strategies.
 
-StatefulGenerationStrategy (new, preferred)
--------------------------------------------
+StatefulGenerationStrategy
+--------------------------
 Each strategy is a class with two methods:
 
     prepare(X_z, partition_ids, unique_partitions) -> PartitionContext
@@ -16,24 +16,6 @@ Each strategy is a class with two methods:
     generate(context, budgets, random_state) -> ndarray (sum(budgets), d)
         Called per expand(); draws samples using precomputed context.
         Fully vectorized — no per-partition Python loops.
-
-GenerationStrategy (old, deprecated)
---------------------------------------
-Any callable with the partition-aware signature::
-
-    def my_strategy(
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-    ) -> np.ndarray:
-
-is still accepted.  A HVRTDeprecationWarning is emitted when HVRT detects
-a plain callable at dispatch time.  The built-in module-level singletons
-(``epanechnikov``, ``bootstrap_noise``, etc.) are now ``StatefulGenerationStrategy``
-instances; calling them directly as functions still works but emits the
-same deprecation warning.
 
 Built-in strategies
 -------------------
@@ -78,44 +60,15 @@ Usage
     X_synth = model.expand(n=5000, generation_strategy=MyStrategy())
 """
 
-import warnings
-
 import numpy as np
 from dataclasses import dataclass
 from typing import Protocol, runtime_checkable
 
 from ._budgets import _partition_pos
-from ._warnings import HVRTDeprecationWarning
 
 
 # ---------------------------------------------------------------------------
-# Old protocol — kept for backward compatibility
-# ---------------------------------------------------------------------------
-
-@runtime_checkable
-class GenerationStrategy(Protocol):
-    """
-    Protocol for partition-aware synthetic sample generation.
-
-    .. deprecated::
-        Implement :class:`StatefulGenerationStrategy` instead.  Plain
-        callables are still accepted but emit a
-        :class:`~hvrt._warnings.HVRTDeprecationWarning` at dispatch time.
-    """
-
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-    ) -> np.ndarray:
-        ...
-
-
-# ---------------------------------------------------------------------------
-# New stateful protocol
+# Stateful protocol
 # ---------------------------------------------------------------------------
 
 @runtime_checkable
@@ -357,26 +310,6 @@ class EpanechnikovStrategy:
         scale_arr = ctx.part_stds[labels]       # (total_budget, d)
         return base + h_arr * scale_arr * noise_unit
 
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(
-            "Calling a generation strategy as a plain function is deprecated. "
-            "Built-in strategies are now StatefulGenerationStrategy instances. "
-            "Pass the strategy object to expand(generation_strategy=...) directly "
-            "or use the strategy name string.",
-            HVRTDeprecationWarning,
-            stacklevel=2,
-        )
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.generate(ctx, budgets, random_state)
-
 
 # ---------------------------------------------------------------------------
 # BootstrapNoiseStrategy
@@ -432,26 +365,6 @@ class BootstrapNoiseStrategy:
         base = _resample_base_points(ctx, labels, total_budget, rng)
         scale = ctx.part_stds[labels] * 0.1   # (total_budget, d)
         return base + rng.standard_normal((total_budget, d)) * scale
-
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(
-            "Calling a generation strategy as a plain function is deprecated. "
-            "Built-in strategies are now StatefulGenerationStrategy instances. "
-            "Pass the strategy object to expand(generation_strategy=...) directly "
-            "or use the strategy name string.",
-            HVRTDeprecationWarning,
-            stacklevel=2,
-        )
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.generate(ctx, budgets, random_state)
 
 
 # ---------------------------------------------------------------------------
@@ -551,26 +464,6 @@ class MultivariateKDEStrategy:
         L_arr = ctx.L_all[labels]          # (total_budget, d, d)
         noise = (L_arr @ z)[:, :, 0]      # (total_budget, d)
         return base + noise
-
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(
-            "Calling a generation strategy as a plain function is deprecated. "
-            "Built-in strategies are now StatefulGenerationStrategy instances. "
-            "Pass the strategy object to expand(generation_strategy=...) directly "
-            "or use the strategy name string.",
-            HVRTDeprecationWarning,
-            stacklevel=2,
-        )
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.generate(ctx, budgets, random_state)
 
 
 # ---------------------------------------------------------------------------
@@ -706,29 +599,9 @@ class UnivariateCopulaStrategy:
                 )
         return X_synth
 
-    def __call__(
-        self,
-        X_z: np.ndarray,
-        partition_ids: np.ndarray,
-        unique_partitions: np.ndarray,
-        budgets: np.ndarray,
-        random_state: int,
-        n_jobs: int = 1,
-    ) -> np.ndarray:
-        warnings.warn(
-            "Calling a generation strategy as a plain function is deprecated. "
-            "Built-in strategies are now StatefulGenerationStrategy instances. "
-            "Pass the strategy object to expand(generation_strategy=...) directly "
-            "or use the strategy name string.",
-            HVRTDeprecationWarning,
-            stacklevel=2,
-        )
-        ctx = self.prepare(X_z, partition_ids, unique_partitions)
-        return self.generate(ctx, budgets, random_state)
-
 
 # ---------------------------------------------------------------------------
-# Module-level singletons — same names as the old functions for drop-in compat
+# Module-level singletons
 # ---------------------------------------------------------------------------
 
 epanechnikov         = EpanechnikovStrategy()

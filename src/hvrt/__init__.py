@@ -27,10 +27,6 @@ Pipeline API (v2)
 
     pipe = Pipeline([('hvrt', FastHVRT(expand_params=ExpandParams(n=50000)))])
     X_synth = pipe.fit_transform(X)
-
-Legacy API (v1, kept for backward compatibility)
-------------------------------------------------
-    from hvrt import HVRTSampleReducer, AdaptiveHVRTReducer
 """
 
 from ._warnings import HVRTWarning, HVRTFeatureWarning, HVRTDeprecationWarning
@@ -38,12 +34,7 @@ from ._params import ReduceParams, ExpandParams, AugmentParams
 from .model import HVRT, FastHVRT
 from .optimizer import HVRTOptimizer
 
-# Legacy v1 classes — kept for backward compatibility
-from .legacy.sample_reduction import HVRTSampleReducer
-from .legacy.adaptive_reducer import AdaptiveHVRTReducer
 from .reduction_strategies import (
-    # Old callable protocol (kept for backward compat)
-    SelectionStrategy,
     # New stateful protocol
     StatefulSelectionStrategy,
     # Context dataclass
@@ -63,8 +54,6 @@ from .reduction_strategies import (
     get_strategy,
 )
 from .generation_strategies import (
-    # Old protocol (kept for backward compat)
-    GenerationStrategy,
     # New stateful protocol
     StatefulGenerationStrategy,
     # Context dataclasses
@@ -88,7 +77,7 @@ from .generation_strategies import (
     get_generation_strategy,
 )
 
-__version__ = '2.6.1'
+__version__ = '2.7.0'
 
 __all__ = [
     # v2 primary API
@@ -103,8 +92,6 @@ __all__ = [
     'HVRTWarning',
     'HVRTFeatureWarning',
     'HVRTDeprecationWarning',
-    # Selection strategies — old callable protocol
-    'SelectionStrategy',
     # Selection strategies — new stateful protocol
     'StatefulSelectionStrategy',
     'SelectionContext',
@@ -119,8 +106,6 @@ __all__ = [
     'stratified',
     'BUILTIN_STRATEGIES',
     'get_strategy',
-    # Generation strategies — old protocol
-    'GenerationStrategy',
     # Generation strategies — new stateful protocol
     'StatefulGenerationStrategy',
     'PartitionContext',
@@ -139,7 +124,4 @@ __all__ = [
     'epanechnikov',
     'BUILTIN_GENERATION_STRATEGIES',
     'get_generation_strategy',
-    # v1 legacy API
-    'HVRTSampleReducer',
-    'AdaptiveHVRTReducer',
 ]

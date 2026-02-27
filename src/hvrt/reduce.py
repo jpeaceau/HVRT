@@ -7,18 +7,9 @@ and multi-strategy within-partition sample selection.
 
 from __future__ import annotations
 
-import inspect
-from typing import Callable, Literal, Union
-
 import numpy as np
 
 from ._budgets import _compute_weights, _partition_pos, allocate_budgets
-from .reduction_strategies import get_strategy
-
-SelectionMethod = Union[
-    Literal['fps', 'centroid_fps', 'medoid_fps', 'variance_ordered', 'stratified'],
-    Callable,
-]
 
 
 def compute_partition_budgets(
@@ -72,46 +63,3 @@ def compute_partition_budgets(
         remaining_capacity[pick] -= 1
 
     return budgets
-
-
-def select_from_partitions(
-    X_z: np.ndarray,
-    partition_ids: np.ndarray,
-    unique_partitions: np.ndarray,
-    budgets: np.ndarray,
-    method: SelectionMethod,
-    random_state: int,
-    n_jobs: int = 1,
-) -> np.ndarray:
-    """
-    Select samples from each partition using the given strategy.
-
-    Parameters
-    ----------
-    X_z : ndarray (n_samples, n_features)
-    partition_ids : ndarray (n_samples,)
-    unique_partitions : ndarray
-    budgets : ndarray of int
-    method : str or callable
-        Built-in string aliases or a partition-aware callable
-        ``(X_z, partition_ids, unique_partitions, budgets, random_state) -> ndarray[int]``.
-    random_state : int
-    n_jobs : int, default 1
-        Number of parallel jobs for built-in strategies.  Passed only when
-        the strategy's signature declares an ``n_jobs`` parameter.
-
-    Returns
-    -------
-    indices : ndarray of int
-    """
-    strategy = get_strategy(method) if isinstance(method, str) else method
-    try:
-        sig = inspect.signature(strategy)
-        if 'n_jobs' in sig.parameters:
-            return strategy(
-                X_z, partition_ids, unique_partitions, budgets, random_state,
-                n_jobs=n_jobs,
-            )
-    except (ValueError, TypeError):
-        pass
-    return strategy(X_z, partition_ids, unique_partitions, budgets, random_state)

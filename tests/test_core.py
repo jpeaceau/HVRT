@@ -1,13 +1,13 @@
 """
 Tests for HVRT and FastHVRT core classes.
 
-Covers: fit, reduce, expand, augment, fit_transform (params-based and legacy
-mode), utility methods, presets, unsupervised/supervised modes.
+Covers: fit, reduce, expand, augment, fit_transform (params-based),
+utility methods, unsupervised/supervised modes.
 """
 
 import pytest
 import numpy as np
-from hvrt import HVRT, FastHVRT, HVRTDeprecationWarning, ReduceParams, ExpandParams, AugmentParams
+from hvrt import HVRT, FastHVRT, ReduceParams, ExpandParams, AugmentParams
 
 
 # ---------------------------------------------------------------------------
@@ -148,12 +148,6 @@ class TestExpand:
         X2 = model.expand(n=100, variance_weighted=False)
         assert X1.shape == X2.shape
 
-    def test_expand_min_novelty(self, ModelCls, small_X):
-        model = ModelCls(random_state=0).fit(small_X)
-        with pytest.warns(HVRTDeprecationWarning, match="min_novelty is deprecated"):
-            X_synth = model.expand(n=100, min_novelty=0.1)
-        assert X_synth.shape[0] == 100
-
     def test_expand_novelty_stats(self, ModelCls, small_X):
         model = ModelCls(random_state=0).fit(small_X)
         X_synth, stats = model.expand(n=50, return_novelty_stats=True)
@@ -232,38 +226,6 @@ class TestFitTransform:
         model = ModelCls(random_state=0).fit(small_X)
         with pytest.raises(ValueError):
             model.fit_transform(small_X)
-
-
-# ---------------------------------------------------------------------------
-# fit_transform — deprecated mode API
-# ---------------------------------------------------------------------------
-
-class TestFitTransformLegacyMode:
-    def test_mode_reduce_warns(self, ModelCls, small_X):
-        model = ModelCls(mode='reduce', random_state=0)
-        with pytest.warns(HVRTDeprecationWarning, match="mode.*deprecated"):
-            X_red = model.fit_transform(small_X, ratio=0.3)
-        assert X_red.shape[1] == small_X.shape[1]
-        assert len(X_red) < len(small_X)
-
-    def test_mode_expand_warns(self, ModelCls, small_X):
-        model = ModelCls(mode='expand', random_state=0)
-        with pytest.warns(HVRTDeprecationWarning, match="mode.*deprecated"):
-            X_synth = model.fit_transform(small_X, n=200)
-        assert X_synth.shape == (200, small_X.shape[1])
-
-    def test_mode_augment_warns(self, ModelCls, small_X):
-        model = ModelCls(mode='augment', random_state=0)
-        with pytest.warns(HVRTDeprecationWarning, match="mode.*deprecated"):
-            X_aug = model.fit_transform(small_X, n=500)
-        assert X_aug.shape == (500, small_X.shape[1])
-
-    def test_mode_invalid_raises(self, ModelCls, small_X):
-        model = ModelCls(mode='invalid', random_state=0)
-        model.fit(small_X)
-        with pytest.warns(HVRTDeprecationWarning):
-            with pytest.raises(ValueError):
-                model.fit_transform(small_X)
 
 
 # ---------------------------------------------------------------------------

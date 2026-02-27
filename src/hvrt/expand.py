@@ -162,9 +162,6 @@ def sample_from_kdes(
     X_z: np.ndarray,
     partition_ids: np.ndarray,
     random_state: int,
-    min_novelty: float = 0.0,
-    oversample_factor: int = 5,
-    max_attempts: int = 10,
     n_jobs: int = 1,
 ) -> np.ndarray:
     """
@@ -178,17 +175,11 @@ def sample_from_kdes(
     unique_partitions : ndarray
     budgets : ndarray of int
     X_z : ndarray (n_samples, n_features)
-        Original data in z-score space, used for novelty filtering.
+        Original data in z-score space.
     partition_ids : ndarray (n_samples,)
     random_state : int
-    min_novelty : float, default 0.0
-        Minimum Euclidean distance from any original sample.
-        ``0.0`` disables filtering.
-    oversample_factor : int, default 5
-    max_attempts : int, default 10
     n_jobs : int, default 1
-        Number of parallel jobs for the min_novelty=0 fast path.
-        The novelty-filtering path is always serial (deprecated feature).
+        Number of parallel jobs for KDE resampling.
 
     Returns
     -------
@@ -196,73 +187,29 @@ def sample_from_kdes(
     """
     rng = np.random.RandomState(random_state)
 
-    if min_novelty <= 0.0:
-        # Fast path: simple KDE resample — fully parallelisable.
-        tasks = []
-        for pid, budget in zip(unique_partitions, budgets):
-            if budget == 0:
-                continue
-            kde = kdes.get(int(pid))
-            X_part = X_z[partition_ids == pid]
-            seed = int(rng.randint(0, 2 ** 31))
-            tasks.append((kde, X_part, budget, seed))
-
-        if not tasks:
-            return np.empty((0, X_z.shape[1]))
-
-        _MIN_PAR = 6
-        if n_jobs == 1 or len(tasks) < _MIN_PAR:
-            results = [_sample_kde_partition_simple(*t) for t in tasks]
-        else:
-            from joblib import Parallel, delayed
-            # prefer='threads': kde.resample() releases the GIL (scipy/BLAS).
-            results = Parallel(n_jobs=n_jobs, prefer='threads')(
-                delayed(_sample_kde_partition_simple)(*t) for t in tasks
-            )
-
-        return np.vstack(results)
-
-    # Novelty-filtering path (deprecated, always serial — complex retry logic).
-    all_synthetic = []
+    tasks = []
     for pid, budget in zip(unique_partitions, budgets):
         if budget == 0:
             continue
-
         kde = kdes.get(int(pid))
         X_part = X_z[partition_ids == pid]
+        seed = int(rng.randint(0, 2 ** 31))
+        tasks.append((kde, X_part, budget, seed))
 
-        if kde is None:
-            base = np.tile(X_part[0], (budget, 1))
-            base += rng.normal(0, 0.01, base.shape)
-            all_synthetic.append(base)
-            continue
-
-        collected = []
-        needed = budget
-        attempts = 0
-
-        while needed > 0 and attempts < max_attempts:
-            n_draw = needed * oversample_factor
-            drawn = kde.resample(n_draw, seed=int(rng.randint(0, 2 ** 31))).T
-            dists = cdist(drawn, X_part, metric='euclidean').min(axis=1)
-            novel = drawn[dists >= min_novelty]
-            if len(novel) > 0:
-                take = min(needed, len(novel))
-                collected.append(novel[:take])
-                needed -= take
-            attempts += 1
-
-        if needed > 0:
-            fallback = kde.resample(needed, seed=int(rng.randint(0, 2 ** 31))).T
-            collected.append(fallback)
-
-        samples = np.vstack(collected) if collected else np.empty((0, X_z.shape[1]))
-        all_synthetic.append(samples[:budget])
-
-    if not all_synthetic:
+    if not tasks:
         return np.empty((0, X_z.shape[1]))
 
-    return np.vstack(all_synthetic)
+    _MIN_PAR = 6
+    if n_jobs == 1 or len(tasks) < _MIN_PAR:
+        results = [_sample_kde_partition_simple(*t) for t in tasks]
+    else:
+        from joblib import Parallel, delayed
+        # prefer='threads': kde.resample() releases the GIL (scipy/BLAS).
+        results = Parallel(n_jobs=n_jobs, prefer='threads')(
+            delayed(_sample_kde_partition_simple)(*t) for t in tasks
+        )
+
+    return np.vstack(results)
 
 
 # ---------------------------------------------------------------------------
