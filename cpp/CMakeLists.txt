@@ -9,10 +9,10 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Compiler flags
 # --------------------------------------------------------------------------
 if(MSVC)
-    add_compile_options(/O2 /arch:AVX2 /W3)
+    add_compile_options(/O2 /W3)
     add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
 else()
-    add_compile_options(-O3 -march=native -Wall -Wextra -Wno-unused-parameter)
+    add_compile_options(-O3 -Wall -Wextra -Wno-unused-parameter)
 endif()
 
 # --------------------------------------------------------------------------
