@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["scikit-build-core>=0.9", "pybind11>=2.11", "cmake>=3.20", "ninja"]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "hvrt"
-version = "2.7.0"
+version = "2.8.0"
 description = "Hierarchical Variance-Retaining Transformer (HVRT) — variance-aware sample transformation for tabular data"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -54,6 +54,7 @@ dev = [
 optimizer = [
     "optuna>=3.0.0",
 ]
+cpp = []    # no extra pip deps — C++ built automatically by scikit-build-core
 
 [project.urls]
 Homepage = "https://github.com/hotprotato/hvrt"
@@ -64,6 +65,14 @@ Issues = "https://github.com/hotprotato/hvrt/issues"
 [tool.setuptools.packages.find]
 where = ["src"]
 exclude = ["hvrt.benchmarks*"]
+
+[tool.scikit-build]
+cmake.build-type = "Release"
+wheel.packages = ["src/hvrt"]
+cmake.source-dir = "."
+
+[tool.scikit-build.cmake.define]
+HVRT_BUILD_TESTS = "OFF"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -91,3 +100,12 @@ warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false
 ignore_missing_imports = true
+
+[tool.cibuildwheel]
+# Build CPython 3.9–3.13; skip 32-bit and musl-libc (Alpine) targets
+build = "cp39-* cp310-* cp311-* cp312-* cp313-*"
+skip  = "*-win32 *-manylinux_i686 *-musllinux_*"
+
+[tool.cibuildwheel.macos]
+# Build native Intel and Apple Silicon wheels from the same runner
+archs = ["x86_64", "arm64"]

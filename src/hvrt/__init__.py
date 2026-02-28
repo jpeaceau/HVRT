@@ -17,16 +17,18 @@ Primary API (v2)
     model = FastHVRT().fit(X)                    # z-score sum (faster)
     X_synthetic = model.expand(n=50000)
 
-Pipeline API (v2)
------------------
-    from hvrt import HVRT, ReduceParams, ExpandParams
-    from sklearn.pipeline import Pipeline
+C++ backend (v2.8+)
+-------------------
+When the compiled extension (_hvrt_cpp) is available, performance-critical
+operations (pairwise target, centroid FPS, medoid FPS) automatically use the
+C++ implementation. Install via scikit-build-core or build from source. The
+dispatch order is: C++ → Numba (hvrt[fast]) → NumPy.
 
-    pipe = Pipeline([('hvrt', HVRT(reduce_params=ReduceParams(ratio=0.3)))])
-    X_red = pipe.fit_transform(X, y)
-
-    pipe = Pipeline([('hvrt', FastHVRT(expand_params=ExpandParams(n=50000)))])
-    X_synth = pipe.fit_transform(X)
+Deprecated (removed in v3.0)
+-----------------------------
+- Constructor params ``reduce_params``, ``expand_params``, ``augment_params``
+- ``fit_transform()``
+- ``get_params()`` / ``set_params()``
 """
 
 from ._warnings import HVRTWarning, HVRTFeatureWarning, HVRTDeprecationWarning
@@ -77,7 +79,7 @@ from .generation_strategies import (
     get_generation_strategy,
 )
 
-__version__ = '2.7.0'
+__version__ = '2.8.0'
 
 __all__ = [
     # v2 primary API

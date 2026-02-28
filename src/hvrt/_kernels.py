@@ -44,6 +44,8 @@ breaking rule (first occurrence of the extreme value).
 
 import numpy as np
 
+from ._cpp_backend import _CPP_AVAILABLE, _cpp_pairwise_target
+
 # ---------------------------------------------------------------------------
 # Numba import — fail gracefully
 # ---------------------------------------------------------------------------
@@ -155,6 +157,15 @@ def _pairwise_target_numpy(X_z):
         scores += inter_z.sum(axis=1)
 
     return scores
+
+
+def _pairwise_target(X_z: np.ndarray) -> np.ndarray:
+    """Dispatch: C++ → Numba → NumPy."""
+    if _CPP_AVAILABLE:
+        return _cpp_pairwise_target(np.ascontiguousarray(X_z, dtype=np.float64))
+    if _NUMBA_AVAILABLE:
+        return _pairwise_target_nb(np.ascontiguousarray(X_z, dtype=np.float64))
+    return _pairwise_target_numpy(X_z)
 
 
 # ---------------------------------------------------------------------------

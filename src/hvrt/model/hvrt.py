@@ -14,7 +14,7 @@ Preferred for sample *reduction*; comparable to FastHVRT for expansion.
 import numpy as np
 
 from .._base import _HVRTBase
-from .._kernels import _NUMBA_AVAILABLE, _pairwise_target_nb, _pairwise_target_numpy
+from .._kernels import _pairwise_target
 
 
 class HVRT(_HVRTBase):
@@ -84,7 +84,4 @@ class HVRT(_HVRTBase):
         (O(n·d) peak memory) otherwise.  Both paths are numerically equivalent
         to within ~1e-8 on z-scored data.
         """
-        X_z = np.ascontiguousarray(X_z, dtype=np.float64)
-        if _NUMBA_AVAILABLE:
-            return _pairwise_target_nb(X_z)
-        return _pairwise_target_numpy(X_z)
+        return _pairwise_target(np.ascontiguousarray(X_z, dtype=np.float64))

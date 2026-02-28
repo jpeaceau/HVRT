@@ -22,7 +22,6 @@ import warnings
 from typing import Callable, Literal, Optional, Union
 
 import numpy as np
-from sklearn.base import BaseEstimator, TransformerMixin
 
 from ._warnings import HVRTDeprecationWarning, HVRTFeatureWarning
 from ._params import ReduceParams, ExpandParams, AugmentParams
@@ -43,7 +42,7 @@ from .expand import (
 )
 
 
-class _HVRTBase(BaseEstimator, TransformerMixin):
+class _HVRTBase:
     """
     Base class shared by HVRT (pairwise interactions) and FastHVRT (z-score sum).
 
@@ -135,6 +134,25 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         self.reduce_params = reduce_params
         self.expand_params = expand_params
         self.augment_params = augment_params
+
+        if reduce_params is not None:
+            warnings.warn(
+                "The 'reduce_params' constructor parameter is deprecated and will be removed "
+                "in v3.0. Call fit() then reduce() directly.",
+                HVRTDeprecationWarning, stacklevel=2,
+            )
+        if expand_params is not None:
+            warnings.warn(
+                "The 'expand_params' constructor parameter is deprecated and will be removed "
+                "in v3.0. Call fit() then expand() directly.",
+                HVRTDeprecationWarning, stacklevel=2,
+            )
+        if augment_params is not None:
+            warnings.warn(
+                "The 'augment_params' constructor parameter is deprecated and will be removed "
+                "in v3.0. Call fit() then augment() directly.",
+                HVRTDeprecationWarning, stacklevel=2,
+            )
 
     # ------------------------------------------------------------------
     # Subclass interface
@@ -591,14 +609,15 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
         """
         Fit and transform in a single step for sklearn pipeline use.
 
-        Examples
-        --------
-        >>> pipe = Pipeline([('hvrt', HVRT(reduce_params=ReduceParams(ratio=0.3)))])
-        >>> X_red = pipe.fit_transform(X)
-
-        >>> pipe = Pipeline([('hvrt', FastHVRT(expand_params=ExpandParams(n=50000)))])
-        >>> X_synth = pipe.fit_transform(X)
+        .. deprecated:: 2.8.0
+            ``fit_transform()`` is deprecated and will be removed in v3.0.
+            Call ``fit()`` then ``reduce()`` / ``expand()`` / ``augment()`` explicitly.
         """
+        warnings.warn(
+            "fit_transform() is deprecated and will be removed in v3.0. "
+            "Call fit() then reduce() / expand() / augment() explicitly.",
+            HVRTDeprecationWarning, stacklevel=2,
+        )
         self.fit(X, y)
 
         if self.reduce_params is not None:
@@ -613,6 +632,70 @@ class _HVRTBase(BaseEstimator, TransformerMixin):
             "to be set at construction. For direct use, call fit() then "
             "reduce() / expand() / augment() separately."
         )
+
+    # ------------------------------------------------------------------
+    # Deprecated sklearn-compat methods
+    # ------------------------------------------------------------------
+
+    def get_params(self, deep=True):
+        """
+        .. deprecated:: 2.8.0
+            ``get_params()`` is deprecated and will be removed in v3.0.
+            Access constructor parameters directly as attributes.
+        """
+        warnings.warn(
+            "get_params() is deprecated and will be removed in v3.0. "
+            "Access constructor parameters directly as attributes.",
+            HVRTDeprecationWarning, stacklevel=2,
+        )
+        import inspect
+        return {
+            k: getattr(self, k, None)
+            for k in inspect.signature(type(self).__init__).parameters
+            if k != 'self'
+        }
+
+    def set_params(self, **params):
+        """
+        .. deprecated:: 2.8.0
+            ``set_params()`` is deprecated and will be removed in v3.0.
+            Pass parameters via the constructor instead.
+        """
+        warnings.warn(
+            "set_params() is deprecated and will be removed in v3.0. "
+            "Pass parameters via the constructor instead.",
+            HVRTDeprecationWarning, stacklevel=2,
+        )
+        for k, v in params.items():
+            setattr(self, k, v)
+        return self
+
+    # ------------------------------------------------------------------
+    # apply_raw — combined _to_z + tree_.apply
+    # ------------------------------------------------------------------
+
+    def apply_raw(self, X):
+        """
+        Combined _to_z() + tree_.apply() in a single call.
+
+        Avoids two separate Python-level method calls. In GeoXGB's noise
+        estimation and KDE y-assignment, this pattern appears on every
+        refit interval — using apply_raw() reduces accumulated call overhead.
+
+        Future: when the C++ tree replaces the sklearn DT, both steps will
+        execute in compiled code with the GIL released.
+
+        Parameters
+        ----------
+        X : array-like (n_samples, n_features)
+
+        Returns
+        -------
+        partition_ids : ndarray of int, shape (n_samples,)
+        """
+        self._check_fitted()
+        X_z = self._to_z(self._coerce_external_X(X))
+        return self.tree_.apply(X_z)
 
     # ------------------------------------------------------------------
     # Utility methods

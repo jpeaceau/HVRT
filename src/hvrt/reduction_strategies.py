@@ -28,6 +28,7 @@ from typing import Protocol, runtime_checkable
 from scipy.spatial.distance import cdist
 
 from ._budgets import _iter_partitions, _partition_pos
+from ._cpp_backend import _CPP_AVAILABLE, _cpp_centroid_fps, _cpp_medoid_fps
 from ._kernels import (
     _NUMBA_AVAILABLE,
     _centroid_fps_core_nb,
@@ -165,15 +166,13 @@ def _centroid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
     """
     Centroid-seeded FPS on a single partition; returns local indices.
 
-    Dispatches to the Numba-compiled kernel when ``numba`` is installed
-    (``pip install hvrt[fast]``), otherwise runs the pure-NumPy path.
-    Both paths are algorithmically identical and produce the same indices
-    on non-degenerate data.
+    Dispatches: C++ → Numba → NumPy fallback.
     """
+    X_c = np.ascontiguousarray(X_part, dtype=np.float64)
+    if _CPP_AVAILABLE:
+        return np.asarray(_cpp_centroid_fps(X_c, int(budget)), dtype=np.int64)
     if _NUMBA_AVAILABLE:
-        return _centroid_fps_core_nb(
-            np.ascontiguousarray(X_part, dtype=np.float64), int(budget)
-        )
+        return _centroid_fps_core_nb(X_c, int(budget))
     # --- pure-NumPy fallback ---
     n_points = len(X_part)
     centroid = X_part.mean(axis=0)
@@ -237,14 +236,14 @@ def _medoid_fps_core(X_part: np.ndarray, budget: int) -> np.ndarray:
     """
     Medoid-seeded FPS on a single partition; returns local indices.
 
-    Dispatches to the Numba-compiled kernel when ``numba`` is installed
-    (``pip install hvrt[fast]``), otherwise runs the pure-NumPy/scipy path.
+    Dispatches: C++ → Numba → NumPy/scipy fallback.
     Both paths use the same threshold (200) for exact vs approximate medoid.
     """
+    X_c = np.ascontiguousarray(X_part, dtype=np.float64)
+    if _CPP_AVAILABLE:
+        return np.asarray(_cpp_medoid_fps(X_c, int(budget)), dtype=np.int64)
     if _NUMBA_AVAILABLE:
-        return _medoid_fps_core_nb(
-            np.ascontiguousarray(X_part, dtype=np.float64), int(budget)
-        )
+        return _medoid_fps_core_nb(X_c, int(budget))
     # --- pure-NumPy/scipy fallback ---
     n_points = len(X_part)
 
