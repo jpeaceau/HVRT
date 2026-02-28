@@ -112,6 +112,7 @@ class _HVRTBase:
         max_depth=None,
         min_samples_per_partition=5,
         y_weight=0.0,
+        y_weight_mode='fixed',
         auto_tune=True,
         n_jobs=1,
         bandwidth='auto',
@@ -126,6 +127,7 @@ class _HVRTBase:
         self.max_depth = max_depth
         self.min_samples_per_partition = min_samples_per_partition
         self.y_weight = y_weight
+        self.y_weight_mode = y_weight_mode
         self.auto_tune = auto_tune
         self.n_jobs = n_jobs
         self.bandwidth = bandwidth
@@ -180,7 +182,39 @@ class _HVRTBase:
             y_extremeness.std() + 1e-10
         )
 
-        return (1.0 - self.y_weight) * x_component + self.y_weight * y_component
+        mode = self.y_weight_mode
+
+        if mode == 'fixed':
+            return (1.0 - self.y_weight) * x_component + self.y_weight * y_component
+
+        if mode == 'adaptive':
+            # Attenuate y_weight by the correlation between x and y components.
+            # When they already agree (|r| → 1), y adds no new information —
+            # the feature cooperation signal already captures the label structure.
+            r = float(np.corrcoef(x_component, y_component)[0, 1])
+            eff_weight = self.y_weight * (1.0 - abs(r))
+            return (1.0 - eff_weight) * x_component + eff_weight * y_component
+
+        if mode == 'linear':
+            # Per-sample weight: concentrate label signal on extreme-y samples.
+            # Central samples (near median y) get near-zero y influence;
+            # tail samples get full y_weight.
+            y_ext_norm = y_extremeness / (y_extremeness.max() + 1e-10)  # [0, 1]
+            per_w = self.y_weight * y_ext_norm                          # (n,)
+            return (1.0 - per_w) * x_component + per_w * y_component
+
+        if mode == 'adaptive_linear':
+            # Both: correlation-attenuation AND per-sample tail concentration.
+            r = float(np.corrcoef(x_component, y_component)[0, 1])
+            attenuation = 1.0 - abs(r)
+            y_ext_norm = y_extremeness / (y_extremeness.max() + 1e-10)
+            per_w = self.y_weight * attenuation * y_ext_norm
+            return (1.0 - per_w) * x_component + per_w * y_component
+
+        raise ValueError(
+            f"Unknown y_weight_mode {mode!r}. "
+            "Expected 'fixed', 'adaptive', 'linear', or 'adaptive_linear'."
+        )
 
     # ------------------------------------------------------------------
     # Preprocessing delegates
@@ -722,6 +756,144 @@ class _HVRTBase:
                 'variance': float(X_part.var()),
             })
         return result
+
+    def geometry_stats(self, X=None):
+        """
+        Compute T/Q cooperation statistics and cone degeneracy diagnostics.
+
+        Based on the decomposition from the HVRT analysis paper:
+
+            S = sum(z_i)              -- cooperative projection onto the all-ones axis
+            Q = sum(z_i^2)            -- squared Mahalanobis norm (||z||^2)
+            T = S^2 - Q               -- cooperation measure; equal to
+                                         2 * sum_{i<j} z_i * z_j
+
+        The cooperative cone is {z : T > 0}.  For isotropic z ~ N(0, I_d)
+        the cone is well-behaved with E[T] = 0 and Cov(T, Q) = 0 exactly
+        (Theorem 1 of the paper).  Non-zero E[T] or Cov(T,Q) indicates
+        geometric structure that HVRT's partition tree exploits.
+
+        The cone is flagged **degenerate** when:
+          - frac_in_cone < 0.05  (near-total anti-cooperation; T almost always < 0)
+          - frac_in_cone > 0.95  (near-total cooperation; T almost always > 0)
+          - std(T) < 1e-6        (T is effectively constant; cone gives no information)
+
+        Parameters
+        ----------
+        X : array-like (n, n_features) or None
+            Data to evaluate.  If None, uses the fitted training data (X_z_
+            is reused directly, avoiding recomputation).
+
+        Returns
+        -------
+        dict with keys:
+
+        Global statistics
+          n_samples, n_features
+          E_T, E_Q              -- mean cooperation and mean norm^2
+          std_T, std_Q          -- standard deviations
+          cov_TQ                -- Cov(T, Q); 0 for isotropic data
+          corr_TQ               -- Pearson r(T, Q)
+          frac_in_cone          -- fraction of samples with T > 0
+          cooperation_ratio     -- E[T] / E[Q]  (0 for isotropic)
+          cone_degenerate       -- bool; True when cone collapses
+          cone_critical_angle_deg -- arccos(1/sqrt(d)) in degrees (theoretical
+                                     half-angle of the cone boundary)
+
+        Per-partition breakdown (list of dicts, one per partition)
+          partitions[i]:
+            id, n
+            E_T, E_Q, std_T, std_Q
+            frac_in_cone
+            cone_degenerate
+
+        Notes
+        -----
+        T and Q are model-agnostic: they characterise the whitened feature
+        geometry independently of any downstream model (GeoXGB, GeoRF,
+        HVRT-NN).  A downstream model that only uses Q (e.g. standard
+        k-NN or RBF kernel) is geometrically blind to T; HVRT exploits both.
+        """
+        self._check_fitted()
+
+        if X is None:
+            X_z = self.X_z_
+            partition_ids = self.partition_ids_
+            unique_partitions = self.unique_partitions_
+        else:
+            X_z = self._to_z(self._coerce_external_X(X))
+            partition_ids = self.tree_.apply(X_z)
+            unique_partitions = np.unique(partition_ids)
+
+        n, d = X_z.shape
+
+        # ------------------------------------------------------------------
+        # Per-sample T and Q
+        # ------------------------------------------------------------------
+        S = X_z.sum(axis=1)            # (n,)  cooperative projection
+        Q = (X_z ** 2).sum(axis=1)     # (n,)  squared Mahalanobis norm
+        T = S ** 2 - Q                 # (n,)  cooperation  (= 2 * sum_{i<j} z_i z_j)
+
+        E_T   = float(T.mean())
+        E_Q   = float(Q.mean())
+        std_T = float(T.std())
+        std_Q = float(Q.std())
+
+        cov_TQ  = float(np.cov(T, Q)[0, 1]) if n > 1 else float('nan')
+        corr_TQ = float(np.corrcoef(T, Q)[0, 1]) if (std_T > 1e-12 and std_Q > 1e-12) \
+                  else float('nan')
+
+        frac_in_cone = float((T > 0).mean())
+        coop_ratio   = E_T / (E_Q + 1e-12)
+
+        cone_degenerate = (frac_in_cone < 0.05 or frac_in_cone > 0.95
+                           or std_T < 1e-6)
+
+        crit_angle = float(np.degrees(np.arccos(1.0 / np.sqrt(max(d, 1)))))
+
+        # ------------------------------------------------------------------
+        # Per-partition breakdown
+        # ------------------------------------------------------------------
+        partitions = []
+        for pid in unique_partitions:
+            mask  = partition_ids == pid
+            T_p   = T[mask]
+            Q_p   = Q[mask]
+            n_p   = int(mask.sum())
+            E_T_p = float(T_p.mean()) if n_p > 0 else float('nan')
+            E_Q_p = float(Q_p.mean()) if n_p > 0 else float('nan')
+            std_T_p = float(T_p.std()) if n_p > 1 else float('nan')
+            std_Q_p = float(Q_p.std()) if n_p > 1 else float('nan')
+            fic_p   = float((T_p > 0).mean()) if n_p > 0 else float('nan')
+            deg_p   = (n_p < 2
+                       or (not np.isnan(fic_p) and (fic_p < 0.05 or fic_p > 0.95))
+                       or (not np.isnan(std_T_p) and std_T_p < 1e-6))
+            partitions.append({
+                'id':             int(pid),
+                'n':              n_p,
+                'E_T':            E_T_p,
+                'E_Q':            E_Q_p,
+                'std_T':          std_T_p,
+                'std_Q':          std_Q_p,
+                'frac_in_cone':   fic_p,
+                'cone_degenerate': deg_p,
+            })
+
+        return {
+            'n_samples':                n,
+            'n_features':               d,
+            'E_T':                      E_T,
+            'E_Q':                      E_Q,
+            'std_T':                    std_T,
+            'std_Q':                    std_Q,
+            'cov_TQ':                   cov_TQ,
+            'corr_TQ':                  corr_TQ,
+            'frac_in_cone':             frac_in_cone,
+            'cooperation_ratio':        coop_ratio,
+            'cone_degenerate':          cone_degenerate,
+            'cone_critical_angle_deg':  crit_angle,
+            'partitions':               partitions,
+        }
 
     def compute_novelty(self, X_new):
         """

@@ -79,7 +79,7 @@ from .generation_strategies import (
     get_generation_strategy,
 )
 
-__version__ = '2.8.0'
+__version__ = '2.8.1'
 
 __all__ = [
     # v2 primary API
