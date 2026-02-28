@@ -1,6 +1,6 @@
 """C++ backend import — safe, never raises on ImportError."""
 try:
-    from _hvrt_cpp import (
+    from ._hvrt_cpp import (
         compute_pairwise_target as _cpp_pairwise_target,
         centroid_fps            as _cpp_centroid_fps,
         medoid_fps              as _cpp_medoid_fps,

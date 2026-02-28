@@ -26,14 +26,28 @@ FetchContent_Declare(
     GIT_TAG        3.4.0
     GIT_SHALLOW    TRUE
 )
-FetchContent_Declare(
-    pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11.git
-    GIT_TAG        v2.11.1
-    GIT_SHALLOW    TRUE
-)
+# Populate Eigen with EXCLUDE_FROM_ALL so its own install() rules don't run —
+# without this, Eigen's 500+ headers end up inside the Python wheel.
+FetchContent_GetProperties(Eigen)
+if(NOT eigen_POPULATED)
+    FetchContent_Populate(Eigen)
+    add_subdirectory(${eigen_SOURCE_DIR} ${eigen_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
 
-FetchContent_MakeAvailable(Eigen pybind11)
+# pybind11 — prefer find_package (scikit-build-core injects the path
+# automatically; for local CMake builds: pip install pybind11).
+# Falls back to FetchContent v3.0.0 when not found (e.g. offline builds).
+find_package(pybind11 CONFIG QUIET)
+if(NOT pybind11_FOUND)
+    message(STATUS "pybind11 not found via find_package; fetching v3.0.0 from GitHub")
+    FetchContent_Declare(
+        pybind11
+        GIT_REPOSITORY https://github.com/pybind/pybind11.git
+        GIT_TAG        v3.0.0
+        GIT_SHALLOW    TRUE
+    )
+    FetchContent_MakeAvailable(pybind11)
+endif()
 
 # --------------------------------------------------------------------------
 # hvrt_core — static library (no Python dependency)
@@ -54,6 +68,7 @@ target_include_directories(hvrt_core PUBLIC
 )
 
 target_link_libraries(hvrt_core PUBLIC Eigen3::Eigen)
+set_property(TARGET hvrt_core PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # --------------------------------------------------------------------------
 # _hvrt — pybind11 extension module

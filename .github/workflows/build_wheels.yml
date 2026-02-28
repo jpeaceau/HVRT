@@ -25,8 +25,7 @@ jobs:
         include:
           - os: ubuntu-latest   # Linux x86_64 (manylinux)
           - os: windows-latest  # Windows x86_64
-          - os: macos-13        # macOS Intel x86_64 (native)
-          - os: macos-14        # macOS Apple Silicon arm64 (native)
+          - os: macos-14        # macOS Apple Silicon arm64
 
     steps:
       - uses: actions/checkout@v4
