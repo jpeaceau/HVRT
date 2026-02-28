@@ -246,7 +246,7 @@ PartitionKDEParams Expander::fit_partition(
                               eig.eigenvectors().transpose();
         Eigen::LLT<Eigen::MatrixXd> llt(psd);
         par.copula_cholesky = (llt.info() == Eigen::Success)
-            ? llt.matrixL()
+            ? Eigen::MatrixXd(llt.matrixL())
             : Eigen::MatrixXd::Identity(d_cont, d_cont);
     }
 
