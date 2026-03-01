@@ -18,7 +18,8 @@ public:
     // ── Fit ───────────────────────────────────────────────────────────────────
     // X            : n x d  (raw, not whitened)
     // y            : optional target variable (used for y_weight blending)
-    // feature_types: "continuous" / "categorical" per column; auto-detect if empty
+    // feature_types: accepted for API compatibility; encoding is user-managed upstream.
+    //               All columns are treated as continuous (histogram-based splits).
     HVRT& fit(const Eigen::MatrixXd& X,
               std::optional<Eigen::VectorXd> y = std::nullopt,
               std::optional<std::vector<std::string>> feature_types = std::nullopt);
@@ -96,17 +97,11 @@ private:
     Eigen::MatrixXd  X_z_;          // whitened training data
     Eigen::MatrixXd  X_orig_;       // original training data
     Eigen::VectorXi  partition_ids_;
-    std::vector<int> cont_cols_;
-    std::vector<int> cat_cols_;
     bool fitted_ = false;
 
     // Helpers
     static ReductionMethod    parse_reduction_method(const std::string& s);
     static GenerationStrategy parse_generation_strategy(const std::string& s);
-
-    std::vector<bool> detect_feature_types(
-        const Eigen::MatrixXd& X,
-        const std::optional<std::vector<std::string>>& feature_types) const;
 };
 
 } // namespace hvrt

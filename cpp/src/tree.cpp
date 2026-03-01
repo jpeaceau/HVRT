@@ -4,6 +4,9 @@
 #include <cmath>
 #include <queue>
 #include <stdexcept>
+#ifdef _OPENMP
+#  include <omp.h>
+#endif
 
 namespace hvrt {
 
@@ -44,6 +47,13 @@ static double variance_gain(double sum_p, double sum_sq_p, int n_p,
 }
 
 // ── Continuous split evaluation ───────────────────────────────────────────────
+//
+// Two-stage algorithm:
+//   A. Transposed scatter (sample-outer, feature-inner):
+//      X_binned is RowMajor → row(idx) is contiguous in fi → cache-friendly.
+//      If OpenMP is available, threads split the sample range; each keeps
+//      thread-local histogram arrays and merges under a critical section.
+//   B. Prefix scan per feature: independent → can run after merge.
 
 PartitionTree::SplitResult PartitionTree::evaluate_continuous_splits(
     const std::vector<int>& indices,
@@ -51,58 +61,113 @@ PartitionTree::SplitResult PartitionTree::evaluate_continuous_splits(
     const std::vector<int>& cont_cols,
     const Eigen::VectorXd& target,
     const std::vector<Eigen::VectorXd>& bin_edges,
-    int n_bins) const
+    int n_bins,
+    int min_samples_leaf) const
 {
     const int n_node = static_cast<int>(indices.size());
     const int d_cont = static_cast<int>(cont_cols.size());
+    // nb_max: worst-case bins per feature; actual nb per feature may be less.
+    const int nb_max = n_bins + 1;
 
     SplitResult best;
     best.valid = false;
     best.gain  = -1.0;
 
-    // Pre-compute parent sum and sum_sq
+    if (d_cont == 0) return best;
+
+    // Flat histogram storage: feature fi, bin b → index fi * nb_max + b.
+    std::vector<double> bin_sum(d_cont * nb_max, 0.0);
+    std::vector<double> bin_sum_sq(d_cont * nb_max, 0.0);
+    std::vector<int>    bin_cnt(d_cont * nb_max, 0);
+
     double sum_p = 0.0, sum_sq_p = 0.0;
-    for (int idx : indices) {
-        double t = target[idx];
-        sum_p   += t;
-        sum_sq_p+= t * t;
-    }
+    const int stride = static_cast<int>(X_binned.cols()); // == d_cont (RowMajor)
 
-    for (int fi = 0; fi < d_cont; ++fi) {
-        int nb = static_cast<int>(bin_edges[fi].size()) - 1;
-        if (nb <= 0) continue;
+    // ── Stage A: transposed scatter ──────────────────────────────────────────
+#ifdef _OPENMP
+    // Each thread accumulates its own local histograms and reduces under a
+    // critical section.  Allocation is proportional to d_cont * nb_max per
+    // thread — typically a few KB, negligible vs. scatter work.
+    #pragma omp parallel
+    {
+        double my_sum_p = 0.0, my_sum_sq_p = 0.0;
+        std::vector<double> my_sum(d_cont * nb_max, 0.0);
+        std::vector<double> my_sum_sq(d_cont * nb_max, 0.0);
+        std::vector<int>    my_cnt(d_cont * nb_max, 0);
 
-        // Stage A: scatter → per-bin sum and count
-        std::vector<double> bin_sum(nb, 0.0);
-        std::vector<double> bin_sum_sq(nb, 0.0);
-        std::vector<int>    bin_cnt(nb, 0);
-
-        for (int idx : indices) {
-            uint8_t b = X_binned(idx, fi);
-            if (b >= static_cast<uint8_t>(nb)) b = static_cast<uint8_t>(nb - 1);
-            bin_sum[b]    += target[idx];
-            bin_sum_sq[b] += target[idx] * target[idx];
-            bin_cnt[b]    += 1;
+        #pragma omp for schedule(static)
+        for (int si = 0; si < n_node; ++si) {
+            const int    idx = indices[si];
+            const double t   = target[idx];
+            const double t2  = t * t;
+            my_sum_p    += t;
+            my_sum_sq_p += t2;
+            const uint8_t* row = X_binned.data() + (ptrdiff_t)idx * stride;
+            for (int fi = 0; fi < d_cont; ++fi) {
+                const int b    = static_cast<int>(row[fi]);
+                const int base = fi * nb_max;
+                my_sum[base + b]    += t;
+                my_sum_sq[base + b] += t2;
+                my_cnt[base + b]    += 1;
+            }
         }
 
-        // Stage B: prefix sums → scan thresholds
+        #pragma omp critical
+        {
+            sum_p    += my_sum_p;
+            sum_sq_p += my_sum_sq_p;
+            const int flat = d_cont * nb_max;
+            for (int k = 0; k < flat; ++k) {
+                bin_sum[k]    += my_sum[k];
+                bin_sum_sq[k] += my_sum_sq[k];
+                bin_cnt[k]    += my_cnt[k];
+            }
+        }
+    } // end parallel
+#else
+    for (int si = 0; si < n_node; ++si) {
+        const int    idx = indices[si];
+        const double t   = target[idx];
+        const double t2  = t * t;
+        sum_p    += t;
+        sum_sq_p += t2;
+        const uint8_t* row = X_binned.data() + (ptrdiff_t)idx * stride;
+        for (int fi = 0; fi < d_cont; ++fi) {
+            const int b    = static_cast<int>(row[fi]);
+            const int base = fi * nb_max;
+            bin_sum[base + b]    += t;
+            bin_sum_sq[base + b] += t2;
+            bin_cnt[base + b]    += 1;
+        }
+    }
+#endif
+
+    // ── Stage B: prefix scan per feature ─────────────────────────────────────
+    // Features are independent; serial scan is typically fast (d_cont * n_bins).
+    for (int fi = 0; fi < d_cont; ++fi) {
+        const int nb   = static_cast<int>(bin_edges[fi].size()) - 1;
+        if (nb <= 0) continue;
+        const int base = fi * nb_max;
+
         double cum_sum = 0.0, cum_sum_sq = 0.0;
         int    cum_cnt = 0;
         for (int b = 0; b < nb - 1; ++b) {
-            cum_sum    += bin_sum[b];
-            cum_sum_sq += bin_sum_sq[b];
-            cum_cnt    += bin_cnt[b];
+            cum_sum    += bin_sum[base + b];
+            cum_sum_sq += bin_sum_sq[base + b];
+            cum_cnt    += bin_cnt[base + b];
 
-            if (cum_cnt == 0 || cum_cnt == n_node) continue;
+            // Skip splits that violate msl on either side — this ensures the
+            // gain formula can only select splits that will actually be committed.
+            if (cum_cnt < min_samples_leaf || (n_node - cum_cnt) < min_samples_leaf) continue;
 
-            double g = variance_gain(sum_p, sum_sq_p, n_node,
-                                     cum_sum, cum_sum_sq, cum_cnt);
+            const double g = variance_gain(sum_p, sum_sq_p, n_node,
+                                           cum_sum, cum_sum_sq, cum_cnt);
             if (g > best.gain) {
                 best.valid     = true;
                 best.gain      = g;
                 best.feature   = cont_cols[fi];
                 best.bin       = b;
-                best.threshold = 0.5 * (bin_edges[fi][b] + bin_edges[fi][b + 1]);
+                best.threshold = bin_edges[fi][b + 1];  // right boundary: routes ~bin_cnt[b] left
                 best.is_binary = false;
             }
         }
@@ -265,7 +330,7 @@ Eigen::VectorXi PartitionTree::build(
 
         // Evaluate both streams
         SplitResult cont_split = evaluate_continuous_splits(
-            indices, X_binned, cont_cols, target, bin_edges, cfg.n_bins);
+            indices, X_binned, cont_cols, target, bin_edges, cfg.n_bins, msl);
         SplitResult bin_split = evaluate_binary_splits(
             indices, X_z, binary_cols, target);
 

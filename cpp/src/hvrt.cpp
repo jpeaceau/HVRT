@@ -4,45 +4,14 @@
 #include <algorithm>
 #include <numeric>
 #include <cmath>
-#include <stdexcept>
 #include <set>
+#include <stdexcept>
 
 namespace hvrt {
 
 // ── Constructor ───────────────────────────────────────────────────────────────
 
 HVRT::HVRT(HVRTConfig cfg) : cfg_(std::move(cfg)) {}
-
-// ── Feature type detection ────────────────────────────────────────────────────
-
-std::vector<bool> HVRT::detect_feature_types(
-    const Eigen::MatrixXd& X,
-    const std::optional<std::vector<std::string>>& feature_types) const
-{
-    const int d = static_cast<int>(X.cols());
-    const int n = static_cast<int>(X.rows());
-    std::vector<bool> cat_mask(d, false);
-
-    if (feature_types) {
-        if (static_cast<int>(feature_types->size()) != d)
-            throw std::invalid_argument("feature_types length must match X columns");
-        for (int j = 0; j < d; ++j)
-            cat_mask[j] = ((*feature_types)[j] == "categorical");
-    } else {
-        // Auto-detect: if a column has <= 10 unique values AND all are integers → categorical
-        for (int j = 0; j < d; ++j) {
-            std::set<double> uniq;
-            bool all_int = true;
-            for (int i = 0; i < n; ++i) {
-                double v = X(i, j);
-                uniq.insert(v);
-                if (std::abs(v - std::round(v)) > 1e-9) all_int = false;
-            }
-            cat_mask[j] = (all_int && static_cast<int>(uniq.size()) <= 10);
-        }
-    }
-    return cat_mask;
-}
 
 // ── Parse enums ───────────────────────────────────────────────────────────────
 
@@ -68,7 +37,7 @@ GenerationStrategy HVRT::parse_generation_strategy(const std::string& s) {
 HVRT& HVRT::fit(
     const Eigen::MatrixXd& X,
     std::optional<Eigen::VectorXd> y,
-    std::optional<std::vector<std::string>> feature_types)
+    std::optional<std::vector<std::string>> /* feature_types — encoding is user-managed */)
 {
     const int n = static_cast<int>(X.rows());
     const int d = static_cast<int>(X.cols());
@@ -78,75 +47,60 @@ HVRT& HVRT::fit(
 
     X_orig_ = X;
 
-    // 1. Feature type detection
-    std::vector<bool> cat_mask = detect_feature_types(X, feature_types);
-
-    cont_cols_.clear();
-    cat_cols_.clear();
-    for (int j = 0; j < d; ++j) {
-        if (cat_mask[j]) cat_cols_.push_back(j);
-        else             cont_cols_.push_back(j);
-    }
-
-    // 2. Whitener fit + transform
-    whitener_.fit(X, cat_mask);
+    // 1. Whitener: all columns treated as continuous (no categorical path).
+    //    Categorical encoding is the caller's responsibility.
+    whitener_.fit(X, std::vector<bool>(d, false));
     X_z_ = whitener_.transform(X);
 
-    // 3. Binner fit on continuous columns only
-    Eigen::MatrixXd X_cont(n, static_cast<int>(cont_cols_.size()));
-    for (int fi = 0; fi < static_cast<int>(cont_cols_.size()); ++fi)
-        X_cont.col(fi) = X_z_.col(cont_cols_[fi]);
+    // 2. Detect binary columns (≤2 unique values post-whitening) via a quick
+    //    Binner pass, then build X_binned for the non-binary subset.
+    using BinMat = Eigen::Matrix<uint8_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
 
-    std::vector<bool> binary_mask = binner_.fit(X_cont, cfg_.n_bins);
-
-    // Identify binary vs non-binary continuous cols
     std::vector<int> binary_cols, hist_cont_cols;
-    for (int fi = 0; fi < static_cast<int>(cont_cols_.size()); ++fi) {
-        if (binary_mask[fi]) binary_cols.push_back(cont_cols_[fi]);
-        else                 hist_cont_cols.push_back(cont_cols_[fi]);
+    {
+        Binner detect_binner;
+        std::vector<bool> bm = detect_binner.fit(X_z_, cfg_.n_bins);
+        for (int j = 0; j < d; ++j) {
+            if (bm[j]) binary_cols.push_back(j);
+            else        hist_cont_cols.push_back(j);
+        }
     }
 
-    // Rebuild X_cont without binary cols for binning
-    int d_cont_hist = static_cast<int>(hist_cont_cols.size());
-    Eigen::MatrixXd X_cont_hist(n, d_cont_hist);
-    for (int fi = 0; fi < d_cont_hist; ++fi)
-        X_cont_hist.col(fi) = X_z_.col(hist_cont_cols[fi]);
-
-    // Re-fit binner on non-binary cols only (binary handled separately)
-    Binner hist_binner;
-    using BinMat = Eigen::Matrix<uint8_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
     BinMat X_binned;
-    if (d_cont_hist > 0) {
-        hist_binner.fit(X_cont_hist, cfg_.n_bins);
-        X_binned = hist_binner.transform(X_cont_hist);
+    const int d_hist = static_cast<int>(hist_cont_cols.size());
+    if (d_hist > 0) {
+        Eigen::MatrixXd X_hist(n, d_hist);
+        for (int fi = 0; fi < d_hist; ++fi)
+            X_hist.col(fi) = X_z_.col(hist_cont_cols[fi]);
+        binner_.fit(X_hist, cfg_.n_bins);
+        X_binned = binner_.transform(X_hist);
     } else {
         X_binned.resize(n, 0);
     }
 
-    // 4. Target computation
-    int fast_threshold = 50;  // use pairwise for d <= threshold
+    // 3. Target computation
     Eigen::VectorXd target_vec;
-    if (d <= fast_threshold) {
+    if (d <= 50) {
         target_vec = compute_pairwise_target(X_z_);
     } else {
         target_vec = compute_sum_target(X_z_);
     }
 
-    // 5. Y-weight blending
+    // 4. Y-weight blending
     if (y && cfg_.y_weight > 0.0f) {
         target_vec = blend_target(target_vec, *y, static_cast<double>(cfg_.y_weight));
     }
 
-    // 6. Build partition tree
-    // Store bin_edges in tree builder context via hist_binner
-    // The tree build receives X_binned indexed by hist_cont_cols position
+    // 5. Build partition tree
     partition_ids_ = tree_.build(
         X_z_, X_binned, hist_cont_cols, binary_cols, target_vec, cfg_);
 
-    // 7. Prepare expander
+    // 6. Prepare expander (all columns are continuous)
+    std::vector<int> all_cols(d);
+    std::iota(all_cols.begin(), all_cols.end(), 0);
     expander_.prepare(
         X_z_, partition_ids_,
-        cont_cols_, cat_cols_,
+        all_cols, /*cat_cols=*/{},
         GenerationStrategy::Auto,
         cfg_.bandwidth,
         cfg_.n_threads);

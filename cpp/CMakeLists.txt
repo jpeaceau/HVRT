@@ -15,6 +15,22 @@ else()
     add_compile_options(-O3 -Wall -Wextra -Wno-unused-parameter)
 endif()
 
+# Optional: enable -march=native / /arch:AVX2 for AVX2 SIMD auto-vectorization.
+# OFF by default so CI wheels remain cross-platform. Enable locally for max speed.
+option(HVRT_NATIVE_ARCH "Use -march=native / /arch:AVX2 for AVX2 auto-vectorization" OFF)
+if(HVRT_NATIVE_ARCH)
+    if(MSVC)
+        add_compile_options(/arch:AVX2)
+    else()
+        add_compile_options(-march=native)
+    endif()
+endif()
+
+# --------------------------------------------------------------------------
+# OpenMP (soft dependency — builds without it; enables scatter parallelism)
+# --------------------------------------------------------------------------
+find_package(OpenMP)
+
 # --------------------------------------------------------------------------
 # FetchContent dependencies
 # --------------------------------------------------------------------------
@@ -68,6 +84,12 @@ target_include_directories(hvrt_core PUBLIC
 )
 
 target_link_libraries(hvrt_core PUBLIC Eigen3::Eigen)
+if(OpenMP_CXX_FOUND)
+    target_link_libraries(hvrt_core PUBLIC OpenMP::OpenMP_CXX)
+    message(STATUS "OpenMP found — scatter parallelism enabled")
+else()
+    message(STATUS "OpenMP not found — single-threaded scatter (still cache-optimised)")
+endif()
 set_property(TARGET hvrt_core PROPERTY POSITION_INDEPENDENT_CODE ON)
 
 # --------------------------------------------------------------------------

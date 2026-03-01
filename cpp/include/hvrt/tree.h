@@ -71,7 +71,8 @@ private:
         const std::vector<int>& cont_cols,
         const Eigen::VectorXd& target,
         const std::vector<Eigen::VectorXd>& bin_edges,
-        int n_bins) const;
+        int n_bins,
+        int min_samples_leaf) const;
 
     SplitResult evaluate_binary_splits(
         const std::vector<int>& indices,
