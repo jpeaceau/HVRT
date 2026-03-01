@@ -4,6 +4,65 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.9.0] — 2026-03-01
+
+### Performance
+
+- **C++ tree: transposed scatter loop** — `evaluate_continuous_splits()` now
+  iterates sample-outer, feature-inner over the RowMajor `X_binned` matrix.
+  Each row is contiguous in memory for the inner feature loop, raising cache
+  bandwidth utilisation from ~1.5% (old feature-outer layout) to ~100%.
+  Flat histogram array `[fi * nb_max + bin]` avoids pointer indirection.
+
+- **OpenMP parallel scatter** — when OpenMP is available at build time, each
+  thread accumulates thread-local histograms over its assigned sample range and
+  merges under a single `#pragma omp critical` after the scan.  The serial
+  prefix scan (Stage B) runs unchanged after the merge.
+  Soft dependency: builds and runs correctly without OpenMP (no behaviour change;
+  the `#ifdef _OPENMP` block is skipped).  `HVRT_NATIVE_ARCH` cmake option (OFF
+  by default) enables `/arch:AVX2` / `-march=native` for additional SIMD gain.
+
+### Fixed
+
+- **Split threshold correctness** — threshold is now set to `bin_edges[b+1]`
+  (right boundary of bin *b*) instead of the midpoint between adjacent edges.
+  The old midpoint formula caused the routing predicate to disagree with the
+  histogram bin assignment: bin *b* counts samples that fall in
+  `[edges[b], edges[b+1])`, but the midpoint threshold left roughly half of
+  those samples on the wrong side.
+
+- **msl-aware gain filter** — the prefix scan in `evaluate_continuous_splits()`
+  now skips any candidate split where either child would have fewer than
+  `min_samples_leaf` samples.  Previously, the variance-gain formula could
+  select an extreme split (very small left child, large gain) that the BFS
+  would immediately reject, causing the node to become a leaf even though a
+  valid interior split existed at a more balanced threshold.  Concretely, pure
+  continuous normally distributed data (d=20, n=2000) previously returned
+  1 partition; it now returns the expected multi-partition structure.
+
+### Changed
+
+- **Categorical feature path removed** — `detect_feature_types()` and the
+  associated `cont_cols_` / `cat_cols_` members have been removed from the C++
+  `HVRT` class.  All columns are now treated as continuous (histogram-based
+  splits); categorical encoding remains the caller's responsibility.  This
+  matches the documented contract and removes a code path that incorrectly
+  bypassed the Binner for multi-valued integer columns.
+
+### Added (v2.8.x, consolidated here)
+
+- **`geometry_stats()`** on `HVRT` / `FastHVRT` — returns T/Q cooperation
+  statistics and cone diagnostics per partition (T = S² − Q, cone = {z: T > 0},
+  degenerate flags).  Useful for downstream libraries (GeoXGB, GeoRF) to detect
+  collapsed geometry without fitting a separate model.
+
+- **C++ backend** — `_hvrt_cpp` pybind11 extension provides the full `HVRT`
+  class (fit / reduce / expand / apply / _to_z / tree_.apply), standalone
+  `compute_pairwise_target`, `centroid_fps`, and `medoid_fps` hot-path
+  functions.  Python 3.9–3.13 wheels built on ubuntu, windows, macos-14.
+
+---
+
 ## [2.6.1] — 2026-02-27
 
 ### Added
