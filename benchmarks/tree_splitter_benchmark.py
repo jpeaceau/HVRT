@@ -36,7 +36,7 @@ from sklearn.model_selection import train_test_split
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'src'))
 
-from hvrt import HVRT, FastHVRT
+from hvrt import HVRT, FastHVRT, HART, FastHART
 from hvrt.benchmarks.datasets import BENCHMARK_DATASETS, make_emergence_divergence, make_emergence_bifurcation
 from hvrt.benchmarks.metrics import evaluate_reduction, evaluate_expansion, ml_utility_tstr
 
@@ -65,9 +65,10 @@ def _load(ds_name, max_n=None):
     return train_test_split(X, y, test_size=0.2, random_state=RANDOM_STATE)
 
 
-def _run_reduce(X_tr, y_tr, X_te, y_te, splitter, ratio, is_emergence, trtr):
+def _run_reduce(X_tr, y_tr, X_te, y_te, splitter, ratio, is_emergence, trtr,
+                model_cls=HVRT):
     n_target = max(2, int(len(X_tr) * ratio))
-    model = HVRT(random_state=RANDOM_STATE, tree_splitter=splitter)
+    model = model_cls(random_state=RANDOM_STATE, tree_splitter=splitter)
     t0 = time.perf_counter()
     model.fit(X_tr, y_tr)
     t_fit = time.perf_counter() - t0
@@ -83,7 +84,10 @@ def _run_expand(X_tr, y_tr, X_te, y_te, splitter, exp_ratio, trtr):
     n_syn = int(len(X_tr) * exp_ratio)
     is_cls = len(np.unique(y_tr)) <= 20
     results = {}
-    for ModelCls, tag in [(HVRT, 'HVRT'), (FastHVRT, 'FastHVRT')]:
+    for ModelCls, tag in [
+        (HVRT, 'HVRT'), (FastHVRT, 'FastHVRT'),
+        (HART, 'HART'), (FastHART, 'FastHART'),
+    ]:
         model = ModelCls(random_state=RANDOM_STATE, tree_splitter=splitter)
         y_col = y_tr.reshape(-1, 1).astype(float)
         XY_tr = np.column_stack([X_tr, y_col])
@@ -122,52 +126,56 @@ if __name__ == '__main__':
     # -----------------------------------------------------------------------
     # Reduction
     # -----------------------------------------------------------------------
-    print('=' * 72)
-    print('REDUCTION: HVRT-var  best vs random  (6 datasets × 4 ratios)')
-    print('=' * 72)
-    print(f'{"dataset":<26} {"ratio":>5}  {"mf_best":>7} {"mf_rnd":>7} {"dmf":>7}  '
-          f'{"ml_best":>7} {"ml_rnd":>7} {"dml":>7}  '
-          f'{"fit_best":>8} {"fit_rnd":>7} {"speedup":>7}')
-    print('-' * 72)
+    for ModelCls, model_tag in [(HVRT, 'HVRT'), (HART, 'HART')]:
+        print('=' * 72)
+        print(f'REDUCTION: {model_tag}-var  best vs random  (6 datasets × 4 ratios)')
+        print('=' * 72)
+        print(f'{"dataset":<26} {"ratio":>5}  {"mf_best":>7} {"mf_rnd":>7} {"dmf":>7}  '
+              f'{"ml_best":>7} {"ml_rnd":>7} {"dml":>7}  '
+              f'{"fit_best":>8} {"fit_rnd":>7} {"speedup":>7}')
+        print('-' * 72)
 
-    for ds_name in REDUCE_DATASETS:
-        is_em = ds_name in EMERGENCE_DATASETS
-        X_tr, X_te, y_tr, y_te = _load(ds_name)
-        trtr = round(ml_utility_tstr(X_tr, y_tr, X_te, y_te), 4)
+        for ds_name in REDUCE_DATASETS:
+            is_em = ds_name in EMERGENCE_DATASETS
+            X_tr, X_te, y_tr, y_te = _load(ds_name)
+            trtr = round(ml_utility_tstr(X_tr, y_tr, X_te, y_te), 4)
 
-        for ratio in REDUCE_RATIOS:
-            try:
-                mb = _run_reduce(X_tr, y_tr, X_te, y_te, 'best',   ratio, is_em, trtr)
-                mr = _run_reduce(X_tr, y_tr, X_te, y_te, 'random', ratio, is_em, trtr)
-            except Exception as e:
-                print(f'  ERROR {ds_name} ratio={ratio}: {e}')
-                continue
+            for ratio in REDUCE_RATIOS:
+                try:
+                    mb = _run_reduce(X_tr, y_tr, X_te, y_te, 'best',   ratio, is_em, trtr,
+                                     model_cls=ModelCls)
+                    mr = _run_reduce(X_tr, y_tr, X_te, y_te, 'random', ratio, is_em, trtr,
+                                     model_cls=ModelCls)
+                except Exception as e:
+                    print(f'  ERROR {ds_name} ratio={ratio}: {e}')
+                    continue
 
-            mf_b = mb.get('marginal_fidelity', float('nan'))
-            mf_r = mr.get('marginal_fidelity', float('nan'))
-            ml_b = mb.get('ml_utility_retention', float('nan'))
-            ml_r = mr.get('ml_utility_retention', float('nan'))
-            fit_b = mb['fit_ms']
-            fit_r = mr['fit_ms']
-            speedup = fit_b / fit_r if fit_r > 0 else float('nan')
+                mf_b = mb.get('marginal_fidelity', float('nan'))
+                mf_r = mr.get('marginal_fidelity', float('nan'))
+                ml_b = mb.get('ml_utility_retention', float('nan'))
+                ml_r = mr.get('ml_utility_retention', float('nan'))
+                fit_b = mb['fit_ms']
+                fit_r = mr['fit_ms']
+                speedup = fit_b / fit_r if fit_r > 0 else float('nan')
 
-            label = f'{ds_name}@{ratio:.0%}'
-            print(f'{label:<26} {ratio:>5.0%}  '
-                  f'{mf_b:>7.3f} {mf_r:>7.3f} {mf_r-mf_b:>+7.3f}  '
-                  f'{ml_b:>7.3f} {ml_r:>7.3f} {ml_r-ml_b:>+7.3f}  '
-                  f'{fit_b:>7.0f}ms {fit_r:>6.0f}ms {speedup:>6.1f}x')
+                label = f'{ds_name}@{ratio:.0%}'
+                print(f'{label:<26} {ratio:>5.0%}  '
+                      f'{mf_b:>7.3f} {mf_r:>7.3f} {mf_r-mf_b:>+7.3f}  '
+                      f'{ml_b:>7.3f} {ml_r:>7.3f} {ml_r-ml_b:>+7.3f}  '
+                      f'{fit_b:>7.0f}ms {fit_r:>6.0f}ms {speedup:>6.1f}x')
 
-            reduce_rows.append({
-                'dataset': ds_name, 'ratio': ratio,
-                'best': mb, 'random': mr,
-            })
+                reduce_rows.append({
+                    'dataset': ds_name, 'model': model_tag, 'ratio': ratio,
+                    'best': mb, 'random': mr,
+                })
+        print()
 
     # -----------------------------------------------------------------------
     # Expansion
     # -----------------------------------------------------------------------
     print()
     print('=' * 72)
-    print('EXPANSION: HVRT-var + FastHVRT-var  best vs random  (4 datasets × 3 ratios)')
+    print('EXPANSION: HVRT/FastHVRT/HART/FastHART-var  best vs random  (4 datasets × 3 ratios)')
     print('=' * 72)
     print(f'{"dataset/model":<30} {"exp":>4}  '
           f'{"disc_b":>6} {"disc_r":>6} {"ddisc":>6}  '
@@ -187,7 +195,7 @@ if __name__ == '__main__':
                 print(f'  ERROR {ds_name} exp={exp_ratio}: {e}')
                 continue
 
-            for tag in ('HVRT', 'FastHVRT'):
+            for tag in ('HVRT', 'FastHVRT', 'HART', 'FastHART'):
                 mb = res_b[tag]
                 mr = res_r[tag]
                 disc_b = mb.get('discriminator_accuracy', float('nan'))
@@ -279,4 +287,4 @@ if __name__ == '__main__':
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
     with open(out_path, 'w') as f:
         json.dump(out, f, indent=2, default=str)
-    print(f'\nResults saved → {out_path}')
+    print(f'\nResults saved -> {out_path}')

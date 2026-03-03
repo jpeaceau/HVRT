@@ -198,6 +198,8 @@ RADAR_EXPAND = ['marginal_fidelity', 'discriminator_accuracy', 'tail_preservatio
 
 HVRT_COLOUR     = '#1565C0'   # deep blue — HVRT family
 FASTHVRT_COLOUR = '#42A5F5'   # light blue — FastHVRT family
+HART_COLOUR     = '#E65100'   # deep orange — HART family
+FASTHART_COLOUR = '#FFB74D'   # light orange — FastHART family
 COMP_COLOUR     = '#9E9E9E'   # grey — competitors
 TARGET_COLOUR   = '#E53935'   # red — target reference lines
 
@@ -211,6 +213,10 @@ def _method_colour(name):
         return FASTHVRT_COLOUR
     if name.startswith('HVRT'):
         return HVRT_COLOUR
+    if name.startswith('FastHART'):
+        return FASTHART_COLOUR
+    if name.startswith('HART'):
+        return HART_COLOUR
     return COMP_COLOUR
 
 
@@ -545,6 +551,8 @@ def _make_legend(fig):
     legend_elements = [
         Patch(facecolor=HVRT_COLOUR,     label='HVRT'),
         Patch(facecolor=FASTHVRT_COLOUR, label='FastHVRT'),
+        Patch(facecolor=HART_COLOUR,     label='HART'),
+        Patch(facecolor=FASTHART_COLOUR, label='FastHART'),
         Patch(facecolor=COMP_COLOUR,     label='Competitors'),
     ]
     fig.legend(handles=legend_elements, loc='lower center', ncol=3,
@@ -679,19 +687,24 @@ def _heatmap_fig(agg, metrics, title):
     ax.set_yticks(np.arange(len(methods)))
     ax.set_yticklabels(methods, fontsize=8)
 
-    # Highlight HVRT-family rows
+    # Highlight model-family rows (HVRT=blue border, HART=orange border)
     for ri, m in enumerate(methods):
-        if m.startswith('HVRT') or m.startswith('FastHVRT'):
+        if m.startswith('FastHVRT') or m.startswith('HVRT'):
             ax.add_patch(plt.Rectangle(
                 (-0.5, ri - 0.5), len(cols), 1,
                 fill=False, edgecolor=HVRT_COLOUR, linewidth=1.8, zorder=3,
+            ))
+        elif m.startswith('FastHART') or m.startswith('HART'):
+            ax.add_patch(plt.Rectangle(
+                (-0.5, ri - 0.5), len(cols), 1,
+                fill=False, edgecolor=HART_COLOUR, linewidth=1.8, zorder=3,
             ))
 
     cbar = fig.colorbar(im, ax=ax, fraction=0.03, pad=0.02)
     cbar.set_label('Normalised score  (1 = best)', fontsize=8)
     cbar.ax.tick_params(labelsize=7)
 
-    ax.set_title(title + '\n(colour = normalised rank;  number = raw value;  blue border = HVRT family)',
+    ax.set_title(title + '\n(colour = normalised rank;  number = raw value;  blue border = HVRT family;  orange border = HART family)',
                  fontsize=9, fontweight='bold')
     fig.tight_layout()
     return fig

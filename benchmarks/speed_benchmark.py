@@ -14,7 +14,7 @@ from __future__ import annotations
 import time
 import multiprocessing
 import numpy as np
-from hvrt import HVRT
+from hvrt import HVRT, HART
 
 
 # ---------------------------------------------------------------------------
@@ -85,8 +85,8 @@ def run_expand_bench(X: np.ndarray, n_jobs: int, strategy: str, expand_n: int, r
     return time_call(lambda: model.expand(n=expand_n, generation_strategy=strategy), repeats=repeats)
 
 
-def run_fit_bench(X: np.ndarray, repeats: int) -> float:
-    return time_call(lambda: HVRT(random_state=42).fit(X), repeats=repeats)
+def run_fit_bench(X: np.ndarray, repeats: int, model_cls=HVRT) -> float:
+    return time_call(lambda: model_cls(random_state=42).fit(X), repeats=repeats)
 
 
 # ---------------------------------------------------------------------------
@@ -117,13 +117,15 @@ def main():
     print("Done.\n")
 
     # --- Fit timing (tree fit is single-threaded sklearn; shown for reference) ---
-    print("\n[fit() — tree fitting, always serial via sklearn]\n")
-    print(f"  {'Dataset':<10}  {'n':>6}  {'d':>3}  {'fit time':>10}")
-    print(f"  {'-'*10}  {'-'*6}  {'-'*3}  {'-'*10}")
+    print("\n[fit() — HVRT (squared_error) vs HART (absolute_error) — always serial]\n")
+    print(f"  {'Dataset':<10}  {'n':>6}  {'d':>3}  {'HVRT fit':>10}  {'HART fit':>10}  {'ratio':>8}")
+    print(f"  {'-'*10}  {'-'*6}  {'-'*3}  {'-'*10}  {'-'*10}  {'-'*8}")
     for label, n, d, n_part, expand_n, reps in CONFIGS:
         X = make_data(n, d)
-        t = run_fit_bench(X, reps)
-        print(f"  {label}  {n:>6,}  {d:>3}  {fmt(t):>10}")
+        t_hvrt = run_fit_bench(X, reps, model_cls=HVRT)
+        t_hart = run_fit_bench(X, reps, model_cls=HART)
+        ratio_str = f"{t_hart / t_hvrt:.2f}×" if t_hvrt > 0 else "  —  "
+        print(f"  {label}  {n:>6,}  {d:>3}  {fmt(t_hvrt):>10}  {fmt(t_hart):>10}  {ratio_str:>8}")
 
     # --- Reduce timing ---
     print("\n[reduce() — selection strategies]\n")
