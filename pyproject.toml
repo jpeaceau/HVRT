@@ -4,7 +4,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "hvrt"
-version = "2.10.0"
+version = "2.11.0"
 description = "Hierarchical Variance-Retaining Transformer (HVRT) — variance-aware sample transformation for tabular data"
 readme = "README.md"
 requires-python = ">=3.8"

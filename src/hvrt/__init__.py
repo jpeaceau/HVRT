@@ -33,7 +33,15 @@ Deprecated (removed in v3.0)
 
 from ._warnings import HVRTWarning, HVRTFeatureWarning, HVRTDeprecationWarning
 from ._params import ReduceParams, ExpandParams, AugmentParams
-from .model import HVRT, FastHVRT, HART, FastHART
+from .model import HVRT, FastHVRT, HART, FastHART, PyramidHART
+from ._geometry import (
+    compute_S,
+    compute_Q,
+    compute_T,
+    compute_A,
+    minority_sign_total,
+    geometry_stats,
+)
 from .optimizer import HVRTOptimizer
 
 from .reduction_strategies import (
@@ -79,7 +87,7 @@ from .generation_strategies import (
     get_generation_strategy,
 )
 
-__version__ = '2.10.0'
+__version__ = '2.11.0'
 
 __all__ = [
     # v2 primary API
@@ -87,7 +95,15 @@ __all__ = [
     'FastHVRT',
     'HART',
     'FastHART',
+    'PyramidHART',
     'HVRTOptimizer',
+    # Cooperative geometry functions
+    'compute_S',
+    'compute_Q',
+    'compute_T',
+    'compute_A',
+    'minority_sign_total',
+    'geometry_stats',
     # Operation params
     'ReduceParams',
     'ExpandParams',
