@@ -1,0 +1,3410 @@
+[
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9224269978172468,
+      "correlation_fidelity": 0.9638486878073811,
+      "tail_preservation": 1.0858818796460428,
+      "ml_utility_retention": 0.6397707281208791,
+      "train_time_seconds": 0.0666,
+      "operation_time_seconds": 0.0108,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0035
+    },
+    "timestamp": "2026-03-03T12:43:40.716813+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8614782397436347,
+      "correlation_fidelity": 0.9658720223140257,
+      "tail_preservation": 1.1757969622715847,
+      "ml_utility_retention": 0.6381528565138301,
+      "train_time_seconds": 0.0684,
+      "operation_time_seconds": 0.0101,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0051
+    },
+    "timestamp": "2026-03-03T12:43:41.790185+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9280339614809144,
+      "correlation_fidelity": 0.9769663239399977,
+      "tail_preservation": 1.1095583007236265,
+      "ml_utility_retention": 0.6414938300962709,
+      "train_time_seconds": 0.0449,
+      "operation_time_seconds": 0.0099,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0018
+    },
+    "timestamp": "2026-03-03T12:43:42.802372+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8577227666892908,
+      "correlation_fidelity": 0.9574317156513223,
+      "tail_preservation": 1.2016744973082925,
+      "ml_utility_retention": 0.6440051753369693,
+      "train_time_seconds": 0.0478,
+      "operation_time_seconds": 0.0099,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": 0.0007
+    },
+    "timestamp": "2026-03-03T12:43:43.812589+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.90134168609245,
+      "correlation_fidelity": 0.9800284038339452,
+      "tail_preservation": 1.1556558058745503,
+      "ml_utility_retention": 0.6359804618338479,
+      "train_time_seconds": 0.1889,
+      "operation_time_seconds": 0.0108,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0073
+    },
+    "timestamp": "2026-03-03T12:43:44.973192+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8368716253781634,
+      "correlation_fidelity": 0.9337548358412376,
+      "tail_preservation": 1.198043812187219,
+      "ml_utility_retention": 0.6401804826770606,
+      "train_time_seconds": 0.1893,
+      "operation_time_seconds": 0.0102,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0031
+    },
+    "timestamp": "2026-03-03T12:43:46.123674+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9330833698018959,
+      "correlation_fidelity": 0.9673549478852888,
+      "tail_preservation": 1.0936220434245956,
+      "ml_utility_retention": 0.636411922765589,
+      "train_time_seconds": 0.1984,
+      "operation_time_seconds": 0.0106,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0069
+    },
+    "timestamp": "2026-03-03T12:43:47.294491+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8576886824585004,
+      "correlation_fidelity": 0.9603184753674251,
+      "tail_preservation": 1.1734524387459822,
+      "ml_utility_retention": 0.6359769274681484,
+      "train_time_seconds": 0.1945,
+      "operation_time_seconds": 0.0102,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0073
+    },
+    "timestamp": "2026-03-03T12:43:48.479535+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8693629620586535,
+      "correlation_fidelity": 0.9409393166606118,
+      "tail_preservation": 1.1238686471080443,
+      "ml_utility_retention": 0.619676028739198,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.0705,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0236
+    },
+    "timestamp": "2026-03-03T12:43:49.853374+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9902996152187689,
+      "correlation_fidelity": 0.9818434402780382,
+      "tail_preservation": 1.0014637936217592,
+      "ml_utility_retention": 0.6318594159373381,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0117,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0114
+    },
+    "timestamp": "2026-03-03T12:43:50.824911+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9911417227221869,
+      "correlation_fidelity": 0.9803923680002793,
+      "tail_preservation": 0.9967050779295055,
+      "ml_utility_retention": 0.632127744287651,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0022,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0112
+    },
+    "timestamp": "2026-03-03T12:43:51.778107+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9908225665716305,
+      "correlation_fidelity": 0.9829862699797776,
+      "tail_preservation": 0.9889137377292353,
+      "ml_utility_retention": 0.6392886666661655,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.004
+    },
+    "timestamp": "2026-03-03T12:43:52.745910+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8757058033644649,
+      "correlation_fidelity": 0.9428984761637139,
+      "tail_preservation": 1.1434256394071207,
+      "ml_utility_retention": 0.63903613213277,
+      "train_time_seconds": 0.0687,
+      "operation_time_seconds": 0.0078,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0043
+    },
+    "timestamp": "2026-03-03T12:43:53.385586+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8040604888199897,
+      "correlation_fidelity": 0.9682344988391233,
+      "tail_preservation": 1.2358387671195856,
+      "ml_utility_retention": 0.6378292563641659,
+      "train_time_seconds": 0.0696,
+      "operation_time_seconds": 0.0075,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0055
+    },
+    "timestamp": "2026-03-03T12:43:54.026934+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8850870039309978,
+      "correlation_fidelity": 0.9629951516222569,
+      "tail_preservation": 1.1663243082748125,
+      "ml_utility_retention": 0.6370846995390274,
+      "train_time_seconds": 0.046,
+      "operation_time_seconds": 0.0084,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0062
+    },
+    "timestamp": "2026-03-03T12:43:54.655667+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8034316962375899,
+      "correlation_fidelity": 0.9646150127836554,
+      "tail_preservation": 1.2731004502312142,
+      "ml_utility_retention": 0.6394292721356768,
+      "train_time_seconds": 0.0449,
+      "operation_time_seconds": 0.0078,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0039
+    },
+    "timestamp": "2026-03-03T12:43:55.271288+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8371705374828137,
+      "correlation_fidelity": 0.9671187488409195,
+      "tail_preservation": 1.2687536375563018,
+      "ml_utility_retention": 0.6282416287841369,
+      "train_time_seconds": 0.187,
+      "operation_time_seconds": 0.0072,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0151
+    },
+    "timestamp": "2026-03-03T12:43:56.056183+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7579495886201891,
+      "correlation_fidelity": 0.9307728216309299,
+      "tail_preservation": 1.3206953897490352,
+      "ml_utility_retention": 0.630457322920519,
+      "train_time_seconds": 0.1964,
+      "operation_time_seconds": 0.0073,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0128
+    },
+    "timestamp": "2026-03-03T12:43:56.816957+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8917741212748442,
+      "correlation_fidelity": 0.9435393065090256,
+      "tail_preservation": 1.1532629280924294,
+      "ml_utility_retention": 0.6342919865386701,
+      "train_time_seconds": 0.1955,
+      "operation_time_seconds": 0.0099,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.009
+    },
+    "timestamp": "2026-03-03T12:43:57.589815+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7913864138393784,
+      "correlation_fidelity": 0.9626328683290191,
+      "tail_preservation": 1.2629023332396982,
+      "ml_utility_retention": 0.6298272887605318,
+      "train_time_seconds": 0.1987,
+      "operation_time_seconds": 0.0076,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0135
+    },
+    "timestamp": "2026-03-03T12:43:58.359602+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7808663905923946,
+      "correlation_fidelity": 0.9082055444994679,
+      "tail_preservation": 1.1980734280376462,
+      "ml_utility_retention": 0.6113977281238636,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.9637,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0319
+    },
+    "timestamp": "2026-03-03T12:43:59.506897+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9837686886755106,
+      "correlation_fidelity": 0.9703906081313771,
+      "tail_preservation": 1.012782505138924,
+      "ml_utility_retention": 0.6235198307940149,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0049,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0198
+    },
+    "timestamp": "2026-03-03T12:44:00.074813+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9857621681951612,
+      "correlation_fidelity": 0.9735639569985508,
+      "tail_preservation": 0.9955017152866479,
+      "ml_utility_retention": 0.6195920340424641,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0021,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0237
+    },
+    "timestamp": "2026-03-03T12:44:00.641899+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9820837571294716,
+      "correlation_fidelity": 0.9725821523561997,
+      "tail_preservation": 0.9898479722678649,
+      "ml_utility_retention": 0.630749840840926,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0011,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0126
+    },
+    "timestamp": "2026-03-03T12:44:01.201739+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8398761536331157,
+      "correlation_fidelity": 0.9318722878229895,
+      "tail_preservation": 1.1787215804335474,
+      "ml_utility_retention": 0.6352280657438477,
+      "train_time_seconds": 0.0666,
+      "operation_time_seconds": 0.0065,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0081
+    },
+    "timestamp": "2026-03-03T12:44:01.652393+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7659288388564299,
+      "correlation_fidelity": 0.9617223074102044,
+      "tail_preservation": 1.272726027585005,
+      "ml_utility_retention": 0.6309929335223174,
+      "train_time_seconds": 0.071,
+      "operation_time_seconds": 0.0062,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0123
+    },
+    "timestamp": "2026-03-03T12:44:02.104625+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8485772986143587,
+      "correlation_fidelity": 0.9524626363419058,
+      "tail_preservation": 1.2305447094492041,
+      "ml_utility_retention": 0.6299146267311659,
+      "train_time_seconds": 0.0441,
+      "operation_time_seconds": 0.0063,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0134
+    },
+    "timestamp": "2026-03-03T12:44:02.523037+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.760927578313143,
+      "correlation_fidelity": 0.9650351863562593,
+      "tail_preservation": 1.3434139415960384,
+      "ml_utility_retention": 0.6333799983195341,
+      "train_time_seconds": 0.045,
+      "operation_time_seconds": 0.0058,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0099
+    },
+    "timestamp": "2026-03-03T12:44:02.948652+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7871168452725331,
+      "correlation_fidelity": 0.9589094557200446,
+      "tail_preservation": 1.3627921497881699,
+      "ml_utility_retention": 0.6251817541973934,
+      "train_time_seconds": 0.1857,
+      "operation_time_seconds": 0.0059,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0181
+    },
+    "timestamp": "2026-03-03T12:44:03.509364+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7025081470184076,
+      "correlation_fidelity": 0.9257658981591486,
+      "tail_preservation": 1.4200749850653436,
+      "ml_utility_retention": 0.6193897695663766,
+      "train_time_seconds": 0.1888,
+      "operation_time_seconds": 0.0058,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0239
+    },
+    "timestamp": "2026-03-03T12:44:04.074729+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8609592758984379,
+      "correlation_fidelity": 0.9337877833102486,
+      "tail_preservation": 1.204062263396659,
+      "ml_utility_retention": 0.6191100802435288,
+      "train_time_seconds": 0.1948,
+      "operation_time_seconds": 0.0068,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0242
+    },
+    "timestamp": "2026-03-03T12:44:04.653574+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7548527237625919,
+      "correlation_fidelity": 0.9701295700093931,
+      "tail_preservation": 1.3197479960402534,
+      "ml_utility_retention": 0.6221878373026979,
+      "train_time_seconds": 0.1924,
+      "operation_time_seconds": 0.0059,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0211
+    },
+    "timestamp": "2026-03-03T12:44:05.220810+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7053005503816068,
+      "correlation_fidelity": 0.8839543522071589,
+      "tail_preservation": 1.2596650848971742,
+      "ml_utility_retention": 0.5975571515962634,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.9167,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0457
+    },
+    "timestamp": "2026-03-03T12:44:06.266146+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9764598317392306,
+      "correlation_fidelity": 0.9597639410972945,
+      "tail_preservation": 1.0201144011861354,
+      "ml_utility_retention": 0.6145416778580031,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0026,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0288
+    },
+    "timestamp": "2026-03-03T12:44:06.641578+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9834228224307826,
+      "correlation_fidelity": 0.9653180013027556,
+      "tail_preservation": 1.00568448063233,
+      "ml_utility_retention": 0.6133039821277433,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.002,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.03
+    },
+    "timestamp": "2026-03-03T12:44:07.015213+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9764599301054334,
+      "correlation_fidelity": 0.9663309079032372,
+      "tail_preservation": 0.996940099902274,
+      "ml_utility_retention": 0.6274808024715752,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0158
+    },
+    "timestamp": "2026-03-03T12:44:07.391481+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7838503875349312,
+      "correlation_fidelity": 0.9186901696979006,
+      "tail_preservation": 1.2582182563709443,
+      "ml_utility_retention": 0.6081726404138285,
+      "train_time_seconds": 0.0707,
+      "operation_time_seconds": 0.0044,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0351
+    },
+    "timestamp": "2026-03-03T12:44:07.661443+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7055352154295833,
+      "correlation_fidelity": 0.9431339248688214,
+      "tail_preservation": 1.3671503349131262,
+      "ml_utility_retention": 0.6154626386364036,
+      "train_time_seconds": 0.0666,
+      "operation_time_seconds": 0.0043,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0278
+    },
+    "timestamp": "2026-03-03T12:44:07.928474+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7853651517203086,
+      "correlation_fidelity": 0.9381204393616497,
+      "tail_preservation": 1.3764419729313293,
+      "ml_utility_retention": 0.6181135144439271,
+      "train_time_seconds": 0.0446,
+      "operation_time_seconds": 0.0041,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0252
+    },
+    "timestamp": "2026-03-03T12:44:08.167511+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6972161982512656,
+      "correlation_fidelity": 0.9497978549768141,
+      "tail_preservation": 1.4791902707449915,
+      "ml_utility_retention": 0.6114446718856974,
+      "train_time_seconds": 0.0452,
+      "operation_time_seconds": 0.0043,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0319
+    },
+    "timestamp": "2026-03-03T12:44:08.415845+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6923789186441688,
+      "correlation_fidelity": 0.9369657867186575,
+      "tail_preservation": 1.5644752251439078,
+      "ml_utility_retention": 0.5979584586723414,
+      "train_time_seconds": 0.1911,
+      "operation_time_seconds": 0.0042,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0453
+    },
+    "timestamp": "2026-03-03T12:44:08.804900+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6000478400020142,
+      "correlation_fidelity": 0.9054055416429564,
+      "tail_preservation": 1.6153768667306037,
+      "ml_utility_retention": 0.591311111709159,
+      "train_time_seconds": 0.1931,
+      "operation_time_seconds": 0.0043,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.052
+    },
+    "timestamp": "2026-03-03T12:44:09.200209+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8035145036253307,
+      "correlation_fidelity": 0.9150689566877448,
+      "tail_preservation": 1.3183416169589635,
+      "ml_utility_retention": 0.6027043380085917,
+      "train_time_seconds": 0.1908,
+      "operation_time_seconds": 0.0043,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0406
+    },
+    "timestamp": "2026-03-03T12:44:09.588211+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6945251366125753,
+      "correlation_fidelity": 0.9528754038332726,
+      "tail_preservation": 1.4138724752496985,
+      "ml_utility_retention": 0.599613749118932,
+      "train_time_seconds": 0.1906,
+      "operation_time_seconds": 0.0045,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0437
+    },
+    "timestamp": "2026-03-03T12:44:09.971892+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5885721910880266,
+      "correlation_fidelity": 0.8480969107534105,
+      "tail_preservation": 1.3751592608643788,
+      "ml_utility_retention": 0.5518790804083107,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.8825,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0914
+    },
+    "timestamp": "2026-03-03T12:44:10.933523+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9696934773073621,
+      "correlation_fidelity": 0.9489784764385378,
+      "tail_preservation": 1.014664588958251,
+      "ml_utility_retention": 0.6055868226335552,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0025,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0377
+    },
+    "timestamp": "2026-03-03T12:44:11.124976+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.971109746154957,
+      "correlation_fidelity": 0.9585162164782095,
+      "tail_preservation": 1.0050614382066214,
+      "ml_utility_retention": 0.6029820422975445,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0403
+    },
+    "timestamp": "2026-03-03T12:44:11.327893+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "housing",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9645059732334377,
+      "correlation_fidelity": 0.9461963120756129,
+      "tail_preservation": 0.996443555438374,
+      "ml_utility_retention": 0.5829445100779831,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004,
+      "ml_utility_trtr": 0.6433,
+      "ml_delta": -0.0604
+    },
+    "timestamp": "2026-03-03T12:44:11.522567+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9333632735253761,
+      "correlation_fidelity": 0.9695312102563682,
+      "tail_preservation": 1.0744902554542028,
+      "ml_utility_retention": 0.9786107627014129,
+      "train_time_seconds": 0.0711,
+      "operation_time_seconds": 0.0119,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0011
+    },
+    "timestamp": "2026-03-03T12:44:16.341806+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8837837838916017,
+      "correlation_fidelity": 0.9341154867213572,
+      "tail_preservation": 1.0868861637501337,
+      "ml_utility_retention": 0.9783054182547969,
+      "train_time_seconds": 0.0683,
+      "operation_time_seconds": 0.0115,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0008
+    },
+    "timestamp": "2026-03-03T12:44:17.955936+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8853972675502357,
+      "correlation_fidelity": 0.9292203485561894,
+      "tail_preservation": 1.09062351569826,
+      "ml_utility_retention": 0.9781857478648088,
+      "train_time_seconds": 0.0627,
+      "operation_time_seconds": 0.0119,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0007
+    },
+    "timestamp": "2026-03-03T12:44:19.569413+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8777269468421645,
+      "correlation_fidelity": 0.9255001415597767,
+      "tail_preservation": 1.0917692012694882,
+      "ml_utility_retention": 0.9778904492842047,
+      "train_time_seconds": 0.066,
+      "operation_time_seconds": 0.0115,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0004
+    },
+    "timestamp": "2026-03-03T12:44:21.182370+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9337820559845117,
+      "correlation_fidelity": 0.9654139901445479,
+      "tail_preservation": 1.0695590257396481,
+      "ml_utility_retention": 0.9784075665594312,
+      "train_time_seconds": 0.2703,
+      "operation_time_seconds": 0.0121,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0009
+    },
+    "timestamp": "2026-03-03T12:44:22.996559+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8651072295104651,
+      "correlation_fidelity": 0.9217401474452074,
+      "tail_preservation": 1.0880454191330287,
+      "ml_utility_retention": 0.9782388898569288,
+      "train_time_seconds": 0.27,
+      "operation_time_seconds": 0.0124,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0007
+    },
+    "timestamp": "2026-03-03T12:44:24.818644+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8920452290130024,
+      "correlation_fidelity": 0.9372860446617957,
+      "tail_preservation": 1.089537059699638,
+      "ml_utility_retention": 0.9779463222642901,
+      "train_time_seconds": 0.2461,
+      "operation_time_seconds": 0.0107,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0004
+    },
+    "timestamp": "2026-03-03T12:44:26.638004+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8813034709367342,
+      "correlation_fidelity": 0.9302837184433485,
+      "tail_preservation": 1.0905851622897975,
+      "ml_utility_retention": 0.978199530838262,
+      "train_time_seconds": 0.2559,
+      "operation_time_seconds": 0.0118,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0007
+    },
+    "timestamp": "2026-03-03T12:44:28.457227+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8116157421463298,
+      "correlation_fidelity": 0.8473409753046484,
+      "tail_preservation": 1.099247601968498,
+      "ml_utility_retention": 0.9768089350277183,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.4647,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0007
+    },
+    "timestamp": "2026-03-03T12:44:30.403243+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9901909210662401,
+      "correlation_fidelity": 0.9839484445349258,
+      "tail_preservation": 0.9985138665980786,
+      "ml_utility_retention": 0.9758821277162418,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0061,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0016
+    },
+    "timestamp": "2026-03-03T12:44:31.951466+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9923335369902446,
+      "correlation_fidelity": 0.9819688006411207,
+      "tail_preservation": 0.9987773760608782,
+      "ml_utility_retention": 0.97659148054698,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0023,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0009
+    },
+    "timestamp": "2026-03-03T12:44:33.504280+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.5
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9892566430176416,
+      "correlation_fidelity": 0.9819798857688923,
+      "tail_preservation": 1.0028307152006395,
+      "ml_utility_retention": 0.9772582453407671,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0002
+    },
+    "timestamp": "2026-03-03T12:44:35.047938+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8913241561318024,
+      "correlation_fidelity": 0.9499779577287087,
+      "tail_preservation": 1.1206882408000554,
+      "ml_utility_retention": 0.9783764835598362,
+      "train_time_seconds": 0.0712,
+      "operation_time_seconds": 0.0083,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0009
+    },
+    "timestamp": "2026-03-03T12:44:36.035153+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8435346066288494,
+      "correlation_fidelity": 0.9213849487338683,
+      "tail_preservation": 1.1354336392767705,
+      "ml_utility_retention": 0.9788711972190696,
+      "train_time_seconds": 0.0688,
+      "operation_time_seconds": 0.0085,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0014
+    },
+    "timestamp": "2026-03-03T12:44:37.005386+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8315421290041025,
+      "correlation_fidelity": 0.9083797402990756,
+      "tail_preservation": 1.1436687249794861,
+      "ml_utility_retention": 0.9779147465902056,
+      "train_time_seconds": 0.0647,
+      "operation_time_seconds": 0.0085,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0004
+    },
+    "timestamp": "2026-03-03T12:44:37.978269+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.824776899470714,
+      "correlation_fidelity": 0.9036509788895026,
+      "tail_preservation": 1.14411933906649,
+      "ml_utility_retention": 0.978592631190678,
+      "train_time_seconds": 0.0646,
+      "operation_time_seconds": 0.009,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0011
+    },
+    "timestamp": "2026-03-03T12:44:38.968735+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8899939905869589,
+      "correlation_fidelity": 0.9433372127845281,
+      "tail_preservation": 1.1125054342814236,
+      "ml_utility_retention": 0.9787451283589291,
+      "train_time_seconds": 0.274,
+      "operation_time_seconds": 0.0087,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0012
+    },
+    "timestamp": "2026-03-03T12:44:40.178636+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8180252870529543,
+      "correlation_fidelity": 0.9135403917548508,
+      "tail_preservation": 1.1365322827395283,
+      "ml_utility_retention": 0.9780718366085945,
+      "train_time_seconds": 0.2683,
+      "operation_time_seconds": 0.0086,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0006
+    },
+    "timestamp": "2026-03-03T12:44:41.364909+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8444288499859409,
+      "correlation_fidelity": 0.9220955419486587,
+      "tail_preservation": 1.1389690933176664,
+      "ml_utility_retention": 0.9777833567089359,
+      "train_time_seconds": 0.2515,
+      "operation_time_seconds": 0.0083,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0003
+    },
+    "timestamp": "2026-03-03T12:44:42.524123+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8315286964808125,
+      "correlation_fidelity": 0.9151679045674552,
+      "tail_preservation": 1.1390264518289814,
+      "ml_utility_retention": 0.9775676275028128,
+      "train_time_seconds": 0.2494,
+      "operation_time_seconds": 0.009,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0001
+    },
+    "timestamp": "2026-03-03T12:44:43.675949+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.722522033580785,
+      "correlation_fidelity": 0.7986636305381929,
+      "tail_preservation": 1.1477769408426324,
+      "ml_utility_retention": 0.9749003335450107,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.3654,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0026
+    },
+    "timestamp": "2026-03-03T12:44:45.320323+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9871837076341858,
+      "correlation_fidelity": 0.9744751219962282,
+      "tail_preservation": 0.9989195277930499,
+      "ml_utility_retention": 0.9751570746242405,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0044,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0023
+    },
+    "timestamp": "2026-03-03T12:44:46.225648+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9886684577242214,
+      "correlation_fidelity": 0.969729035241375,
+      "tail_preservation": 0.9973394416714945,
+      "ml_utility_retention": 0.9757400024905762,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0024,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0018
+    },
+    "timestamp": "2026-03-03T12:44:47.134120+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.3
+    },
+    "metrics": {
+      "marginal_fidelity": 0.983002591215168,
+      "correlation_fidelity": 0.972259525928637,
+      "tail_preservation": 1.000862692069526,
+      "ml_utility_retention": 0.9765272269924435,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0006,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.001
+    },
+    "timestamp": "2026-03-03T12:44:48.030611+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8589897841839984,
+      "correlation_fidelity": 0.9386300913178068,
+      "tail_preservation": 1.15430077097327,
+      "ml_utility_retention": 0.9780304288356668,
+      "train_time_seconds": 0.0696,
+      "operation_time_seconds": 0.0067,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0005
+    },
+    "timestamp": "2026-03-03T12:44:48.708719+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8141575379990819,
+      "correlation_fidelity": 0.9139452678824276,
+      "tail_preservation": 1.1717959936010092,
+      "ml_utility_retention": 0.9778933361011981,
+      "train_time_seconds": 0.0702,
+      "operation_time_seconds": 0.0067,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0004
+    },
+    "timestamp": "2026-03-03T12:44:49.371399+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7910682759334756,
+      "correlation_fidelity": 0.8935183166224118,
+      "tail_preservation": 1.1842163487679054,
+      "ml_utility_retention": 0.9780510027529563,
+      "train_time_seconds": 0.0633,
+      "operation_time_seconds": 0.0066,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0006
+    },
+    "timestamp": "2026-03-03T12:44:50.029145+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7881869759486555,
+      "correlation_fidelity": 0.8913692552109246,
+      "tail_preservation": 1.182374354497586,
+      "ml_utility_retention": 0.977161733666546,
+      "train_time_seconds": 0.0632,
+      "operation_time_seconds": 0.0067,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0003
+    },
+    "timestamp": "2026-03-03T12:44:50.696868+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.858633953580907,
+      "correlation_fidelity": 0.9322256992572426,
+      "tail_preservation": 1.1437436844086302,
+      "ml_utility_retention": 0.9781888723654188,
+      "train_time_seconds": 0.2688,
+      "operation_time_seconds": 0.0069,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0007
+    },
+    "timestamp": "2026-03-03T12:44:51.559797+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7876775734721995,
+      "correlation_fidelity": 0.9063443696769504,
+      "tail_preservation": 1.1682866253231818,
+      "ml_utility_retention": 0.9768014166048864,
+      "train_time_seconds": 0.2679,
+      "operation_time_seconds": 0.007,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0007
+    },
+    "timestamp": "2026-03-03T12:44:52.423402+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8044629793121814,
+      "correlation_fidelity": 0.9138641378193075,
+      "tail_preservation": 1.1786708197179396,
+      "ml_utility_retention": 0.9779543044794509,
+      "train_time_seconds": 0.2485,
+      "operation_time_seconds": 0.0066,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.0005
+    },
+    "timestamp": "2026-03-03T12:44:53.265187+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7955114645034072,
+      "correlation_fidelity": 0.9094009021007038,
+      "tail_preservation": 1.1801797757220271,
+      "ml_utility_retention": 0.9785131565095961,
+      "train_time_seconds": 0.2541,
+      "operation_time_seconds": 0.0068,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": 0.001
+    },
+    "timestamp": "2026-03-03T12:44:54.112997+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.6654104021976153,
+      "correlation_fidelity": 0.774644957168046,
+      "tail_preservation": 1.177755980058023,
+      "ml_utility_retention": 0.9721054987486597,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.3612,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0054
+    },
+    "timestamp": "2026-03-03T12:44:55.668266+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9802277464718419,
+      "correlation_fidelity": 0.9613295309062416,
+      "tail_preservation": 1.0055794934362146,
+      "ml_utility_retention": 0.9748572979267313,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0051,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0026
+    },
+    "timestamp": "2026-03-03T12:44:56.270216+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9844368378715429,
+      "correlation_fidelity": 0.9651772958765079,
+      "tail_preservation": 0.9942942539218389,
+      "ml_utility_retention": 0.975229565480643,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0036,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0023
+    },
+    "timestamp": "2026-03-03T12:44:56.870766+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.2
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9796245978179834,
+      "correlation_fidelity": 0.9637808774511277,
+      "tail_preservation": 1.003101763350207,
+      "ml_utility_retention": 0.9758890469217136,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0016
+    },
+    "timestamp": "2026-03-03T12:44:57.468748+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8060038611427947,
+      "correlation_fidelity": 0.9188192792155407,
+      "tail_preservation": 1.207858258018311,
+      "ml_utility_retention": 0.9754423374217421,
+      "train_time_seconds": 0.0699,
+      "operation_time_seconds": 0.0046,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0021
+    },
+    "timestamp": "2026-03-03T12:44:57.849361+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.759899483389332,
+      "correlation_fidelity": 0.8950731141950421,
+      "tail_preservation": 1.226889927364308,
+      "ml_utility_retention": 0.9758470256139299,
+      "train_time_seconds": 0.0728,
+      "operation_time_seconds": 0.0048,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0017
+    },
+    "timestamp": "2026-03-03T12:44:58.226377+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7356417152235969,
+      "correlation_fidelity": 0.8754710691116832,
+      "tail_preservation": 1.2362917338310262,
+      "ml_utility_retention": 0.974597752708499,
+      "train_time_seconds": 0.0632,
+      "operation_time_seconds": 0.0047,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0029
+    },
+    "timestamp": "2026-03-03T12:44:58.595767+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7299238722737937,
+      "correlation_fidelity": 0.8755605943823956,
+      "tail_preservation": 1.2396047304540694,
+      "ml_utility_retention": 0.9736599129332131,
+      "train_time_seconds": 0.0641,
+      "operation_time_seconds": 0.005,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0038
+    },
+    "timestamp": "2026-03-03T12:44:58.977092+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.805888884342119,
+      "correlation_fidelity": 0.91277076874527,
+      "tail_preservation": 1.1984164125642036,
+      "ml_utility_retention": 0.9757908998352989,
+      "train_time_seconds": 0.2736,
+      "operation_time_seconds": 0.0047,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0017
+    },
+    "timestamp": "2026-03-03T12:44:59.565837+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.740584740084049,
+      "correlation_fidelity": 0.8953528442496606,
+      "tail_preservation": 1.2169220057589019,
+      "ml_utility_retention": 0.9755280169474079,
+      "train_time_seconds": 0.269,
+      "operation_time_seconds": 0.0071,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.002
+    },
+    "timestamp": "2026-03-03T12:45:00.142261+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7540019900973174,
+      "correlation_fidelity": 0.8995425078382532,
+      "tail_preservation": 1.2367723261361923,
+      "ml_utility_retention": 0.9741063239127791,
+      "train_time_seconds": 0.2534,
+      "operation_time_seconds": 0.0047,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0034
+    },
+    "timestamp": "2026-03-03T12:45:00.709051+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.7487826527255539,
+      "correlation_fidelity": 0.8962646050430693,
+      "tail_preservation": 1.2316598624108694,
+      "ml_utility_retention": 0.9741093040381475,
+      "train_time_seconds": 0.2506,
+      "operation_time_seconds": 0.0047,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0034
+    },
+    "timestamp": "2026-03-03T12:45:01.266632+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Kennard-Stone",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.5908854950179182,
+      "correlation_fidelity": 0.7556222158599599,
+      "tail_preservation": 1.2414514616147252,
+      "ml_utility_retention": 0.9719802271983357,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 1.2718,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0055
+    },
+    "timestamp": "2026-03-03T12:45:02.656966+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "QR-Pivot",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9632406898305201,
+      "correlation_fidelity": 0.9471843281148788,
+      "tail_preservation": 1.0072878731798478,
+      "ml_utility_retention": 0.9729448750529481,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0042,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0046
+    },
+    "timestamp": "2026-03-03T12:45:02.963351+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Stratified",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9724097207876323,
+      "correlation_fidelity": 0.9405295384944812,
+      "tail_preservation": 0.9903534057842796,
+      "ml_utility_retention": 0.9734803983776571,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.004
+    },
+    "timestamp": "2026-03-03T12:45:03.259573+00:00"
+  },
+  {
+    "task": "reduce",
+    "dataset": "multimodal",
+    "method": "Random",
+    "params": {
+      "ratio": 0.1
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9711529546220699,
+      "correlation_fidelity": 0.9473493702075398,
+      "tail_preservation": 1.0048815916793175,
+      "ml_utility_retention": 0.9731011972442538,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9775,
+      "ml_delta": -0.0044
+    },
+    "timestamp": "2026-03-03T12:45:03.561973+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9323408808335862,
+      "correlation_fidelity": 0.827814585917404,
+      "tail_preservation": 0.9732321939496289,
+      "discriminator_accuracy": 0.43124999999999997,
+      "privacy_dcr": 0.613302638282007,
+      "novelty_min": 35.65500638877277,
+      "ml_utility_tstr": 0.37729261662572733,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0055,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0657
+    },
+    "timestamp": "2026-03-03T12:45:03.658339+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8937283832904352,
+      "correlation_fidelity": 0.8715449607421527,
+      "tail_preservation": 1.0105990688006756,
+      "discriminator_accuracy": 0.5333333333333333,
+      "privacy_dcr": 0.6348582377276893,
+      "novelty_min": 35.65500638877277,
+      "ml_utility_tstr": 0.41425857165875124,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0031,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0287
+    },
+    "timestamp": "2026-03-03T12:45:03.708515+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.942137601679436,
+      "correlation_fidelity": 0.9014632601898579,
+      "tail_preservation": 0.985664640875147,
+      "discriminator_accuracy": 0.4604166666666667,
+      "privacy_dcr": 0.6375407866630696,
+      "novelty_min": 38.48452854344573,
+      "ml_utility_tstr": 0.3345623629353702,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0036,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.1084
+    },
+    "timestamp": "2026-03-03T12:45:03.759432+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8750744972967194,
+      "correlation_fidelity": 0.8609358171735186,
+      "tail_preservation": 1.1211474963312213,
+      "discriminator_accuracy": 0.53125,
+      "privacy_dcr": 0.6898444925833175,
+      "novelty_min": 38.48452854344584,
+      "ml_utility_tstr": 0.2864413915042494,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.003,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.1566
+    },
+    "timestamp": "2026-03-03T12:45:03.812319+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9258970784795475,
+      "correlation_fidelity": 0.9317139630795318,
+      "tail_preservation": 0.9514010711291385,
+      "discriminator_accuracy": 0.4895833333333333,
+      "privacy_dcr": 0.6675721800857333,
+      "novelty_min": 91.2981682924438,
+      "ml_utility_tstr": 0.4329066307170444,
+      "train_time_seconds": 0.0023,
+      "operation_time_seconds": 0.0032,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0101
+    },
+    "timestamp": "2026-03-03T12:45:03.863458+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8821932765589596,
+      "correlation_fidelity": 0.8978353217208387,
+      "tail_preservation": 0.9821580310681959,
+      "discriminator_accuracy": 0.5187499999999999,
+      "privacy_dcr": 0.6870017819161258,
+      "novelty_min": 91.2981682924438,
+      "ml_utility_tstr": 0.24667908126037674,
+      "train_time_seconds": 0.002,
+      "operation_time_seconds": 0.0031,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.1963
+    },
+    "timestamp": "2026-03-03T12:45:03.915675+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9341562841609612,
+      "correlation_fidelity": 0.9003975727723399,
+      "tail_preservation": 1.035173677818325,
+      "discriminator_accuracy": 0.46458333333333335,
+      "privacy_dcr": 0.6474541233359457,
+      "novelty_min": 35.12640892686148,
+      "ml_utility_tstr": 0.3541698637223726,
+      "train_time_seconds": 0.0018,
+      "operation_time_seconds": 0.0029,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0888
+    },
+    "timestamp": "2026-03-03T12:45:03.967858+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8787879848266859,
+      "correlation_fidelity": 0.8280293232474509,
+      "tail_preservation": 1.0634568053169478,
+      "discriminator_accuracy": 0.5499999999999999,
+      "privacy_dcr": 0.6900024310499355,
+      "novelty_min": 35.12640892686148,
+      "ml_utility_tstr": 0.3452854448042183,
+      "train_time_seconds": 0.0019,
+      "operation_time_seconds": 0.0035,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0977
+    },
+    "timestamp": "2026-03-03T12:45:04.019188+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8349058775909571,
+      "correlation_fidelity": 0.8667523782502065,
+      "tail_preservation": 1.0696434465550138,
+      "discriminator_accuracy": 0.4583333333333333,
+      "privacy_dcr": 1.2174579549934146,
+      "novelty_min": 90.30759748934993,
+      "ml_utility_tstr": 0.39835485885961863,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 2.3613,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0446
+    },
+    "timestamp": "2026-03-03T12:45:06.445350+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8946048861805246,
+      "correlation_fidelity": 0.7993964996680542,
+      "tail_preservation": 0.879454384422043,
+      "discriminator_accuracy": 0.5187499999999999,
+      "privacy_dcr": 0.8958168332586343,
+      "novelty_min": 148.72385505265703,
+      "ml_utility_tstr": 0.4200053673062477,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0014,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.023
+    },
+    "timestamp": "2026-03-03T12:45:06.514079+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9219501362332955,
+      "correlation_fidelity": 0.8796316846418034,
+      "tail_preservation": 0.9336613889525139,
+      "discriminator_accuracy": 0.5041666666666668,
+      "privacy_dcr": 0.768482868314889,
+      "novelty_min": 59.56237601184999,
+      "ml_utility_tstr": 0.34334760116582297,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0002,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0997
+    },
+    "timestamp": "2026-03-03T12:45:06.582028+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8902472769136561,
+      "correlation_fidelity": 0.8509909900828448,
+      "tail_preservation": 0.8662257234177161,
+      "discriminator_accuracy": 0.49791666666666673,
+      "privacy_dcr": 0.34680413433374024,
+      "novelty_min": 8.67288433644762,
+      "ml_utility_tstr": 0.3364673622412736,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.2201,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.1065
+    },
+    "timestamp": "2026-03-03T12:45:06.870365+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9357923187942896,
+      "correlation_fidelity": 0.8953515185585981,
+      "tail_preservation": 1.0099104913746468,
+      "discriminator_accuracy": 0.4854166666666666,
+      "privacy_dcr": 0.614400617640048,
+      "novelty_min": 34.7671649898846,
+      "ml_utility_tstr": 0.3345669796362606,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.003,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.1084
+    },
+    "timestamp": "2026-03-03T12:45:06.943613+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.900262139281625,
+      "correlation_fidelity": 0.9357799487959756,
+      "tail_preservation": 1.030993521626466,
+      "discriminator_accuracy": 0.525,
+      "privacy_dcr": 0.6331139557650564,
+      "novelty_min": 34.76716498988454,
+      "ml_utility_tstr": 0.4973364060797829,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0034,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": 0.0543
+    },
+    "timestamp": "2026-03-03T12:45:07.017861+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9450549094946756,
+      "correlation_fidelity": 0.921922541792825,
+      "tail_preservation": 0.9916012571480053,
+      "discriminator_accuracy": 0.46041666666666664,
+      "privacy_dcr": 0.6880102135716135,
+      "novelty_min": 38.48452854344573,
+      "ml_utility_tstr": 0.480412855004543,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0035,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": 0.0374
+    },
+    "timestamp": "2026-03-03T12:45:07.094402+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.907766991831567,
+      "correlation_fidelity": 0.9228748315572713,
+      "tail_preservation": 1.0572886751724913,
+      "discriminator_accuracy": 0.5375,
+      "privacy_dcr": 0.6941076947520194,
+      "novelty_min": 38.48452854344562,
+      "ml_utility_tstr": 0.3589250626480812,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0031,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0841
+    },
+    "timestamp": "2026-03-03T12:45:07.165803+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9441681034208846,
+      "correlation_fidelity": 0.9181406286022848,
+      "tail_preservation": 0.9829694631707678,
+      "discriminator_accuracy": 0.5041666666666667,
+      "privacy_dcr": 0.6413658125714844,
+      "novelty_min": 17.35401958150631,
+      "ml_utility_tstr": 0.3066525170263482,
+      "train_time_seconds": 0.002,
+      "operation_time_seconds": 0.0028,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.1363
+    },
+    "timestamp": "2026-03-03T12:45:07.244744+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8941848984321102,
+      "correlation_fidelity": 0.9257247202932402,
+      "tail_preservation": 1.0437872157820076,
+      "discriminator_accuracy": 0.5291666666666667,
+      "privacy_dcr": 0.6768641796272291,
+      "novelty_min": 37.07239153961546,
+      "ml_utility_tstr": 0.4111220291500516,
+      "train_time_seconds": 0.002,
+      "operation_time_seconds": 0.0029,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0319
+    },
+    "timestamp": "2026-03-03T12:45:07.318244+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9318932664601194,
+      "correlation_fidelity": 0.8659202560766233,
+      "tail_preservation": 0.9380407301798218,
+      "discriminator_accuracy": 0.5208333333333334,
+      "privacy_dcr": 0.6641120433981651,
+      "novelty_min": 23.055944171068337,
+      "ml_utility_tstr": 0.5208718555927365,
+      "train_time_seconds": 0.0017,
+      "operation_time_seconds": 0.0028,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": 0.0779
+    },
+    "timestamp": "2026-03-03T12:45:07.390720+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8758274301696993,
+      "correlation_fidelity": 0.8644534308997589,
+      "tail_preservation": 1.1031444314171381,
+      "discriminator_accuracy": 0.5583333333333332,
+      "privacy_dcr": 0.7164797015134184,
+      "novelty_min": 19.17035140857212,
+      "ml_utility_tstr": 0.3905763171146853,
+      "train_time_seconds": 0.0018,
+      "operation_time_seconds": 0.0028,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0524
+    },
+    "timestamp": "2026-03-03T12:45:07.465360+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8327885190411813,
+      "correlation_fidelity": 0.8986058012112789,
+      "tail_preservation": 1.056184677275004,
+      "discriminator_accuracy": 0.4770833333333333,
+      "privacy_dcr": 1.2002792070847994,
+      "novelty_min": 90.30759748934993,
+      "ml_utility_tstr": 0.41401998086190595,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0248,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.029
+    },
+    "timestamp": "2026-03-03T12:45:07.576430+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9272540658522307,
+      "correlation_fidelity": 0.8650066570856387,
+      "tail_preservation": 0.9281072892125947,
+      "discriminator_accuracy": 0.5208333333333334,
+      "privacy_dcr": 0.9204076525831719,
+      "novelty_min": 80.10315540095063,
+      "ml_utility_tstr": 0.4035646998436603,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0015,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0394
+    },
+    "timestamp": "2026-03-03T12:45:07.665975+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.951276811222654,
+      "correlation_fidelity": 0.9226413815475357,
+      "tail_preservation": 1.0036883737968778,
+      "discriminator_accuracy": 0.43124999999999997,
+      "privacy_dcr": 0.7894699517751488,
+      "novelty_min": 74.8217467932534,
+      "ml_utility_tstr": 0.4302367667809951,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0002,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0128
+    },
+    "timestamp": "2026-03-03T12:45:07.756715+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8752308308273181,
+      "correlation_fidelity": 0.8912945645436939,
+      "tail_preservation": 0.792692819321473,
+      "discriminator_accuracy": 0.5291666666666667,
+      "privacy_dcr": 0.3770313160831648,
+      "novelty_min": 2.15686205153919,
+      "ml_utility_tstr": 0.3688911025568926,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0012,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0741
+    },
+    "timestamp": "2026-03-03T12:45:07.852596+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9623546294134238,
+      "correlation_fidelity": 0.9668777849192003,
+      "tail_preservation": 1.0185080792901489,
+      "discriminator_accuracy": 0.5041666666666668,
+      "privacy_dcr": 0.6322478657209468,
+      "novelty_min": 23.67333737418284,
+      "ml_utility_tstr": 0.3713223823469488,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0056,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0717
+    },
+    "timestamp": "2026-03-03T12:45:08.003744+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9217628899933734,
+      "correlation_fidelity": 0.9367407318656318,
+      "tail_preservation": 1.0925723756602075,
+      "discriminator_accuracy": 0.50625,
+      "privacy_dcr": 0.6433085495908445,
+      "novelty_min": 30.50297610407756,
+      "ml_utility_tstr": 0.4845539799723727,
+      "train_time_seconds": 0.0031,
+      "operation_time_seconds": 0.0036,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": 0.0416
+    },
+    "timestamp": "2026-03-03T12:45:08.152012+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9671472878760616,
+      "correlation_fidelity": 0.9388709433939841,
+      "tail_preservation": 0.9878478788948653,
+      "discriminator_accuracy": 0.48541666666666666,
+      "privacy_dcr": 0.675111563105061,
+      "novelty_min": 23.331059460425337,
+      "ml_utility_tstr": 0.48017554010773,
+      "train_time_seconds": 0.0009,
+      "operation_time_seconds": 0.0035,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": 0.0372
+    },
+    "timestamp": "2026-03-03T12:45:08.299906+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9238432456571023,
+      "correlation_fidelity": 0.9239757447941053,
+      "tail_preservation": 1.05411156012527,
+      "discriminator_accuracy": 0.525,
+      "privacy_dcr": 0.7341905476684567,
+      "novelty_min": 23.33105946042539,
+      "ml_utility_tstr": 0.36685491844125084,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0036,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0761
+    },
+    "timestamp": "2026-03-03T12:45:08.448466+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HART-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9641468858747045,
+      "correlation_fidelity": 0.9510551234266811,
+      "tail_preservation": 0.9880887839356421,
+      "discriminator_accuracy": 0.4708333333333334,
+      "privacy_dcr": 0.6468152466461856,
+      "novelty_min": 8.39839335885877,
+      "ml_utility_tstr": 0.4270686042076628,
+      "train_time_seconds": 0.002,
+      "operation_time_seconds": 0.0029,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0159
+    },
+    "timestamp": "2026-03-03T12:45:08.606677+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "HART-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9135420126192875,
+      "correlation_fidelity": 0.9318143324454072,
+      "tail_preservation": 1.0472786163556895,
+      "discriminator_accuracy": 0.5458333333333334,
+      "privacy_dcr": 0.6835315877943121,
+      "novelty_min": 8.398393358858764,
+      "ml_utility_tstr": 0.41963504941841534,
+      "train_time_seconds": 0.0021,
+      "operation_time_seconds": 0.003,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0234
+    },
+    "timestamp": "2026-03-03T12:45:08.758492+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHART-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9539778248960507,
+      "correlation_fidelity": 0.960450147605485,
+      "tail_preservation": 0.9907320331335951,
+      "discriminator_accuracy": 0.5270833333333333,
+      "privacy_dcr": 0.6908696772924585,
+      "novelty_min": 19.17035140857212,
+      "ml_utility_tstr": 0.4831165145081233,
+      "train_time_seconds": 0.0017,
+      "operation_time_seconds": 0.003,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": 0.0401
+    },
+    "timestamp": "2026-03-03T12:45:08.896247+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "FastHART-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.898241956413836,
+      "correlation_fidelity": 0.9179195397959717,
+      "tail_preservation": 1.0988619383998994,
+      "discriminator_accuracy": 0.5583333333333332,
+      "privacy_dcr": 0.7062904374930569,
+      "novelty_min": 19.170351408572664,
+      "ml_utility_tstr": 0.38689546377592354,
+      "train_time_seconds": 0.0017,
+      "operation_time_seconds": 0.0028,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0561
+    },
+    "timestamp": "2026-03-03T12:45:09.071157+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8344037654829337,
+      "correlation_fidelity": 0.9301639450827075,
+      "tail_preservation": 1.086489061144759,
+      "discriminator_accuracy": 0.4749999999999999,
+      "privacy_dcr": 1.2206559392242196,
+      "novelty_min": 77.69685615973107,
+      "ml_utility_tstr": 0.4229267577317265,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0141,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0201
+    },
+    "timestamp": "2026-03-03T12:45:09.241874+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9607017708650666,
+      "correlation_fidelity": 0.8818473807757803,
+      "tail_preservation": 0.9599855841557627,
+      "discriminator_accuracy": 0.5041666666666667,
+      "privacy_dcr": 0.9606121658215017,
+      "novelty_min": 80.10315540095063,
+      "ml_utility_tstr": 0.43318393052487214,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0017,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0098
+    },
+    "timestamp": "2026-03-03T12:45:09.414277+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9592379453866983,
+      "correlation_fidelity": 0.9511939168316852,
+      "tail_preservation": 1.0023922708254545,
+      "discriminator_accuracy": 0.4458333333333333,
+      "privacy_dcr": 0.7798994381560634,
+      "novelty_min": 20.2860057332517,
+      "ml_utility_tstr": 0.4209294865421068,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0003,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0221
+    },
+    "timestamp": "2026-03-03T12:45:09.583172+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "housing",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8880713160323623,
+      "correlation_fidelity": 0.9160005989137947,
+      "tail_preservation": 0.8323276108944745,
+      "discriminator_accuracy": 0.5083333333333333,
+      "privacy_dcr": 0.35775673031395844,
+      "novelty_min": 0.5750520043883549,
+      "ml_utility_tstr": 0.3856443512836395,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0013,
+      "ml_utility_trtr": 0.443,
+      "ml_delta": -0.0574
+    },
+    "timestamp": "2026-03-03T12:45:09.747221+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9223424690665418,
+      "correlation_fidelity": 0.8502172416381659,
+      "tail_preservation": 1.0318100494862439,
+      "discriminator_accuracy": 0.48541666666666666,
+      "privacy_dcr": 0.47469707823919843,
+      "novelty_min": 0.416551737816745,
+      "ml_utility_tstr": 0.9600328468668043,
+      "train_time_seconds": 0.0017,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0015
+    },
+    "timestamp": "2026-03-03T12:45:09.868968+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9022506319069247,
+      "correlation_fidelity": 0.8155313542874014,
+      "tail_preservation": 1.0410546272938843,
+      "discriminator_accuracy": 0.5145833333333333,
+      "privacy_dcr": 0.4767161272616136,
+      "novelty_min": 0.416551737816745,
+      "ml_utility_tstr": 0.9581540128423689,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0033
+    },
+    "timestamp": "2026-03-03T12:45:09.933483+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9121847144641427,
+      "correlation_fidelity": 0.8689701456389248,
+      "tail_preservation": 1.073578218504172,
+      "discriminator_accuracy": 0.4458333333333333,
+      "privacy_dcr": 0.6178126847195715,
+      "novelty_min": 0.45858742109269734,
+      "ml_utility_tstr": 0.9611792915438682,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0004,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0003
+    },
+    "timestamp": "2026-03-03T12:45:09.994536+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8962316568625986,
+      "correlation_fidelity": 0.852734407383736,
+      "tail_preservation": 1.073946957679324,
+      "discriminator_accuracy": 0.45,
+      "privacy_dcr": 0.6211701586874757,
+      "novelty_min": 0.45858742109269734,
+      "ml_utility_tstr": 0.9507115895692277,
+      "train_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0108
+    },
+    "timestamp": "2026-03-03T12:45:10.060798+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9162086786632959,
+      "correlation_fidelity": 0.8625658456655032,
+      "tail_preservation": 1.0445472554092516,
+      "discriminator_accuracy": 0.4520833333333334,
+      "privacy_dcr": 0.4638765895412725,
+      "novelty_min": 0.564479312532569,
+      "ml_utility_tstr": 0.9612816018459879,
+      "train_time_seconds": 0.0029,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0002
+    },
+    "timestamp": "2026-03-03T12:45:10.124740+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8749640592918817,
+      "correlation_fidelity": 0.8484687708775305,
+      "tail_preservation": 1.0301017521871512,
+      "discriminator_accuracy": 0.5,
+      "privacy_dcr": 0.47090383543658093,
+      "novelty_min": 0.4091790739274166,
+      "ml_utility_tstr": 0.9642064677197836,
+      "train_time_seconds": 0.0027,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0027
+    },
+    "timestamp": "2026-03-03T12:45:10.193872+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9125578230265675,
+      "correlation_fidelity": 0.9130275710453284,
+      "tail_preservation": 1.0405382352224304,
+      "discriminator_accuracy": 0.4354166666666666,
+      "privacy_dcr": 0.6396577206972838,
+      "novelty_min": 0.4904306613772384,
+      "ml_utility_tstr": 0.956758883468831,
+      "train_time_seconds": 0.0022,
+      "operation_time_seconds": 0.0004,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0047
+    },
+    "timestamp": "2026-03-03T12:45:10.258365+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8870641792699975,
+      "correlation_fidelity": 0.879545129351701,
+      "tail_preservation": 1.0392479910758503,
+      "discriminator_accuracy": 0.45208333333333334,
+      "privacy_dcr": 0.6396577206972838,
+      "novelty_min": 0.4904306613772384,
+      "ml_utility_tstr": 0.9455269246654208,
+      "train_time_seconds": 0.0023,
+      "operation_time_seconds": 0.0004,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.016
+    },
+    "timestamp": "2026-03-03T12:45:10.322266+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8825701062637706,
+      "correlation_fidelity": 0.8697413199724935,
+      "tail_preservation": 0.9989937250778851,
+      "discriminator_accuracy": 0.4937500000000001,
+      "privacy_dcr": 1.1183436043487878,
+      "novelty_min": 1.1077003371286447,
+      "ml_utility_tstr": 0.9478619647306653,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0084,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0136
+    },
+    "timestamp": "2026-03-03T12:45:10.419494+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9374707909439209,
+      "correlation_fidelity": 0.7332634351261296,
+      "tail_preservation": 0.9536847188133537,
+      "discriminator_accuracy": 0.4437499999999999,
+      "privacy_dcr": 1.4994521870462192,
+      "novelty_min": 1.1999075687172305,
+      "ml_utility_tstr": 0.9483050435444319,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0019,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0132
+    },
+    "timestamp": "2026-03-03T12:45:10.506231+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9274016841824417,
+      "correlation_fidelity": 0.8607102395133517,
+      "tail_preservation": 1.0017105012556662,
+      "discriminator_accuracy": 0.47708333333333336,
+      "privacy_dcr": 0.25802751318174894,
+      "novelty_min": 0.20364756452600402,
+      "ml_utility_tstr": 0.950389272292487,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0002,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0111
+    },
+    "timestamp": "2026-03-03T12:45:10.602015+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 1.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8617652546671147,
+      "correlation_fidelity": 0.7970159015189304,
+      "tail_preservation": 0.8747002826232351,
+      "discriminator_accuracy": 0.4833333333333334,
+      "privacy_dcr": 0.2680674376299315,
+      "novelty_min": 0.025370568299202638,
+      "ml_utility_tstr": 0.951260349635859,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0013,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0102
+    },
+    "timestamp": "2026-03-03T12:45:10.696093+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9364578382406201,
+      "correlation_fidelity": 0.9076427677769581,
+      "tail_preservation": 1.0577220118752888,
+      "discriminator_accuracy": 0.45,
+      "privacy_dcr": 0.4660017198922344,
+      "novelty_min": 0.3694733937720246,
+      "ml_utility_tstr": 0.9701684869410501,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0087
+    },
+    "timestamp": "2026-03-03T12:45:10.799392+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.921128203440789,
+      "correlation_fidelity": 0.8643504674060962,
+      "tail_preservation": 1.0483872907627763,
+      "discriminator_accuracy": 0.4416666666666667,
+      "privacy_dcr": 0.46734784769420856,
+      "novelty_min": 0.5095100173316055,
+      "ml_utility_tstr": 0.953961515024223,
+      "train_time_seconds": 0.0014,
+      "operation_time_seconds": 0.0006,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0075
+    },
+    "timestamp": "2026-03-03T12:45:10.900248+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9226196708085589,
+      "correlation_fidelity": 0.8975895262938383,
+      "tail_preservation": 1.0703352806018023,
+      "discriminator_accuracy": 0.4875,
+      "privacy_dcr": 0.6084237650857086,
+      "novelty_min": 0.4324746940417874,
+      "ml_utility_tstr": 0.9537537882291053,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0077
+    },
+    "timestamp": "2026-03-03T12:45:11.002834+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8968516237256198,
+      "correlation_fidelity": 0.8768340148379749,
+      "tail_preservation": 1.071448040306844,
+      "discriminator_accuracy": 0.46458333333333335,
+      "privacy_dcr": 0.6024834493855351,
+      "novelty_min": 0.4324746940417874,
+      "ml_utility_tstr": 0.953332405398123,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0082
+    },
+    "timestamp": "2026-03-03T12:45:11.103917+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9400687737116858,
+      "correlation_fidelity": 0.9017156434460002,
+      "tail_preservation": 1.0151189915540664,
+      "discriminator_accuracy": 0.4854166666666666,
+      "privacy_dcr": 0.46215722972887147,
+      "novelty_min": 0.4592525809146453,
+      "ml_utility_tstr": 0.9669021845239806,
+      "train_time_seconds": 0.0027,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0054
+    },
+    "timestamp": "2026-03-03T12:45:11.204417+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8909219136181536,
+      "correlation_fidelity": 0.8592201277001904,
+      "tail_preservation": 1.022225966572202,
+      "discriminator_accuracy": 0.5270833333333332,
+      "privacy_dcr": 0.47002635139681304,
+      "novelty_min": 0.4592525809146453,
+      "ml_utility_tstr": 0.9608677844873409,
+      "train_time_seconds": 0.0026,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0006
+    },
+    "timestamp": "2026-03-03T12:45:11.307346+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9209554472783781,
+      "correlation_fidelity": 0.8833216027118436,
+      "tail_preservation": 1.0569069380304288,
+      "discriminator_accuracy": 0.42083333333333334,
+      "privacy_dcr": 0.6279232448126585,
+      "novelty_min": 0.3716920669258727,
+      "ml_utility_tstr": 0.9576970139463705,
+      "train_time_seconds": 0.0022,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0038
+    },
+    "timestamp": "2026-03-03T12:45:11.411386+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8974346920314719,
+      "correlation_fidelity": 0.8805445933427136,
+      "tail_preservation": 1.06298412177003,
+      "discriminator_accuracy": 0.4375,
+      "privacy_dcr": 0.6240874236617913,
+      "novelty_min": 0.3716920669258727,
+      "ml_utility_tstr": 0.961893978057904,
+      "train_time_seconds": 0.0022,
+      "operation_time_seconds": 0.0005,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0004
+    },
+    "timestamp": "2026-03-03T12:45:11.518596+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8929412801392774,
+      "correlation_fidelity": 0.8918812961160978,
+      "tail_preservation": 1.003663831429054,
+      "discriminator_accuracy": 0.46458333333333335,
+      "privacy_dcr": 1.1254293615223798,
+      "novelty_min": 1.1077003371286447,
+      "ml_utility_tstr": 0.9492521067406414,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0091,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0122
+    },
+    "timestamp": "2026-03-03T12:45:11.645932+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.955604489090641,
+      "correlation_fidelity": 0.7703444982442949,
+      "tail_preservation": 0.9742494851801075,
+      "discriminator_accuracy": 0.47708333333333336,
+      "privacy_dcr": 1.4922876914383232,
+      "novelty_min": 1.183662170594647,
+      "ml_utility_tstr": 0.9536418847194026,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0022,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0079
+    },
+    "timestamp": "2026-03-03T12:45:11.772222+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9247411673841421,
+      "correlation_fidelity": 0.8768998626998965,
+      "tail_preservation": 1.015843780089574,
+      "discriminator_accuracy": 0.48125,
+      "privacy_dcr": 0.24513743580350414,
+      "novelty_min": 0.24720265176172326,
+      "ml_utility_tstr": 0.9589150133878424,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0002,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0026
+    },
+    "timestamp": "2026-03-03T12:45:11.896151+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 2.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8957932853912977,
+      "correlation_fidelity": 0.837076054233306,
+      "tail_preservation": 0.9185339009366715,
+      "discriminator_accuracy": 0.46875,
+      "privacy_dcr": 0.28466030725776714,
+      "novelty_min": 0.005656405452710336,
+      "ml_utility_tstr": 0.950807843314553,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0013,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0107
+    },
+    "timestamp": "2026-03-03T12:45:12.029757+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9503304291646864,
+      "correlation_fidelity": 0.916864688221659,
+      "tail_preservation": 1.0402343754197583,
+      "discriminator_accuracy": 0.4875,
+      "privacy_dcr": 0.4638249287419361,
+      "novelty_min": 0.37962732478309513,
+      "ml_utility_tstr": 0.9684320626136033,
+      "train_time_seconds": 0.0012,
+      "operation_time_seconds": 0.0006,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0069
+    },
+    "timestamp": "2026-03-03T12:45:12.250610+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9208564032848692,
+      "correlation_fidelity": 0.9121718942428059,
+      "tail_preservation": 1.0451335478219685,
+      "discriminator_accuracy": 0.5125000000000001,
+      "privacy_dcr": 0.4653333451974977,
+      "novelty_min": 0.37962732478309513,
+      "ml_utility_tstr": 0.9664616777836484,
+      "train_time_seconds": 0.0013,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.005
+    },
+    "timestamp": "2026-03-03T12:45:12.466369+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9442896563713292,
+      "correlation_fidelity": 0.9157776684243452,
+      "tail_preservation": 1.0530438502997141,
+      "discriminator_accuracy": 0.4791666666666667,
+      "privacy_dcr": 0.6000451809048812,
+      "novelty_min": 0.43666128403477983,
+      "ml_utility_tstr": 0.9650141771931553,
+      "train_time_seconds": 0.0011,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0035
+    },
+    "timestamp": "2026-03-03T12:45:12.690506+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHVRT-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9165009705120695,
+      "correlation_fidelity": 0.9106412879823832,
+      "tail_preservation": 1.0512320354596958,
+      "discriminator_accuracy": 0.5104166666666666,
+      "privacy_dcr": 0.587799436272321,
+      "novelty_min": 0.3941209924688948,
+      "ml_utility_tstr": 0.9683029370090509,
+      "train_time_seconds": 0.001,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0068
+    },
+    "timestamp": "2026-03-03T12:45:12.908782+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HART-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9537687571657362,
+      "correlation_fidelity": 0.9197589878033748,
+      "tail_preservation": 1.0298514879301908,
+      "discriminator_accuracy": 0.46458333333333335,
+      "privacy_dcr": 0.4595191635326388,
+      "novelty_min": 0.383347288559614,
+      "ml_utility_tstr": 0.9694439756116429,
+      "train_time_seconds": 0.0026,
+      "operation_time_seconds": 0.0006,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0079
+    },
+    "timestamp": "2026-03-03T12:45:13.134292+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "HART-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.8848022330418819,
+      "correlation_fidelity": 0.8902713911426516,
+      "tail_preservation": 1.0570272180814966,
+      "discriminator_accuracy": 0.5458333333333334,
+      "privacy_dcr": 0.46207769090871703,
+      "novelty_min": 0.383347288559614,
+      "ml_utility_tstr": 0.9717570533523826,
+      "train_time_seconds": 0.0027,
+      "operation_time_seconds": 0.0007,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0103
+    },
+    "timestamp": "2026-03-03T12:45:13.354588+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHART-size",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9370666288344218,
+      "correlation_fidelity": 0.9012705089868512,
+      "tail_preservation": 1.0476440188948186,
+      "discriminator_accuracy": 0.4666666666666666,
+      "privacy_dcr": 0.6154508874492104,
+      "novelty_min": 0.4083055098898343,
+      "ml_utility_tstr": 0.9645174726262046,
+      "train_time_seconds": 0.0023,
+      "operation_time_seconds": 0.0006,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.003
+    },
+    "timestamp": "2026-03-03T12:45:13.579031+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "FastHART-var",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9017612356254209,
+      "correlation_fidelity": 0.8969004617754217,
+      "tail_preservation": 1.0558373511332182,
+      "discriminator_accuracy": 0.5104166666666666,
+      "privacy_dcr": 0.6185182290926216,
+      "novelty_min": 0.4139806238099606,
+      "ml_utility_tstr": 0.9688081511770233,
+      "train_time_seconds": 0.0025,
+      "operation_time_seconds": 0.0008,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": 0.0073
+    },
+    "timestamp": "2026-03-03T12:45:13.799955+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "GMM",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.903702419979628,
+      "correlation_fidelity": 0.9286943262504029,
+      "tail_preservation": 1.0052059304747585,
+      "discriminator_accuracy": 0.4541666666666666,
+      "privacy_dcr": 1.132401919068718,
+      "novelty_min": 1.10105301911992,
+      "ml_utility_tstr": 0.9502761848725791,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0109,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0112
+    },
+    "timestamp": "2026-03-03T12:45:14.054378+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Gaussian-Copula",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9665122101403067,
+      "correlation_fidelity": 0.7989452074884699,
+      "tail_preservation": 0.9820684182764999,
+      "discriminator_accuracy": 0.4270833333333333,
+      "privacy_dcr": 1.5099765288703382,
+      "novelty_min": 1.13971630942951,
+      "ml_utility_tstr": 0.9545154776375473,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0025,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.007
+    },
+    "timestamp": "2026-03-03T12:45:14.308058+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "Bootstrap-Noise",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9524079644899728,
+      "correlation_fidelity": 0.9358186777103643,
+      "tail_preservation": 1.0093892375048787,
+      "discriminator_accuracy": 0.5104166666666666,
+      "privacy_dcr": 0.24928683403563562,
+      "novelty_min": 0.17050646742801875,
+      "ml_utility_tstr": 0.9585819014733071,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0004,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0029
+    },
+    "timestamp": "2026-03-03T12:45:14.556734+00:00"
+  },
+  {
+    "task": "expand",
+    "dataset": "multimodal",
+    "method": "SMOTE",
+    "params": {
+      "expansion_ratio": 5.0
+    },
+    "metrics": {
+      "marginal_fidelity": 0.9134762378894167,
+      "correlation_fidelity": 0.8969056436292234,
+      "tail_preservation": 0.9108504142028344,
+      "discriminator_accuracy": 0.45416666666666666,
+      "privacy_dcr": 0.2763877378395546,
+      "novelty_min": 0.0009722056449142481,
+      "ml_utility_tstr": 0.9540688280403027,
+      "train_time_seconds": 0.0,
+      "operation_time_seconds": 0.0014,
+      "ml_utility_trtr": 0.9615,
+      "ml_delta": -0.0074
+    },
+    "timestamp": "2026-03-03T12:45:14.802567+00:00"
+  }
+]

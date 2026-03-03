@@ -85,7 +85,7 @@ if hasattr(sys.stdout, 'buffer') and \
         sys.stdout.buffer, encoding='utf-8', errors='replace', line_buffering=True
     )
 
-from hvrt import HVRT
+from hvrt import HVRT, HART
 from hvrt.benchmarks.datasets import BENCHMARK_DATASETS
 from hvrt.generation_strategies import (
     StatefulGenerationStrategy, PartitionContext,
@@ -293,18 +293,22 @@ def tstr_scores(
 # Normality analysis
 # ─────────────────────────────────────────────────────────────────────────────
 
-def partition_normality_stats(X: np.ndarray, random_state: int = 42) -> dict:
+def partition_normality_stats(
+    X: np.ndarray, random_state: int = 42, model_cls=None
+) -> dict:
     """
-    Fit HVRT on X, then compute per-partition per-feature |skewness| and
-    |excess kurtosis| (scipy convention: Gaussian → kurtosis = 0) across
-    all partitions with ≥ 4 samples.
+    Fit model_cls (default HVRT) on X, then compute per-partition per-feature
+    |skewness| and |excess kurtosis| (scipy convention: Gaussian → kurtosis = 0)
+    across all partitions with ≥ 4 samples.
 
-    Low values confirm the structural hypothesis: that HVRT's variance-
-    retaining tree partitions produce locally Gaussian distributions —
-    the condition under which Scott's rule is theoretically AMISE-optimal,
-    and under which the Epanechnikov finite-support property is most useful.
+    Low values confirm the structural hypothesis: that the model's tree
+    partitions produce locally Gaussian distributions — the condition under
+    which Scott's rule is theoretically AMISE-optimal, and under which the
+    Epanechnikov finite-support property is most useful.
     """
-    model = HVRT(random_state=random_state)
+    if model_cls is None:
+        model_cls = HVRT
+    model = model_cls(random_state=random_state)
     model.fit(X)
 
     abs_skews: list = []
@@ -355,11 +359,12 @@ def evaluate_one(
     bw_kwargs: dict,
     is_cls: bool,
     seed: int,
+    model_cls=None,
 ) -> dict:
     """
-    Fit HVRT on the training split (y stacked as last column for joint
-    distribution modelling), expand using the given bandwidth kwargs, then
-    compute all four metrics.
+    Fit model_cls (default HVRT) on the training split (y stacked as last
+    column for joint distribution modelling), expand using the given bandwidth
+    kwargs, then compute all four metrics.
 
     bw_kwargs keys understood:
       bandwidth           → passed to expand()
@@ -368,14 +373,16 @@ def evaluate_one(
 
     Returns a metrics dict; all values are NaN on failure.
     """
+    if model_cls is None:
+        model_cls = HVRT
     _nan = {k: float('nan')
             for k in ('disc_err', 'mw1', 'corr_mae', 'trtr', 'tstr_delta')}
 
     try:
-        # Stack y as last feature so HVRT captures the joint (X, y) distribution
+        # Stack y as last feature so the model captures the joint (X, y) distribution
         XY_tr = np.column_stack([X_tr, y_tr.reshape(-1, 1).astype(float)])
 
-        model = HVRT(random_state=seed)
+        model = model_cls(random_state=seed)
         model.fit(XY_tr)
 
         bw  = bw_kwargs.get('bandwidth')
@@ -420,6 +427,7 @@ def run_condition(
     random_state: int,
     is_cls: bool,
     max_n: int,
+    model_cls=None,
 ) -> dict:
     """Run repeated k-fold CV for one (dataset, ratio, bandwidth) condition."""
     from sklearn.model_selection import RepeatedStratifiedKFold, RepeatedKFold
@@ -449,7 +457,7 @@ def run_condition(
 
         res = evaluate_one(
             X_tr, y_tr, X_te, y_te, n_synth, bw_kwargs,
-            is_cls=is_cls, seed=seed,
+            is_cls=is_cls, seed=seed, model_cls=model_cls,
         )
         for k in ('disc_err', 'mw1', 'corr_mae', 'trtr', 'tstr_delta'):
             accum[k].append(res[k])
@@ -650,7 +658,22 @@ def main():
     parser.add_argument('--seed',      type=int, default=42)
     parser.add_argument('--quick',     action='store_true',
                         help='5 candidates, 3 datasets, 3-fold × 1-repeat')
+    parser.add_argument(
+        '--model', choices=['hvrt', 'hart'], default='hvrt',
+        help=(
+            'Model class to benchmark (default: hvrt). '
+            "'hvrt' uses mean+std normalisation and squared_error splits. "
+            "'hart' uses median+MAD normalisation and absolute_error splits "
+            "(robust to heavy-tailed data)."
+        ),
+    )
     args = parser.parse_args()
+
+    model_cls = HVRT if args.model == 'hvrt' else HART
+    model_label = {
+        'hvrt': 'HVRT (pairwise interactions, mean+std, squared_error)',
+        'hart': 'HART (pairwise interactions, median+MAD, absolute_error)',
+    }[args.model]
 
     if args.quick:
         candidates  = QUICK_CANDIDATES
@@ -668,9 +691,9 @@ def main():
 
     print()
     print('═' * 72)
-    print('  HVRT — KDE Bandwidth & Kernel Benchmark')
+    print('  KDE Bandwidth & Kernel Benchmark')
     print('═' * 72)
-    print(f'  Model         : HVRT (pairwise interaction partitioning target)')
+    print(f'  Model         : {model_label}')
     print(f'  Datasets      : {", ".join(ds_subset)}')
     print(f'  Ratios        : {args.ratios}')
     print(f'  Candidates    : {", ".join(bw_names)}')
@@ -687,11 +710,12 @@ def main():
         is_cls = len(np.unique(y_full)) <= 20
         task_label = 'classification (AUC)' if is_cls else 'regression (R²)'
 
-        # ── Normality analysis (once per dataset) ────────────────────────────
+        # ── Normality analysis (once per dataset, uses model_cls) ─────────────
         X_norm = X_full[:args.max_n]
         print(f'  [{ds_name}]  {task_label}')
         print(f'    Normality analysis ...', end=' ', flush=True)
-        nstats = partition_normality_stats(X_norm, random_state=args.seed)
+        nstats = partition_normality_stats(X_norm, random_state=args.seed,
+                                           model_cls=model_cls)
         normality_results[ds_name] = nstats
         print(f'{nstats["n_partitions"]} partitions | '
               f'mean size {nstats["mean_part_size"]:.1f} | '
@@ -711,6 +735,7 @@ def main():
                     bw_kwargs=bw_kwargs,
                     n_splits=n_splits, n_repeats=n_repeats,
                     random_state=args.seed, is_cls=is_cls, max_n=args.max_n,
+                    model_cls=model_cls,
                 )
                 all_results[cond_key][bw_name] = res
                 print(f'disc_err={res["disc_err_mean"]:.4f}  '

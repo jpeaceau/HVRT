@@ -3,25 +3,19 @@ Benchmark runners for HVRT v2.
 
 Implements the full benchmark matrix:
 
-Reduction (96 configurations):
-  4 datasets × 4 ratios × 6 competitor methods
-  + all 4 HVRT-family reduce combinations
-  = 4 × 4 × (4 + 6) = 160 configurations total
+Reduction:
+  6 datasets × 4 ratios × (8 model-family + 4 competitor) methods
 
-Expansion (runnable methods, small-n by default):
-  4 datasets × 3 expansion ratios × (4 HVRT + 5 classical + 2 deep-learning)
+Expansion (small-n by default):
+  4 datasets × 3 expansion ratios × (8 model-family + 4 classical + 2 deep-learning)
   Training set capped at n=500 by default to test generation from small data.
   Published reference rows (TabDDPM†, MOSTLY AI†) appended when methods='all'.
 
-The 8 HVRT/FastHVRT combinations (per the specification):
-  1. HVRT      + size-weighted  + reduce
-  2. HVRT      + variance-weighted + reduce
-  3. HVRT      + size-weighted  + expand
-  4. HVRT      + variance-weighted + expand
-  5. FastHVRT  + size-weighted  + reduce
-  6. FastHVRT  + variance-weighted + reduce
-  7. FastHVRT  + size-weighted  + expand
-  8. FastHVRT  + variance-weighted + expand
+The 16 model-family combinations (HVRT, FastHVRT, HART, FastHART × size/variance):
+  HVRT-size, HVRT-var        — pairwise interactions, mean+std, squared_error splits
+  FastHVRT-size, FastHVRT-var — z-score sum, mean+std, squared_error splits
+  HART-size, HART-var        — pairwise interactions, median+MAD, absolute_error splits
+  FastHART-size, FastHART-var — z-score sum, median+MAD, absolute_error splits
 """
 
 import json
@@ -31,9 +25,17 @@ import numpy as np
 from datetime import datetime, timezone
 from sklearn.model_selection import train_test_split
 
-from .. import HVRT, FastHVRT
+from .. import HVRT, FastHVRT, HART, FastHART
 from .datasets import BENCHMARK_DATASETS, make_emergence_divergence, make_emergence_bifurcation
 from .metrics import evaluate_reduction, evaluate_expansion, ml_utility_tstr
+
+# Map method-name prefix → model class (covers all four families)
+_HVRT_FAMILY = {
+    'HVRT':     HVRT,
+    'FastHVRT': FastHVRT,
+    'HART':     HART,
+    'FastHART': FastHART,
+}
 
 
 # ---------------------------------------------------------------------------
@@ -315,10 +317,12 @@ def _run_one_reduction(dataset_name, X_train, y_train, X_test, y_test,
     n_target = max(2, int(len(X_train) * ratio))
     t0 = time.perf_counter()
 
-    if method_name in (
-        'HVRT-size', 'HVRT-var', 'FastHVRT-size', 'FastHVRT-var'
-    ):
-        ModelCls = HVRT if method_name.startswith('HVRT-') else FastHVRT
+    # Resolve any HVRT-family method (HVRT-*, FastHVRT-*, HART-*, FastHART-*)
+    _family_prefix = next(
+        (p for p in _HVRT_FAMILY if method_name.startswith(p + '-')), None
+    )
+    if _family_prefix is not None:
+        ModelCls = _HVRT_FAMILY[_family_prefix]
         var_weighted = method_name.endswith('-var')
         model = ModelCls(random_state=random_state)
         model.fit(X_train, y_train)
@@ -403,10 +407,12 @@ def _run_one_expansion(dataset_name, X_train, y_train, X_test, y_test,
     t0 = time.perf_counter()
     y_synth = None   # will be set per-method or via proxy below
 
-    if method_name in (
-        'HVRT-size', 'HVRT-var', 'FastHVRT-size', 'FastHVRT-var'
-    ):
-        ModelCls = HVRT if method_name.startswith('HVRT-') else FastHVRT
+    # Resolve any HVRT-family method (HVRT-*, FastHVRT-*, HART-*, FastHART-*)
+    _family_prefix = next(
+        (p for p in _HVRT_FAMILY if method_name.startswith(p + '-')), None
+    )
+    if _family_prefix is not None:
+        ModelCls = _HVRT_FAMILY[_family_prefix]
         var_weighted = method_name.endswith('-var')
         model = ModelCls(random_state=random_state)
         # Stack y as an extra column so the joint (X, y) distribution is
@@ -513,11 +519,13 @@ def _run_one_expansion(dataset_name, X_train, y_train, X_test, y_test,
 
 REDUCTION_METHODS = [
     'HVRT-size', 'HVRT-var', 'FastHVRT-size', 'FastHVRT-var',
+    'HART-size', 'HART-var', 'FastHART-size', 'FastHART-var',
     'Kennard-Stone', 'QR-Pivot', 'Stratified', 'Random',
 ]
 
 EXPANSION_METHODS = [
     'HVRT-size', 'HVRT-var', 'FastHVRT-size', 'FastHVRT-var',
+    'HART-size', 'HART-var', 'FastHART-size', 'FastHART-var',
     'GMM', 'Gaussian-Copula', 'Bootstrap-Noise', 'SMOTE',
 ]
 
