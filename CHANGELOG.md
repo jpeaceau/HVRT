@@ -4,6 +4,36 @@ All notable changes to HVRT are documented here.
 
 ---
 
+## [2.12.0] — 2026-03-04
+
+### Added
+- **Three PyramidHART-specific generation strategies** for ℓ₁-polyhedral geometry:
+  - `ARangeRejectionStrategy` (`'a_range_rejection'`) — rejection-sampling wrapper
+    enforcing per-partition A-value quantile bounds on any inner strategy (default
+    Epanechnikov); terminates unconditionally via training-point fallback after
+    `max_iter` rounds.  Immune to y-stacking bias; correct in both X-only and
+    joint-space evaluation protocols.
+  - `SignPreservingEpanechnikovStrategy` (`'sign_preserving_epanechnikov'`) —
+    Epanechnikov noise applied to feature magnitudes only; original signs restored.
+    Generated samples never cross coordinate hyperplanes (A ≤ 0 trivially preserved).
+  - `MinoritySignResamplerStrategy` (`'minority_sign_resampler'`) — bootstraps target
+    MST (minority-sign total = −A/2) from training partition; scales minority-sign
+    group to match; 5% std Gaussian noise on majority group.  Fully vectorised.
+- **New context dataclasses**: `ARangeRejectionContext`, `MinoritySignContext`
+- **Module-level singletons**: `a_range_rejection`, `sign_preserving_epanechnikov`,
+  `minority_sign_resampler`; all registered in `BUILTIN_GENERATION_STRATEGIES`
+- **28 new tests** in `tests/test_pyramid_hart_strategies.py` (312 total;
+  285 pass, 27 skip Numba)
+- **X-only benchmark methods**: `PyramidHART-ARejection`, `PyramidHART-SignEpan`,
+  `PyramidHART-MST` in `runners.py` — each fits `PyramidHART` on `X_train` only
+  (no y column stacked) and uses a proxy GBM for synthetic y, providing the correct
+  evaluation protocol for geometry-aware strategies
+- **`benchmarks/findings_pyramid_hart_strategies.md`** — benchmark findings for the
+  three new strategies; confirms strategies are geometrically correct; identifies
+  FastHART-size as the strongest general expansion performer in quick-mode conditions
+
+---
+
 ## [2.9.0] — 2026-03-01
 
 ### Performance

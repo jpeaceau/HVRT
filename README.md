@@ -5,18 +5,26 @@
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](https://www.gnu.org/licenses/agpl-3.0)
 
 Variance-aware sample transformation for tabular data: reduce, expand, or augment.
+Fits once; operates many times.
 
 ---
 
-## Overview
+## Model Family
 
-HVRT partitions a dataset into variance-homogeneous regions via a decision tree fitted on a synthetic extremeness target, then applies a configurable per-partition operation (selection for reduction, sampling for expansion). The tree is fitted once; `reduce()`, `expand()`, and `augment()` all draw from the same fitted model.
+Five model classes share the same primary API. They differ in how they partition data
+and which geometric statistic drives the tree.
 
-| Operation | Method | Description |
-|---|---|---|
-| **Reduce** | `model.reduce(ratio=0.3)` | Select a geometrically diverse representative subset |
-| **Expand** | `model.expand(n=50000)` | Generate synthetic samples via per-partition KDE or other strategy |
-| **Augment** | `model.augment(n=15000)` | Concatenate original data with synthetic samples |
+| Class | Partitioning signal | Normalisation | Use-case |
+|---|---|---|---|
+| `HVRT` | Pairwise feature interactions (O(d²)) | Z-score (mean/std) | Reduction; when pairwise dependencies matter |
+| `FastHVRT` | Z-score sum (O(d)) | Z-score (mean/std) | Expansion; same quality as HVRT at lower cost |
+| `HART` | Pairwise interactions, MAD criterion | Z-score (median/MAD) | Heavy-tailed data; reduction with outliers |
+| `FastHART` | Z-score sum, MAD criterion | Z-score (median/MAD) | Heavy-tailed expansion; best general performer |
+| `PyramidHART` | ℓ₁ cooperation statistic A = \|S\| − ‖z‖₁ | Z-score (median/MAD) | Sign-structured data; polyhedral geometry |
+
+```python
+from hvrt import HVRT, FastHVRT, HART, FastHART, PyramidHART
+```
 
 ---
 
@@ -25,35 +33,40 @@ HVRT partitions a dataset into variance-homogeneous regions via a decision tree 
 ### 1. Z-score normalisation
 
 ```
-X_z = (X - μ) / σ   per feature
+X_z = (X − median) / MAD    (HART / FastHART / PyramidHART)
+X_z = (X − mean)   / std    (HVRT / FastHVRT)
 ```
-
-Categorical features are integer-encoded then z-scored.
 
 ### 2. Synthetic target construction
 
-**HVRT** — sum of normalised pairwise feature interactions:
+**HVRT / HART** — sum of normalised pairwise feature interactions (T-statistic):
 ```
-For all feature pairs (i, j):
-  interaction = X_z[:,i] ⊙ X_z[:,j]
-  normalised  = (interaction - mean) / std
-target = sum of all normalised interaction columns        O(n · d²)
+T = Σ_{i<j}  normalise(X_z[:,i] ⊙ X_z[:,j])    O(n · d²)
 ```
 
-**FastHVRT** — sum of z-scores per sample:
+**FastHVRT / FastHART** — sum of z-scores (S-statistic):
 ```
-target_i = Σ_j  X_z[i, j]                               O(n · d)
+S = Σ_j  X_z[:, j]    O(n · d)
+```
+
+**PyramidHART** — ℓ₁ cooperation statistic (A-statistic):
+```
+A = |S| − ‖z‖₁    bounded, sign-aware, O(n · d)
 ```
 
 ### 3. Partitioning
 
-A `DecisionTreeRegressor` is fitted on the synthetic target. Leaves form variance-homogeneous partitions. Tree depth and leaf size are auto-tuned to dataset size.
+A `DecisionTreeRegressor` is fitted on the synthetic target. Leaves form variance-
+homogeneous partitions. Tree depth and leaf size are auto-tuned to dataset size.
 
 ### 4. Per-partition operations
 
-**Reduce:** Select representatives within each partition using the chosen [selection strategy](#selection-strategies). Budget is proportional to partition size (`variance_weighted=False`) or biased toward high-variance partitions (`variance_weighted=True`).
+**Reduce:** Select representatives within each partition using the chosen
+[selection strategy](#selection-strategies). Budget proportional to partition size
+(`variance_weighted=False`) or biased toward high-variance partitions (`=True`).
 
-**Expand:** Draw synthetic samples within each partition using the chosen [generation strategy](#generation-strategies). Budget allocation follows the same logic.
+**Expand:** Draw synthetic samples within each partition using the chosen
+[generation strategy](#generation-strategies). Budget allocation follows the same logic.
 
 ---
 
@@ -64,14 +77,24 @@ pip install hvrt
 ```
 
 ```bash
-git clone https://github.com/hotprotato/hvrt.git
-cd hvrt
+git clone https://github.com/jpeaceau/HVRT.git
+cd HVRT
 pip install -e .
+```
+
+Optional extras:
+
+```bash
+pip install hvrt[fast]       # Numba-compiled kernels (3–13× speedup on fit/FPS)
+pip install hvrt[optimizer]  # Optuna-backed HPO (HVRTOptimizer)
+pip install hvrt[benchmarks] # xgboost, matplotlib, pandas for benchmark scripts
 ```
 
 ---
 
 ## Quick Start
+
+### HVRT / FastHVRT
 
 ```python
 from hvrt import HVRT, FastHVRT
@@ -87,21 +110,47 @@ model = FastHVRT(random_state=42).fit(X_train)
 X_synthetic = model.expand(n=50000)
 ```
 
+### PyramidHART with geometry-aware strategies
+
+```python
+from hvrt import PyramidHART, geometry_stats
+
+# Fit on features only — sign structure lives in X space
+model = PyramidHART(random_state=42).fit(X_train)
+
+# Expand using A-range enforcement (polyhedral rejection sampling)
+X_synth = model.expand(n=50000, generation_strategy='a_range_rejection')
+
+# Inspect ℓ₁ geometry per partition
+stats = model.geometry_stats()
+# [{'partition_id': 0, 'n': 42, 'S_mean': 1.3, 'A_mean': -0.8, ...}, ...]
+
+# Compute geometry statistics on any z-scored array
+from hvrt import compute_A
+A = compute_A(X_z)   # shape (n,): A-statistic per sample
+```
+
 ---
 
 ## API Reference
 
-### `HVRT`
+### `HVRT` / `FastHVRT`
+
+Both expose identical constructor parameters. `HVRT` uses pairwise interactions (O(d²));
+`FastHVRT` uses z-score sum (O(d)).
 
 ```python
-from hvrt import HVRT
+from hvrt import HVRT, FastHVRT
 
 model = HVRT(
     n_partitions=None,           # Max tree leaves; auto-tuned if None
     min_samples_leaf=None,       # Min samples per leaf; auto-tuned if None
+    max_depth=None,              # Tree max depth; auto-tuned if None
     y_weight=0.0,                # 0.0 = unsupervised; 1.0 = y drives splits
-    bandwidth='auto',            # KDE bandwidth: 'auto' (default), float, 'scott', 'silverman'
+    bandwidth='auto',            # KDE bandwidth: 'auto', float, 'scott', 'silverman'
     auto_tune=True,
+    n_jobs=1,                    # Parallelism: -1 = all cores
+    tree_splitter='best',        # 'best' or 'random' (10–50× faster fit)
     random_state=42,
     # Pipeline params (see Pipeline section)
     reduce_params=None,
@@ -110,17 +159,30 @@ model = HVRT(
 )
 ```
 
-Target: sum of normalised pairwise feature interactions. O(n · d²). Preferred for reduction.
+### `HART` / `FastHART`
 
-### `FastHVRT`
+All constructor parameters identical to HVRT/FastHVRT. Differ in normalisation
+(median/MAD instead of mean/std) and tree criterion (absolute_error instead of
+squared_error). Robust to heavy tails and outliers.
 
 ```python
-from hvrt import FastHVRT
+from hvrt import HART, FastHART
 
-model = FastHVRT(bandwidth='auto', random_state=42)
+model = HART(random_state=42).fit(X_train, y_train)
+model = FastHART(random_state=42).fit(X_train)
 ```
 
-Target: sum of z-scores. O(n · d). Equivalent quality to HVRT for expansion. All constructor parameters identical to HVRT.
+### `PyramidHART`
+
+Extends HART. Uses the ℓ₁ cooperation statistic A = |S| − ‖z‖₁ as the partitioning
+target. Exposes `geometry_stats()` for per-partition breakdown of S, Q, T, and A.
+
+```python
+from hvrt import PyramidHART
+
+model = PyramidHART(random_state=42).fit(X_train)
+stats = model.geometry_stats()   # list of per-partition geometry dicts
+```
 
 ### `HVRTOptimizer`
 
@@ -143,38 +205,30 @@ opt = opt.fit(X, y)          # y enables TSTR Δ objective; required for classif
 ```
 
 Performs TPE-based Bayesian optimisation over `n_partitions`, `min_samples_leaf`,
-`y_weight`, kernel / bandwidth, and `variance_weighted`. The HVRT defaults are always
-evaluated as trial 0 (warm start), so HPO can only match or improve on the baseline.
+`y_weight`, kernel / bandwidth, and `variance_weighted`. HVRT defaults are always
+evaluated as trial 0 (warm start).
 
 **Post-fit attributes:**
 
 | Attribute | Type | Description |
 |---|---|---|
 | `best_score_` | float | Best mean TSTR Δ across CV folds |
-| `best_params_` | dict | Best constructor kwargs (`n_partitions`, `min_samples_leaf`, `y_weight`, `bandwidth`) |
-| `best_expand_params_` | dict | Best expand kwargs (`variance_weighted`, optionally `generation_strategy`) |
-| `best_model_` | HVRT | Refitted on the full dataset using `best_params_` |
-| `study_` | optuna.Study | Full Optuna study for visualisation and diagnostics |
-
-**After fitting:**
+| `best_params_` | dict | Best constructor kwargs |
+| `best_expand_params_` | dict | Best expand kwargs |
+| `best_model_` | HVRT | Refitted on full dataset |
+| `study_` | optuna.Study | Full Optuna study |
 
 ```python
 opt = HVRTOptimizer(n_trials=50, n_jobs=4, cv=3, random_state=42).fit(X, y)
 print(f'Best TSTR Δ: {opt.best_score_:+.4f}')
-print(f'Best params: {opt.best_params_}')
-
 X_synth = opt.expand(n=50000)         # y column stripped automatically
-X_aug   = opt.augment(n=len(X) * 5)   # originals + synthetic
+X_aug   = opt.augment(n=len(X) * 5)
 ```
-
-`expand()` and `augment()` strip the appended y column, returning arrays with the same
-number of columns as the training X.
 
 ### `fit`
 
 ```python
-model.fit(X, y=None, feature_types=None)
-# feature_types: list of 'continuous' or 'categorical' per column
+model.fit(X, y=None)
 ```
 
 ### `reduce`
@@ -196,7 +250,7 @@ X_reduced = model.reduce(
 X_synth = model.expand(
     n=10000,
     variance_weighted=False,      # True = oversample tails
-    bandwidth=None,               # Override instance bandwidth; accepts float, 'auto', 'scott'
+    bandwidth=None,               # Override instance bandwidth
     adaptive_bandwidth=False,     # Scale bandwidth with local expansion ratio
     generation_strategy=None,     # See Generation Strategies
     return_novelty_stats=False,
@@ -204,13 +258,11 @@ X_synth = model.expand(
 )
 ```
 
-`adaptive_bandwidth=True` uses per-partition bandwidth `bw_p = scott_p × max(1, budget_p/n_p)^(1/d)`.
-
 ### `augment`
 
 ```python
 X_aug = model.augment(n=15000, variance_weighted=False)
-# n must exceed len(X); returns original X concatenated with (n - len(X)) synthetic samples
+# n must exceed len(X); returns original X concatenated with synthetic samples
 ```
 
 ### Utility methods
@@ -222,13 +274,20 @@ partitions = model.get_partitions()
 novelty = model.compute_novelty(X_new)   # min z-space distance per point
 
 params = HVRT.recommend_params(X)        # {'n_partitions': 180, ...}
+
+# PyramidHART only
+stats = model.geometry_stats()
+# [{'partition_id': 0, 'n': 42, 'S_mean': 1.3, 'Q_mean': 0.5, 'T_mean': 1.1,
+#   'A_mean': -0.8, 'mst_mean': 0.4, 'A_q05': -2.1, 'A_q95': 0.3}, ...]
 ```
 
 ---
 
 ## sklearn Pipeline
 
-Operation parameters are declared at construction time via `ReduceParams`, `ExpandParams`, or `AugmentParams`. The tree is fitted once during `fit()`; `transform()` calls the corresponding operation.
+Operation parameters are declared at construction time via `ReduceParams`, `ExpandParams`,
+or `AugmentParams`. The tree is fitted once during `fit()`; `transform()` calls the
+corresponding operation.
 
 ```python
 from hvrt import HVRT, FastHVRT, ReduceParams, ExpandParams, AugmentParams
@@ -247,7 +306,7 @@ pipe = Pipeline([('hvrt', HVRT(augment_params=AugmentParams(n=15000)))])
 X_aug = pipe.fit_transform(X)
 ```
 
-Alternatively, import from `hvrt.pipeline` to make the intent explicit:
+Import from `hvrt.pipeline` to make intent explicit:
 
 ```python
 from hvrt.pipeline import HVRT, ReduceParams
@@ -294,6 +353,18 @@ AugmentParams(
 
 ## Generation Strategies
 
+Seven built-in strategies: four general-purpose and three PyramidHART-specific.
+
+| Strategy | Behaviour | Notes |
+|---|---|---|
+| `'multivariate_kde'` | Gaussian KDE via batch Cholesky. Full joint covariance. | Default at large partitions |
+| `'epanechnikov'` | Product Epanechnikov kernel, Ahrens-Dieter sampling. Bounded support. | Recommended for classification; ≥5× ratios |
+| `'bootstrap_noise'` | Resample with replacement + 10% Gaussian noise. | Fastest; no distributional assumptions |
+| `'univariate_kde_copula'` | Per-feature 1-D KDE marginals + Gaussian copula. | Flexible per-feature marginals |
+| `'a_range_rejection'` | Rejection-sampling: accepts only samples within per-partition A-value quantile bounds. Falls back to training point after `max_iter` rounds. | **PyramidHART only** — X-only fit; best for polyhedral constraint enforcement |
+| `'sign_preserving_epanechnikov'` | Epanechnikov noise on feature magnitudes only; original z-signs restored. Samples never cross coordinate hyperplanes. | **PyramidHART only** — X-only fit; sign-coherent generation |
+| `'minority_sign_resampler'` | Bootstraps target MST (−A/2) from training partition; scales minority-sign group to match; Gaussian noise on majority group. | **PyramidHART only** — X-only fit; MST-matching generation |
+
 ```python
 from hvrt import FastHVRT, epanechnikov, univariate_kde_copula
 
@@ -304,16 +375,48 @@ X_synth = model.expand(n=10000, generation_strategy='epanechnikov')
 
 # By reference
 X_synth = model.expand(n=10000, generation_strategy=univariate_kde_copula)
+```
 
-# Custom strategy — implement StatefulGenerationStrategy
+### PyramidHART-specific strategies
+
+These strategies encode assumptions about the ℓ₁ polyhedral geometry of PyramidHART:
+the cooperation statistic A = |S| − ‖z‖₁ partitions feature space into sign-coherent
+cones, and these strategies are designed to preserve or restore that structure.
+
+**Important:** Fit on `X` only (no y column stacked). Stacking y introduces a sign
+dimension unrelated to the geometric construction.
+
+```python
+from hvrt import PyramidHART
+
+model = PyramidHART(random_state=42).fit(X_train)  # X only
+
+# A-range enforcement: reject samples outside training A-quantile range
+X_synth = model.expand(n=50000, generation_strategy='a_range_rejection')
+
+# Sign-preserving: Epanechnikov on magnitudes, original signs restored
+X_synth = model.expand(n=50000, generation_strategy='sign_preserving_epanechnikov')
+
+# MST-matching: bootstrap minority-sign group to match training MST
+X_synth = model.expand(n=50000, generation_strategy='minority_sign_resampler')
+```
+
+All three strategies produce the same results as standard Epanechnikov at the default
+auto-tuned partition granularity (n≈500, ~18–20 leaves). Their geometric advantages
+emerge at larger n and finer partitions (n_partitions≥50) where sign structure in A
+is more pronounced.
+
+### Custom strategy
+
+```python
 from hvrt import StatefulGenerationStrategy, PartitionContext
 import numpy as np
 
 class MyStrategy:
     def prepare(self, X_z, partition_ids, unique_partitions):
-        # precompute partition metadata once
+        # precompute partition metadata once; return a PartitionContext subclass
         ...
-        return PartitionContext(X_z=X_z, ...)   # or a PartitionContext subclass
+        return PartitionContext(X_z=X_z, ...)
 
     def generate(self, context, budgets, random_state):
         ...
@@ -322,21 +425,11 @@ class MyStrategy:
 X_synth = model.expand(n=10000, generation_strategy=MyStrategy())
 ```
 
-| Strategy | Behaviour | Throughput (5K→25K, d=10) | Notes |
-|---|---|---|---|
-| `'multivariate_kde'` | Gaussian KDE via batch Cholesky (pure NumPy). Captures full joint covariance. | 2.3M samples/s | Default when partitions are large |
-| `'epanechnikov'` | Product Epanechnikov kernel, Ahrens-Dieter sampling. Bounded support. | 2.6M samples/s | Recommended for classification; ≥5× ratios |
-| `'bootstrap_noise'` | Resample with replacement + Gaussian noise at 10% of per-feature std. | **4.3M samples/s** | Fastest; no distributional assumptions |
-| `'univariate_kde_copula'` | Per-feature 1-D KDE marginals + Gaussian copula. CDF grids precomputed at `fit()`. | ~1M samples/s | More flexible per-feature marginals |
-
-All four built-in strategies implement `StatefulGenerationStrategy`: partition
-metadata is precomputed once in `prepare()` (called at `fit()` time when the
-strategy is declared) and reused across repeated `expand()` calls.
-
 ```python
 from hvrt import BUILTIN_GENERATION_STRATEGIES
 list(BUILTIN_GENERATION_STRATEGIES)
-# ['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise', 'epanechnikov']
+# ['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise', 'epanechnikov',
+#  'a_range_rejection', 'sign_preserving_epanechnikov', 'minority_sign_resampler']
 ```
 
 ---
@@ -353,27 +446,6 @@ X_red = model.reduce(ratio=0.2, method='fps')             # default
 X_red = model.reduce(ratio=0.2, method='medoid_fps')
 X_red = model.reduce(ratio=0.2, method='variance_ordered')
 X_red = model.reduce(ratio=0.2, method='stratified')
-
-# By reference (module-level singleton)
-from hvrt import centroid_fps, variance_ordered
-X_red = model.reduce(ratio=0.2, method=variance_ordered)
-
-# Custom strategy — implement StatefulSelectionStrategy
-from hvrt import StatefulSelectionStrategy, SelectionContext
-import numpy as np
-
-class MySelector:
-    def prepare(self, X_z, partition_ids, unique_partitions):
-        # precompute partition metadata once (cached at fit() time)
-        from hvrt.reduction_strategies import _build_selection_context
-        return _build_selection_context(X_z, partition_ids, unique_partitions)
-
-    def select(self, context, budgets, random_state, n_jobs=1):
-        # context.sort_idx, context.part_starts, context.part_sizes available
-        ...
-        return selected_indices   # global indices into X_z
-
-X_red = model.reduce(ratio=0.2, method=MySelector())
 ```
 
 | Strategy | Behaviour | Notes |
@@ -383,262 +455,150 @@ X_red = model.reduce(ratio=0.2, method=MySelector())
 | `'variance_ordered'` | Highest local k-NN variance (k=10). | **23–37× faster** with `n_jobs=-1` at large n |
 | `'stratified'` | Fully-vectorised random sample. | **2.5–3× faster** than loop; best for repeated `reduce()` |
 
-All four built-in strategies implement `StatefulSelectionStrategy`: partition
-metadata is precomputed once in `prepare()` (eagerly at `fit()` time when
-declared via `reduce_params.method`) and cached across repeated `reduce()` calls.
-The model's `n_jobs` is forwarded to `select()` automatically.
+### Custom strategy
 
 ```python
-from hvrt import BUILTIN_STRATEGIES
-list(BUILTIN_STRATEGIES)
-# ['centroid_fps', 'fps', 'medoid_fps', 'variance_ordered', 'stratified']
+from hvrt import StatefulSelectionStrategy, SelectionContext
+import numpy as np
+
+class MySelector:
+    def prepare(self, X_z, partition_ids, unique_partitions):
+        from hvrt.reduction_strategies import _build_selection_context
+        return _build_selection_context(X_z, partition_ids, unique_partitions)
+
+    def select(self, context, budgets, random_state, n_jobs=1):
+        ...
+        return selected_indices   # global indices into X_z
+
+X_red = model.reduce(ratio=0.2, method=MySelector())
 ```
 
-**Memory-conscious large-data workflow:** FPS strategies dispatch partitions to
-loky workers independently, keeping per-worker memory O(partition size) regardless
-of total dataset size.  Enable with `n_jobs=-1`:
+**Memory-conscious large-data workflow:**
 
 ```python
 model = HVRT(n_jobs=-1).fit(X_large)          # n_jobs forwarded to select()
-X_red = model.reduce(ratio=0.1, method='fps') # parallel FPS, bounded memory per worker
+X_red = model.reduce(ratio=0.1, method='fps') # parallel FPS, O(partition size) memory per worker
 ```
+
+---
+
+## Cooperative Geometry
+
+The `_geometry.py` module provides standalone functions for computing ℓ₁ cooperation
+statistics. These are useful for model selection, diagnostics, and custom analysis.
+
+### Definitions
+
+| Symbol | Name | Formula |
+|---|---|---|
+| S | Sign sum | Σ_j z_j (z-score sum; FastHVRT target) |
+| Q | Quadrature | ‖z‖₂² = Σ_j z_j² |
+| T | Cooperation | S² − Q = (Σ z_j)² − Σ z_j² |
+| A | ℓ₁ cooperation | \|S\| − ‖z‖₁ = \|Σ z_j\| − Σ \|z_j\| (PyramidHART target) |
+| MST | Minority-sign total | −A/2 = count of features with sign opposite to the majority |
+
+### Usage
+
+```python
+from hvrt import compute_A, geometry_stats
+
+# Compute A-statistic on z-scored feature matrix
+import numpy as np
+X_z = (X - X.mean(0)) / X.std(0)
+A = compute_A(X_z)   # shape (n,); A ∈ [−d/2, 0]
+
+# Full geometry stats (S, Q, T, A) per sample
+from hvrt._geometry import compute_S, compute_Q, compute_T, minority_sign_total
+S = compute_S(X_z)   # shape (n,)
+Q = compute_Q(X_z)   # shape (n,)
+T = compute_T(X_z)   # S² − Q, shape (n,)
+mst = minority_sign_total(X_z)   # shape (n,)
+
+# Per-partition breakdown from a fitted PyramidHART model
+model = PyramidHART().fit(X_train)
+stats = model.geometry_stats()
+# [{'partition_id': 0, 'n': 42, 'S_mean': 1.3, 'A_mean': -0.8, ...}, ...]
+```
+
+### When to use each model
+
+| Question | Recommendation |
+|---|---|
+| General-purpose reduction (keep diversity) | `HVRT` — pairwise T captures interactions |
+| General-purpose expansion (generate synthetic data) | `FastHVRT` — O(d) target, same quality |
+| Data with heavy tails or outliers | `HART` / `FastHART` — MAD normalisation is robust |
+| Sign structure matters (financial, directional data) | `PyramidHART` — A-statistic partitions sign cones |
+| Need per-partition geometry diagnostics | `PyramidHART.geometry_stats()` |
 
 ---
 
 ## Recommendations
 
-Findings from a systematic bandwidth and kernel benchmark across 6 datasets,
-3 expansion ratios (2×/5×/10×), and 11 methods (see `benchmarks/bandwidth_benchmark.py`
-and `findings.md`).
-
 ### `bandwidth='auto'` — the default
 
-`bandwidth='auto'` is the default and requires no tuning for most datasets. At each
-`expand()` call it inspects the fitted partition structure and picks the kernel most
-likely to produce high-quality synthetic data:
-
-```python
-model = HVRT().fit(X)          # bandwidth='auto' by default
-X_synth = model.expand(n=50000)  # auto chooses at call-time
-```
+`bandwidth='auto'` requires no tuning for most datasets. At each `expand()` call it
+inspects the fitted partition structure and picks the kernel most likely to produce
+high-quality synthetic data.
 
 **How it decides:**
 
-At call-time, `'auto'` computes the mean number of samples per partition and
-compares it against a feature-scaled threshold: `max(15, 2 × n_continuous_features)`.
-
 | Condition | Chosen kernel | Reason |
 |---|---|---|
-| mean partition size **≥** threshold | Narrow Gaussian `h=0.1` | Enough samples for stable multivariate covariance estimation; tight kernel stays within partition geometry |
-| mean partition size **<** threshold | Epanechnikov product kernel | Too few samples for reliable covariance; product kernel requires no covariance matrix and bounded support keeps samples within the local region |
+| mean partition size **≥** `max(15, 2 × d)` | Narrow Gaussian `h=0.1` | Enough samples for stable covariance estimation |
+| mean partition size **<** `max(15, 2 × d)` | Epanechnikov product kernel | Too few samples for covariance; product kernel is covariance-free |
 
-The threshold scales with dimensionality because the minimum samples needed for a
-non-degenerate `d`-dimensional covariance matrix grows with `d`. At 5 features the
-threshold is 15; at 15 features it is 30.
+**Why not Scott's rule:** Scott's rule assumes iid Gaussian data. HVRT partitions are
+locally homogeneous but non-Gaussian (mean |skewness| 0.49–1.37 across benchmark
+datasets). The decision tree already captures the primary variance structure, so the
+residual within-partition variance is narrower than Scott's formula assumes, causing
+systematic over-smoothing. Scott's rule won **0 of 18** benchmark conditions.
 
-**Why not just always use one or the other:**
+**When to override:**
 
-Benchmarking across 4 regression datasets showed a clean crossover depending on
-partition size. With the default auto-tuned partition count (typically 15–20 partitions
-at n=500), partitions hold ~25 samples and narrow Gaussian wins on TSTR. But when
-partitions are finer — either because the dataset is large and the auto-tuner produces
-more leaves, or because `n_partitions` is manually increased — Gaussian KDE degrades
-as partitions become too small for stable covariance estimation, while Epanechnikov
-holds steady or improves. For example, on the housing dataset (d=6) at 10× expansion:
+- **Heterogeneous / high-skew classification** (mean |skew| ≳ 0.8): use
+  `generation_strategy='epanechnikov'` directly.
+- **Small dataset, coarse partitions, regression:** use `bandwidth=0.1` or `bandwidth=0.3`.
 
-| Partition count | Gaussian `h=0.1` TSTR | Epanechnikov TSTR |
+### Model selection guidance
+
+| Scenario | Recommended model | Recommended strategy |
 |---|---|---|
-| auto (~18) | +0.004 | −0.014 |
-| 50 | −0.033 | **−0.008** |
-| 100 | −0.037 | **−0.011** |
-| 200 | −0.080 | **−0.008** |
-
-The crossover point depends on dimensionality: higher-dimensional datasets shift it
-earlier. On multimodal (d=10), Epanechnikov wins from 30 partitions onward (mean
-partition size ~13 at n=500). On housing (d=6) and emergence_divergence (d=5),
-the crossover is ~50 partitions. This is because higher dimensionality makes a
-d×d covariance matrix harder to estimate stably from small samples, while
-Epanechnikov is always covariance-free.
-
-`'auto'` captures this automatically: when you call `expand(n_partitions=200)`,
-`'auto'` sees the resulting small partition sizes and switches to Epanechnikov
-without any manual intervention.
-
-**When to override `'auto'`:**
-
-- **Heterogeneous / high-skew classification task (mean |skew| ≳ 0.8):**
-  `generation_strategy='epanechnikov'` directly — Epanechnikov wins consistently
-  when within-partition data is non-Gaussian. On near-Gaussian classification data,
-  `bandwidth='auto'` (`h=0.10`) or `adaptive_bandwidth=True` is competitive or
-  better, particularly at 2×–5× expansion ratios.
-- **Small dataset, coarse partitions, regression:** `bandwidth=0.1` or `bandwidth=0.3`
-  — explicit narrow Gaussian if you know partition sizes are large and correlation
-  structure matters.
-- **Diagnostic / ablation:** pass explicit values (`bandwidth=0.3`, `bandwidth='scott'`)
-  to isolate the bandwidth effect.
-
-### Why Scott's rule underperforms
-
-Scott's rule is AMISE-optimal for iid Gaussian data. HVRT partitions, while locally
-more homogeneous than the global distribution, are not Gaussian enough for this to
-hold (mean |skewness| 0.49–1.37 across benchmark datasets). More importantly, the
-decision tree already captures the primary variance structure of each partition, so
-the residual within-partition variance is narrower than Scott's formula assumes.
-The result is systematic over-smoothing: synthetic samples bleed across partition
-boundaries and dilute the local density structure. Scott's rule won 0 of 18
-benchmark conditions.
-
-Wide bandwidths (≥ 0.75) are actively harmful. They produce synthetic data that
-degrades downstream ML models (TSTR Δ as low as −0.75 R²). Discriminator accuracy
-can paradoxically *improve* with wide bandwidths on regression — a metric artifact
-where spreading matches marginals while destroying joint structure. Use TSTR as the
-primary quality signal, not disc_err.
-
-### Partition granularity
-
-If `'auto'` is already in use, increasing `n_partitions` will automatically trigger
-the switch to Epanechnikov when partition sizes fall below the threshold. You can
-also set it explicitly:
-
-```python
-# Finer partitions — 'auto' will pick Epanechnikov when sizes drop below threshold
-model.expand(n=50000, n_partitions=150)
-
-# Or fix at construction time
-model = HVRT(n_partitions=150, min_samples_leaf=10).fit(X)
-```
-
-Benchmark evidence (regression datasets, 5×/10× expansion ratios):
-
-| Dataset (d) | At auto (~18 parts) best TSTR | At 150 parts Epan TSTR |
-|---|---|---|
-| housing (d=6) | h=0.30: −0.001 | **−0.013** |
-| multimodal (d=10) | h=0.30: +0.004 | **+0.001** |
-| emergence_divergence (d=5) | h=0.10: +0.007 | **+0.004** |
-| emergence_bifurcation (d=5) | h=0.10: −0.022 | **−0.118** |
-
-Note: for the emergence_bifurcation dataset (where the same feature region maps
-to a bimodal target), all methods remain significantly negative at any partition
-count. This indicates a structural limit: if the same X values correspond to
-multiple distinct y outcomes, expansion without conditioning on y cannot reproduce
-that structure. In such cases consider conditioning expansion on y directly
-(e.g., expand class-conditional subsets separately).
+| Reduction from large dataset | `HVRT` | `method='fps'` (default) |
+| Reduction, rare events | `HVRT` | `method='fps'`, `variance_weighted=True`, `y_weight=0.3` |
+| Expansion, general purpose | `FastHVRT` or `FastHART` | `'epanechnikov'` (classification), default (regression) |
+| Data with outliers / heavy tails | `HART` / `FastHART` | any strategy |
+| Sign-structured data | `PyramidHART` | `'a_range_rejection'` (large n), `'sign_preserving_epanechnikov'` (general) |
+| HPO | Any model | `HVRTOptimizer` (requires `[optimizer]`) |
 
 ### Hyperparameter optimisation (HPO)
 
-Dataset heterogeneity is the primary driver of how sensitive synthetic quality
-is to HVRT's parameters. A well-behaved, near-Gaussian dataset with few
-sub-populations produces good synthetic data at defaults with little room to
-improve. A dataset with distinct clusters, non-linear interactions, or
-regime-switching needs finer partitions to achieve local homogeneity within
-each leaf — and the optimal settings are dataset-specific.
-
-Benchmark evidence: on near-Gaussian data (fraud, housing at auto partition
-count), TSTR varied by less than 0.01 across all bandwidth candidates. On
-heterogeneous datasets (emergence_divergence, emergence_bifurcation), TSTR
-varied by up to 0.20+ between the best and worst methods at the same partition
-count. If your data is heterogeneous, HPO pays; if it is well-behaved, defaults
-are sufficient.
-
-**When HPO is worth running:**
-
-- TSTR Δ is significantly negative on your downstream task (below −0.05 is a
-  useful rule of thumb)
-- Your dataset has known sub-populations, clusters, non-linear interactions, or
-  regime changes (e.g., different dynamics at different feature values)
-- You are generating at a high ratio (10×+) where compounding errors matter more
+Dataset heterogeneity is the primary driver of sensitivity to HVRT's parameters.
+A well-behaved near-Gaussian dataset produces good synthetic data at defaults. A
+dataset with distinct clusters or regime-switching needs finer partitions.
 
 **Parameter search space:**
 
-| Parameter | Default | Suggested search | Effect |
-|---|---|---|---|
-| `n_partitions` | auto | `None`, 20, 30, 50, 75, 100 | **Primary lever.** More partitions → finer local homogeneity. Start here. |
-| `min_samples_leaf` | auto | 5, 10, 15, 20 | Controls auto-tuner floor; lower allows finer splits when n is large. |
-| `bandwidth` | `'auto'` | `'auto'`, 0.05, 0.10, 0.30, `epanechnikov` | `'auto'` is usually near-optimal once partition count is right. |
-| `variance_weighted` | `False` | `True`, `False` | `True` oversamples high-variance partitions; useful for tail-heavy distributions. |
-| `y_weight` | 0.0 | 0.1, 0.3, 0.5 | Weights target in synthetic target; helps when y governs sub-population identity. |
+| Parameter | Default | Effect |
+|---|---|---|
+| `n_partitions` | auto | **Primary lever.** More partitions → finer local homogeneity |
+| `bandwidth` | `'auto'` | `'auto'` is near-optimal once partition count is right |
+| `variance_weighted` | `False` | `True` oversamples high-variance partitions; useful for tail-heavy distributions |
+| `y_weight` | 0.0 | Weights y in the synthetic target; helps when y governs sub-populations |
 
-**Evaluation metric:** Use **TSTR Δ** (train-on-synthetic, test-on-real minus
-train-on-real baseline) as the HPO objective. Discriminator accuracy (`disc_err`)
-is structurally insensitive — wide bandwidths can lower it by spreading marginals
-while destroying joint structure. TSTR directly measures what matters: can a model
-trained on synthetic data perform as well as one trained on real data?
+**When HPO is worth running:**
 
-**Example HPO loop:**
-
-Use `HVRTOptimizer` for automated Bayesian optimisation with Optuna
-(install the optional extra first: `pip install hvrt[optimizer]`):
+- TSTR Δ is significantly negative (below −0.05)
+- Dataset has known sub-populations, clusters, or regime changes
+- Generating at high ratio (10×+)
 
 ```python
 from hvrt import HVRTOptimizer
 
 opt = HVRTOptimizer(n_trials=50, n_jobs=4, cv=3, random_state=42).fit(X, y)
 print(f'Best TSTR Δ: {opt.best_score_:+.4f}')
-print(f'Best params: {opt.best_params_}')
-
-X_synth = opt.expand(n=50000)        # uses tuned kernel + params
-X_aug   = opt.augment(n=len(X) * 5)  # originals + synthetic
+X_synth = opt.expand(n=50000)
+X_aug   = opt.augment(n=len(X) * 5)
 ```
-
-`HVRTOptimizer` searches over `n_partitions`, `min_samples_leaf`,
-`y_weight`, kernel / bandwidth, and `variance_weighted` using TPE
-sampling, with TRTR pre-computed once to halve GBM fitting overhead.
-The fitted `best_model_` is refitted on the full dataset after tuning.
-
-For a custom objective or manual grid search:
-
-```python
-from sklearn.ensemble import GradientBoostingRegressor
-from sklearn.metrics import r2_score
-from sklearn.model_selection import train_test_split
-import numpy as np
-from hvrt import HVRT
-
-X_tr, X_te, y_tr, y_te = train_test_split(X, y, test_size=0.2, random_state=42)
-
-def tstr_delta(n_partitions, bandwidth, variance_weighted=False, seed=42):
-    XY_tr = np.column_stack([X_tr, y_tr.reshape(-1, 1)])
-    model = HVRT(n_partitions=n_partitions, bandwidth=bandwidth,
-                 random_state=seed).fit(XY_tr)
-    XY_s = model.expand(n=len(X_tr) * 5, variance_weighted=variance_weighted)
-    X_s, y_s = XY_s[:, :-1], XY_s[:, -1]
-    trtr = r2_score(y_te, GradientBoostingRegressor(
-                        random_state=seed).fit(X_tr, y_tr).predict(X_te))
-    tstr = r2_score(y_te, GradientBoostingRegressor(
-                        random_state=seed).fit(X_s, y_s).predict(X_te))
-    return tstr - trtr
-
-best_score, best_cfg = float('-inf'), {}
-for n_parts in [None, 30, 50, 100]:   # None = let auto-tune decide
-    for bw in ['auto', 0.10, 0.30]:
-        score = tstr_delta(n_partitions=n_parts, bandwidth=bw)
-        if score > best_score:
-            best_score, best_cfg = score, {'n_partitions': n_parts, 'bandwidth': bw}
-
-print(f'Best TSTR Δ={best_score:+.4f}  params={best_cfg}')
-```
-
-**Recommended tuning sequence:**
-
-1. **Run with defaults.** Establish a baseline TSTR Δ. If it is close to zero, stop.
-2. **Sweep `n_partitions`.** This has the largest effect on heterogeneous data. Try
-   `None` (auto), 20, 30, 50, 75, 100. More partitions only help when `n` is large
-   enough — a rule of thumb is at least 10–15 real samples per partition.
-3. **Check `bandwidth`.** With `'auto'`, HVRT already picks the right kernel for
-   the resulting partition size. If you have prior knowledge (classification → prefer
-   `'epanechnikov'`; regression with large partitions → prefer `0.10`), override it.
-4. **Try `variance_weighted=True`** if your dataset has a long tail or rare events
-   you want the expansion to oversample.
-5. **If TSTR remains poor at any partition count**, the dataset likely has inherently
-   unpredictable local structure (e.g., the same feature region maps to multiple
-   distinct outcomes). Consider conditioning: split by `y` quantile or class and
-   expand each subset independently.
-
-**What not to try:** Expanding synthetically and re-fitting HVRT on that output
-("two-phase pipeline") to manufacture fine partitions does not improve TSTR.
-Phase 1 Gaussian smoothing introduces distribution drift that Phase 2 amplifies,
-and the net TSTR is worse than single-phase at the auto partition count. Finer
-partitions must come from more *real* data.
 
 ---
 
@@ -665,38 +625,39 @@ Reproduce: `python benchmarks/reduction_denoising_benchmark.py`
 
 ### Synthetic data expansion
 
-Metrics: discriminator accuracy (target ≈ 50%), marginal fidelity, tail preservation (target = 1.0),
-**Privacy DCR**, TSTR Δ.  `bandwidth='auto'`, `max_n=500` training samples, expansion ratio 1×.
-Mean across continuous benchmark datasets (fraud, housing, multimodal).  Full results: `--print-table expand`.
+Metrics: discriminator accuracy (target ≈ 50%), marginal fidelity, tail preservation
+(target = 1.0), **Privacy DCR**, TSTR Δ.  `bandwidth='auto'`, `max_n=500` training
+samples, expansion ratio 1×. Mean across continuous benchmark datasets (fraud, housing,
+multimodal).
 
 | Method | Marginal Fidelity | Disc. Err % ↓ | Tail Preservation | Privacy DCR | TRTR | TSTR | TSTR Δ | Fit time |
 |---|---|---|---|---|---|---|---|---|
 | **HVRT-size** | **0.944** | 5.0 | 1.023 | 0.45 | 0.846 | 0.850 | +0.004 | 0.006 s |
 | **HVRT-var** | 0.921 | 1.8 | 1.068 | 0.45 | 0.846 | **0.866** | **+0.020** | 0.007 s |
 | FastHVRT-size | 0.936 | **1.5** | 1.018 | 0.43 | 0.846 | 0.805 | −0.041 | 0.006 s |
+| **HART-size** | 0.952 | 2.2 | 1.007 | 0.48 | 0.846 | 0.852 | +0.006 | 0.007 s |
+| **FastHART-size** | 0.949 | 2.1 | 0.998 | 0.52 | 0.846 | 0.858 | +0.012 | 0.007 s |
+| PyramidHART-ARejection† | 0.944 | 4.0 | 1.021 | 0.50 | 0.846 | 0.852 | +0.007 | 0.008 s |
 | Gaussian Copula | 0.937 | 1.9 | 0.983 | 1.17 | 0.846 | 0.806 | −0.040 | 0.002 s |
 | GMM (k≤20) | 0.878 | 1.8 | 1.035 | 1.17 | 0.846 | 0.820 | −0.026 | 0.028 s |
 | Bootstrap + Noise | 0.928 | **0.8** | 0.971 | 0.41 | 0.846 | 0.833 | −0.013 | 0.000 s |
 | SMOTE | 0.902 | 1.0 | 0.889 | 0.30 | 0.846 | 0.828 | −0.018 | 0.003 s |
-| CTGAN† | 0.421 | 32.3 | — | 1.95 | 0.769* | 0.726 | −0.043 | ~10 s |
-| TVAE† | 0.624 | 26.1 | — | 0.89 | 0.769* | 0.702 | −0.067 | ~6 s |
-| TabDDPM‡ | 0.960 | 2.0 | — | N/A‡ | — | — | — | 120 s |
-| MOSTLY AI‡ | 0.975 | 1.0 | — | N/A‡ | — | — | — | 60 s |
+| CTGAN‡ | 0.421 | 32.3 | — | 1.95 | 0.769* | 0.726 | −0.043 | ~10 s |
+| TVAE‡ | 0.624 | 26.1 | — | 0.89 | 0.769* | 0.702 | −0.067 | ~6 s |
+| TabDDPM§ | 0.960 | 2.0 | — | N/A | — | — | — | 120 s |
+| MOSTLY AI§ | 0.975 | 1.0 | — | N/A | — | — | — | 60 s |
 
-*Disc. Err = |discriminator accuracy − 50%|. Lower = more indistinguishable from real. Target = 0.*
-*Note: Bootstrap + Noise achieves 0.8% error by creating near-copies — low discriminator error without genuine novelty. TSTR Δ is the more reliable quality signal.*
-*† CTGAN/TVAE run locally (`--deep-learning`); all metrics including DCR are computed. Poor Disc. Err reflects small n=400 training set — deep-learning methods need more data.*
-*‡ Published numbers only — no local runner. DCR cannot be computed.*
-*\* CTGAN/TVAE TRTR is 0.769 (mean over housing + multimodal); fraud was not evaluated for these methods, so their baseline differs from other methods' 0.846 (fraud + housing + multimodal).*
-*Tail preservation = 1.0 is ideal.*
+*† PyramidHART-ARejection uses X-only fit + proxy y — correct evaluation for geometry-aware strategies.*
+*‡ CTGAN/TVAE run locally (`--deep-learning`). Poor Disc. Err reflects small n=400 training set.*
+*§ Published numbers only — no local runner.*
+*\* CTGAN/TVAE TRTR is 0.769 (housing + multimodal only; fraud not evaluated).*
+*Disc. Err = |discriminator accuracy − 50%|. Lower = more indistinguishable from real.*
 
 Reproduce: `python benchmarks/run_benchmarks.py --tasks expand --deep-learning`
 
 ### Privacy evaluation
 
-The benchmark suite computes two data privacy metrics for every expansion run.
-Both are available in the full JSON output, the ASCII results table (`--print-table expand`),
-and the summary plot (`--plot`).
+The benchmark suite computes two privacy metrics for every expansion run.
 
 **Distance-to-Closest-Record (DCR)**
 
@@ -707,90 +668,24 @@ DCR = median(min_dist(synthetic_i → real))
 
 | DCR range | Interpretation |
 |---|---|
-| < 0.1 | Near-copies: synthetic samples sit very close to specific training records — high record-linkage risk |
-| 0.1 – 0.8 | Tight generation: samples fit the local distribution well; low risk unless combined with auxiliary data |
-| ≈ 1.0 | Neutral: synthetic samples at the same typical distances as real-to-real neighbours |
-| > 1.0 | Spread generation: samples more dispersed than real data — global models cover empty regions |
+| < 0.1 | Near-copies: high record-linkage risk |
+| 0.1 – 0.8 | Tight generation: fits local distribution well; low risk |
+| ≈ 1.0 | Neutral: synthetic at typical real-to-real distances |
+| > 1.0 | Spread: samples more dispersed than real data |
 
-A tight generative model (HVRT, Bootstrap + Noise) intentionally produces samples close to the
-training distribution, yielding DCR < 1 on continuous data — this is correct behaviour, not a
-privacy failure. Global models (Gaussian Copula, GMM) yield DCR ≈ 1.0–1.2 because they sample
-from the full inferred distribution rather than local neighbourhoods.
+HVRT (DCR ≈ 0.45) is 3× safer than Bootstrap + Noise (DCR ≈ 0.16) and 1.5× safer
+than SMOTE (DCR ≈ 0.30) on continuous data.
 
-The critical threshold is DCR < 0.1: at that level synthetic samples are essentially copies of
-training records and present a realistic record-linkage risk. HVRT (DCR ≈ 0.45) is 3× safer
-than Bootstrap + Noise (DCR ≈ 0.16) and 1.5× safer than SMOTE (DCR ≈ 0.30) on continuous data.
+**Privacy–Fidelity Decision Matrix**
 
-**Categorical data caveat**: on datasets with many near-duplicate records (e.g., binary or
-low-cardinality features), the real→real NN distance approaches zero, making the DCR ratio
-unstable. In the benchmark the adult dataset produces DCR values of 10–400× for all methods
-due to this effect — treat those numbers as unreliable. DCR is most meaningful on
-fully-continuous feature sets.
-
-**Novelty min-distance** (`novelty_min`) is the minimum Euclidean distance from any synthetic
-sample to any real sample. A value of 0 means at least one exact duplicate of a training record
-was generated. HVRT's KDE sampling is strictly stochastic and produces `novelty_min > 0` for
-any finite bandwidth.
-
-Full privacy diagnostics per method are printed when you run:
-
-```bash
-python benchmarks/run_benchmarks.py --tasks expand --deep-learning
-python benchmarks/report_results.py            # detailed rankings + radar chart including DCR
-```
-
-### Privacy–Fidelity Decision Matrix
-
-`bandwidth` is the primary lever for controlling Privacy DCR. The table below shows the recommended
-configuration per privacy profile, selected for highest marginal fidelity within each DCR range
-(TSTR Δ ≥ −0.05 filter; expansion ratio 2×; averaged across continuous datasets: fraud, housing, multimodal).
-
-| Privacy Profile | DCR Target | `n_partitions` | `bandwidth` | DCR | Marginal Fidelity | Disc. Err % | TRTR | TSTR | TSTR Δ |
-|---|---|---|---|---|---|---|---|---|---|
-| Tight | [0.00, 0.40) | `None` (auto) | `0.1` | 0.332 | 0.966 | 1.83% | 0.846 | 0.834 | −0.012 |
-| Moderate | [0.40, 0.70) | `None` (auto) | `'auto'` | 0.443 | 0.958 | 0.79% | 0.846 | 0.834 | −0.012 |
-| High | [0.70, 1.00) | `None` (auto) | `0.5` | 0.797 | 0.925 | 1.71% | 0.846 | 0.839 | −0.007 |
-| Maximum | [1.00, ∞) | `10` | `'scott'` | 1.067 | 0.856 | 0.50% | 0.846 | 0.824 | −0.022 |
+| Privacy Profile | DCR Target | `bandwidth` | DCR | Marginal Fidelity | TSTR Δ |
+|---|---|---|---|---|---|
+| Tight | [0.00, 0.40) | `0.1` | 0.332 | 0.966 | −0.012 |
+| Moderate | [0.40, 0.70) | `'auto'` | 0.443 | 0.958 | −0.012 |
+| High | [0.70, 1.00) | `0.5` | 0.797 | 0.925 | −0.007 |
+| Maximum | [1.00, ∞) | `'scott'` + `n_partitions=10` | 1.067 | 0.856 | −0.022 |
 
 *Reproduce: `python benchmarks/dcr_privacy_benchmark.py`*
-
-As expected, higher DCR trades off against marginal fidelity. The Moderate profile (`bandwidth='auto'`, `n_partitions=None`)
-is the default HVRT behaviour. Choosing a privacy profile is a one-parameter decision — only `bandwidth` changes;
-`n_partitions` stays at `None` for all profiles except Maximum.
-
-```python
-# High privacy profile
-model = FastHVRT(bandwidth=0.5, random_state=42).fit(X)
-X_synth = model.expand(n=50000)   # DCR ≈ 0.80, MF ≈ 0.925
-
-# Maximum privacy profile
-model = FastHVRT(n_partitions=10, bandwidth='scott', random_state=42).fit(X)
-X_synth = model.expand(n=50000)   # DCR ≈ 1.07, MF ≈ 0.856
-```
-
-### Adaptive bandwidth and privacy
-
-`adaptive_bandwidth=True` provides a significant DCR lift at expansion ratios above 1× without
-changing constructor parameters. It scales per-partition bandwidth as
-`bw_p = scott_p × max(1, budget_p/n_p)^(1/d)`.
-
-| Expansion ratio | `adaptive_bandwidth` | Dataset | DCR | Marginal Fidelity | TRTR | TSTR | TSTR Δ |
-|---|---|---|---|---|---|---|---|
-| 2× | False | fraud | 0.448 | 0.940 | 1.000 | 1.000 | 0.000 |
-| 2× | **True** | fraud | 0.448 | 0.940 | 1.000 | 1.000 | 0.000 |
-| 2× | False | housing | 0.744 | 0.962 | 0.573 | 0.554 | −0.019 |
-| 2× | **True** | housing | **1.387** | 0.851 | 0.573 | **0.586** | **+0.013** |
-| 2× | False | multimodal | 0.136 | 0.971 | 0.966 | 0.949 | −0.017 |
-| 2× | **True** | multimodal | **1.060** | 0.854 | 0.966 | 0.947 | −0.019 |
-| 5× | False | housing | 0.739 | 0.975 | 0.573 | 0.541 | −0.032 |
-| 5× | **True** | housing | **1.349** | 0.825 | 0.573 | **0.590** | **+0.017** |
-| 5× | False | multimodal | 0.136 | 0.975 | 0.966 | 0.948 | −0.018 |
-| 5× | **True** | multimodal | **1.131** | 0.831 | 0.966 | 0.947 | −0.019 |
-
-`adaptive_bandwidth=True` moves housing from Moderate (0.74) to Maximum (1.39) and multimodal from
-Tight (0.14) to Maximum (1.06) at 2× ratio, while also improving TSTR Δ on housing (+0.032 gain).
-On fraud the dataset is already KDE-bandwidth-dominated and adaptive scaling has no additional effect.
-Use `adaptive_bandwidth=True` when expanding at ratios ≥ 2× and a DCR ≥ 1.0 target is required.
 
 ---
 
@@ -800,87 +695,13 @@ Use `adaptive_bandwidth=True` when expanding at ratios ≥ 2× and a DCR ≥ 1.0
 python benchmarks/run_benchmarks.py
 python benchmarks/run_benchmarks.py --tasks reduce --datasets adult housing
 python benchmarks/run_benchmarks.py --tasks expand
-python benchmarks/strategy_speedup_benchmark.py   # vectorization speedup (new in v2.4)
-python benchmarks/speed_benchmark.py              # serial vs parallel wall-clock times
+python benchmarks/pyramid_hart_benchmark.py          # PyramidHART vs HART/HVRT family
+python benchmarks/pyramid_hart_benchmark.py --quick  # 2 datasets, fast check
+python benchmarks/strategy_speedup_benchmark.py      # vectorization speedup
+python benchmarks/speed_benchmark.py                 # serial vs parallel wall-clock
 python benchmarks/reduction_denoising_benchmark.py
-python benchmarks/adaptive_kde_benchmark.py
-python benchmarks/adaptive_full_benchmark.py
-python benchmarks/heart_disease_benchmark.py      # requires: pip install ctgan
-python benchmarks/bootstrap_failure_benchmark.py
-python benchmarks/hpo_benchmark.py               # HPO vs defaults, nested CV (requires: pip install hvrt[optimizer])
-python benchmarks/hpo_benchmark.py --quick       # 3 datasets, 10 trials, fast mode
-python benchmarks/dcr_privacy_benchmark.py       # privacy–fidelity parameter sweep + decision matrix
-python benchmarks/dcr_privacy_benchmark.py --no-adaptive  # grid-only, skip adaptive bandwidth sweep
-```
-
----
-
-## Backward Compatibility
-
-The v1 API is still importable:
-
-```python
-from hvrt import HVRTSampleReducer, AdaptiveHVRTReducer
-
-reducer = HVRTSampleReducer(reduction_ratio=0.2, random_state=42)
-X_reduced, y_reduced = reducer.fit_transform(X, y)
-```
-
-The `mode` constructor parameter is deprecated. Replace with params objects:
-
-```python
-# Deprecated
-HVRT(mode='reduce')
-
-# Replacement
-HVRT(reduce_params=ReduceParams(ratio=0.3))
-```
-
-The plain callable protocol for generation strategies is deprecated (v2.4).
-Custom callables still work and emit `HVRTDeprecationWarning`:
-
-```python
-# Deprecated (still works)
-def my_strategy(X_z, partition_ids, unique_partitions, budgets, random_state):
-    ...
-    return X_synthetic
-
-model.expand(n=50000, generation_strategy=my_strategy)
-
-# Replacement: implement StatefulGenerationStrategy
-from hvrt import StatefulGenerationStrategy
-
-class MyStrategy:
-    def prepare(self, X_z, partition_ids, unique_partitions):
-        ...   # return a PartitionContext (or subclass)
-    def generate(self, context, budgets, random_state):
-        ...   # return (sum(budgets), d) ndarray
-
-model.expand(n=50000, generation_strategy=MyStrategy())
-```
-
-The plain callable protocol for selection strategies is also deprecated.
-Custom callables still work and emit `HVRTDeprecationWarning`:
-
-```python
-# Deprecated (still works)
-def my_selector(X_z, partition_ids, unique_partitions, budgets, random_state):
-    ...
-    return selected_indices
-
-model.reduce(ratio=0.3, method=my_selector)
-
-# Replacement: implement StatefulSelectionStrategy
-from hvrt import StatefulSelectionStrategy
-from hvrt.reduction_strategies import _build_selection_context
-
-class MySelector:
-    def prepare(self, X_z, partition_ids, unique_partitions):
-        return _build_selection_context(X_z, partition_ids, unique_partitions)
-    def select(self, context, budgets, random_state, n_jobs=1):
-        ...   # return 1-D int64 ndarray of global indices
-
-model.reduce(ratio=0.3, method=MySelector())
+python benchmarks/hpo_benchmark.py                  # requires: pip install hvrt[optimizer]
+python benchmarks/dcr_privacy_benchmark.py           # privacy–fidelity sweep
 ```
 
 ---
@@ -901,7 +722,7 @@ pytest --cov=hvrt --cov-report=term-missing
   author = {Peace, Jake},
   title  = {HVRT: Hierarchical Variance-Retaining Transformer},
   year   = {2026},
-  url    = {https://github.com/hotprotato/hvrt}
+  url    = {https://github.com/jpeaceau/HVRT}
 }
 ```
 

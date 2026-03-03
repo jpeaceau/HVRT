@@ -25,16 +25,17 @@ import numpy as np
 from datetime import datetime, timezone
 from sklearn.model_selection import train_test_split
 
-from .. import HVRT, FastHVRT, HART, FastHART
+from .. import HVRT, FastHVRT, HART, FastHART, PyramidHART
 from .datasets import BENCHMARK_DATASETS, make_emergence_divergence, make_emergence_bifurcation
 from .metrics import evaluate_reduction, evaluate_expansion, ml_utility_tstr
 
-# Map method-name prefix → model class (covers all four families)
+# Map method-name prefix → model class (covers all five families)
 _HVRT_FAMILY = {
-    'HVRT':     HVRT,
-    'FastHVRT': FastHVRT,
-    'HART':     HART,
-    'FastHART': FastHART,
+    'HVRT':        HVRT,
+    'FastHVRT':    FastHVRT,
+    'HART':        HART,
+    'FastHART':    FastHART,
+    'PyramidHART': PyramidHART,
 }
 
 
@@ -437,6 +438,23 @@ def _run_one_expansion(dataset_name, X_train, y_train, X_test, y_test,
         else:
             y_synth = y_synth_raw
 
+    elif method_name in ('PyramidHART-ARejection', 'PyramidHART-SignEpan', 'PyramidHART-MST'):
+        _strat_map = {
+            'PyramidHART-ARejection': 'a_range_rejection',
+            'PyramidHART-SignEpan':   'sign_preserving_epanechnikov',
+            'PyramidHART-MST':        'minority_sign_resampler',
+        }
+        model = PyramidHART(random_state=random_state)
+        model.fit(X_train)           # X-only — no y column stacked
+        t_fit = time.perf_counter() - t0
+        t1 = time.perf_counter()
+        X_synth = model.expand(
+            n=n_synthetic,
+            generation_strategy=_strat_map[method_name],
+        )
+        t_op = time.perf_counter() - t1
+        # y_synth stays None → proxy model assigned by the block below
+
     elif method_name == 'GMM':
         t_fit = 0.0
         t1 = time.perf_counter()
@@ -520,12 +538,15 @@ def _run_one_expansion(dataset_name, X_train, y_train, X_test, y_test,
 REDUCTION_METHODS = [
     'HVRT-size', 'HVRT-var', 'FastHVRT-size', 'FastHVRT-var',
     'HART-size', 'HART-var', 'FastHART-size', 'FastHART-var',
+    'PyramidHART-size', 'PyramidHART-var',
     'Kennard-Stone', 'QR-Pivot', 'Stratified', 'Random',
 ]
 
 EXPANSION_METHODS = [
     'HVRT-size', 'HVRT-var', 'FastHVRT-size', 'FastHVRT-var',
     'HART-size', 'HART-var', 'FastHART-size', 'FastHART-var',
+    'PyramidHART-size', 'PyramidHART-var',
+    'PyramidHART-ARejection', 'PyramidHART-SignEpan', 'PyramidHART-MST',
     'GMM', 'Gaussian-Copula', 'Bootstrap-Noise', 'SMOTE',
 ]
 
