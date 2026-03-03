@@ -69,6 +69,7 @@ def auto_tune_tree_params(
 def fit_hvrt_tree(
     X, target, max_leaf_nodes, min_samples_leaf, max_depth, random_state,
     splitter="best",
+    criterion="squared_error",
 ):
     """
     Fit and return the HVRT partitioning DecisionTreeRegressor.
@@ -87,6 +88,9 @@ def fit_hvrt_tree(
         sklearn splitter strategy.  'random' picks a random threshold per
         feature and selects the best feature — 10–50× faster on large
         datasets at the cost of slightly less precise split boundaries.
+    criterion : str, default 'squared_error'
+        Split quality criterion passed to DecisionTreeRegressor.
+        Use 'absolute_error' for MAD-based models (HART/FastHART).
 
     Returns
     -------
@@ -99,6 +103,7 @@ def fit_hvrt_tree(
         min_impurity_decrease=0.0,
         random_state=random_state,
         splitter=splitter,
+        criterion=criterion,
     )
     tree.fit(X, target)
     return tree

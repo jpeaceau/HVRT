@@ -11,8 +11,35 @@ from __future__ import annotations
 import numpy as np
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
+_MAD_CONSISTENCY = 1.4826  # makes MAD consistent with std for Gaussian data
 
-def fit_preprocess_data(X_raw, feature_types=None):
+
+class _MADScaler:
+    """
+    Median + MAD scaler (sklearn-compatible interface).
+
+    Normalises each column by subtracting the median and dividing by
+    ``1.4826 * MAD``.  Constant columns (MAD == 0) are left with scale 1.0
+    so they map to zero rather than NaN.
+    """
+
+    def fit(self, X):
+        self.center_ = np.median(X, axis=0)
+        mad = np.median(np.abs(X - self.center_), axis=0)
+        self.scale_ = np.where(mad > 0, _MAD_CONSISTENCY * mad, 1.0)
+        return self
+
+    def transform(self, X):
+        return (X - self.center_) / self.scale_
+
+    def inverse_transform(self, X):
+        return X * self.scale_ + self.center_
+
+    def fit_transform(self, X):
+        return self.fit(X).transform(X)
+
+
+def fit_preprocess_data(X_raw, feature_types=None, scaler_factory=None):
     """
     Coerce, encode, and z-score normalise input data.
 
@@ -30,11 +57,13 @@ def fit_preprocess_data(X_raw, feature_types=None):
         Z-scored; layout: [continuous columns | categorical columns].
     continuous_mask : ndarray (n_features,) bool
     categorical_mask : ndarray (n_features,) bool
-    scaler : StandardScaler or None
-    cat_scaler : StandardScaler or None
+    scaler : StandardScaler or _MADScaler or None
+    cat_scaler : StandardScaler or _MADScaler or None
     label_encoders : dict {col_idx: LabelEncoder}
     feature_names_in : list of str or None
     """
+    if scaler_factory is None:
+        scaler_factory = StandardScaler
     if hasattr(X_raw, 'columns'):
         feature_names_in = list(X_raw.columns)
         X = np.asarray(X_raw, dtype=np.float64)
@@ -56,14 +85,14 @@ def fit_preprocess_data(X_raw, feature_types=None):
     label_encoders = {}
 
     if continuous_mask.any():
-        scaler = StandardScaler()
+        scaler = scaler_factory()
         parts.append(scaler.fit_transform(X[:, continuous_mask]))
 
     if categorical_mask.any():
         X_enc, label_encoders = encode_categorical(
             X[:, categorical_mask], fit=True
         )
-        cat_scaler = StandardScaler()
+        cat_scaler = scaler_factory()
         parts.append(cat_scaler.fit_transform(X_enc))
 
     X_z = np.hstack(parts) if len(parts) > 1 else parts[0]

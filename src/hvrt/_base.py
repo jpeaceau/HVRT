@@ -160,11 +160,24 @@ class _HVRTBase:
     # Subclass interface
     # ------------------------------------------------------------------
 
+    # Class-level attribute: subclasses (HART, FastHART) override to 'absolute_error'
+    _TREE_CRITERION = 'squared_error'
+
     def _compute_x_component(self, X_z):
         """Return the X-based partitioning signal.  Overridden by subclasses."""
         raise NotImplementedError(
             "_compute_x_component must be implemented by HVRT or FastHVRT."
         )
+
+    def _preprocess_data(self, X, feature_types):
+        """Preprocess X; overridden by HART subclasses to use _MADScaler."""
+        return fit_preprocess_data(X, feature_types)
+
+    def _normalize_y(self, y):
+        """Normalise y to a [−∞, +∞] extremeness signal; overridden by HART."""
+        y_norm = (y - y.mean()) / (y.std() + 1e-10)
+        y_extremeness = np.abs(y_norm - np.median(y_norm))
+        return (y_extremeness - y_extremeness.mean()) / (y_extremeness.std() + 1e-10)
 
     # ------------------------------------------------------------------
     # Synthetic target
@@ -176,11 +189,7 @@ class _HVRTBase:
         if y is None or self.y_weight == 0.0:
             return x_component
 
-        y_norm = (y - y.mean()) / (y.std() + 1e-10)
-        y_extremeness = np.abs(y_norm - np.median(y_norm))
-        y_component = (y_extremeness - y_extremeness.mean()) / (
-            y_extremeness.std() + 1e-10
-        )
+        y_component = self._normalize_y(y)
 
         mode = self.y_weight_mode
 
@@ -199,15 +208,19 @@ class _HVRTBase:
             # Per-sample weight: concentrate label signal on extreme-y samples.
             # Central samples (near median y) get near-zero y influence;
             # tail samples get full y_weight.
-            y_ext_norm = y_extremeness / (y_extremeness.max() + 1e-10)  # [0, 1]
-            per_w = self.y_weight * y_ext_norm                          # (n,)
+            y_norm = (y - y.mean()) / (y.std() + 1e-10)
+            y_ext_norm = np.abs(y_norm - np.median(y_norm))
+            y_ext_norm /= y_ext_norm.max() + 1e-10  # [0, 1]
+            per_w = self.y_weight * y_ext_norm       # (n,)
             return (1.0 - per_w) * x_component + per_w * y_component
 
         if mode == 'adaptive_linear':
             # Both: correlation-attenuation AND per-sample tail concentration.
             r = float(np.corrcoef(x_component, y_component)[0, 1])
             attenuation = 1.0 - abs(r)
-            y_ext_norm = y_extremeness / (y_extremeness.max() + 1e-10)
+            y_norm = (y - y.mean()) / (y.std() + 1e-10)
+            y_ext_norm = np.abs(y_norm - np.median(y_norm))
+            y_ext_norm /= y_ext_norm.max() + 1e-10
             per_w = self.y_weight * attenuation * y_ext_norm
             return (1.0 - per_w) * x_component + per_w * y_component
 
@@ -274,6 +287,7 @@ class _HVRTBase:
             X_z, self._last_target_,
             max_leaf, min_leaf, self.max_depth, self.random_state,
             splitter=self.tree_splitter,
+            criterion=self._TREE_CRITERION,
         )
         self._tree_max_leaf_ = max_leaf
         self._tree_min_leaf_ = min_leaf
@@ -312,7 +326,7 @@ class _HVRTBase:
             self.cat_scaler_,
             self.label_encoders_,
             self.feature_names_in_,
-        ) = fit_preprocess_data(X, feature_types)
+        ) = self._preprocess_data(X, feature_types)
 
         y_arr = np.asarray(y, dtype=np.float64).ravel() if y is not None else None
         self._last_target_ = self._compute_synthetic_target(self.X_z_, y_arr)
