@@ -18,10 +18,12 @@ only, without a separate ``fit()`` call.
 
 from __future__ import annotations
 
+import math
 import warnings
 from typing import Callable, Literal, Optional, Union
 
 import numpy as np
+from sklearn.tree import DecisionTreeRegressor
 
 from ._warnings import HVRTDeprecationWarning, HVRTFeatureWarning
 from ._params import ReduceParams, ExpandParams, AugmentParams
@@ -230,19 +232,63 @@ class _HVRTBase:
         )
 
     # ------------------------------------------------------------------
+    # Categorical projection tree
+    # ------------------------------------------------------------------
+
+    def _fit_cat_projection_tree(self, y):
+        """
+        Fit a shallow decision tree on categorical features predicting *y*,
+        then append its prediction as an extra continuous column to ``X_z_``.
+
+        This provides a geometrically meaningful signal that replaces the
+        arbitrary ordinal distances created by label-encoding + z-scoring.
+        The partitioning tree (and cooperative geometry signals) can then
+        split on a continuous proxy that reflects real category–target
+        associations rather than integer encodings.
+        """
+        n_cont = int(self.continuous_mask_.sum())
+        X_cat_z = self.X_z_[:, n_cont:]          # z-scored categorical portion
+
+        n_unique = len(np.unique(X_cat_z, axis=0))
+        depth = min(4, max(2, int(math.log2(max(n_unique, 4)))))
+
+        tree = DecisionTreeRegressor(
+            max_depth=depth,
+            min_samples_leaf=max(10, len(self.X_) // 100),
+            random_state=self.random_state,
+        )
+        tree.fit(X_cat_z, y)
+        self._cat_projection_tree_ = tree
+
+        signal = tree.predict(X_cat_z).reshape(-1, 1)
+        self._cat_proj_mean_ = float(signal.mean())
+        self._cat_proj_std_ = float(signal.std() + 1e-10)
+        signal_z = (signal - self._cat_proj_mean_) / self._cat_proj_std_
+        self.X_z_ = np.hstack([self.X_z_, signal_z])
+
+    # ------------------------------------------------------------------
     # Preprocessing delegates
     # ------------------------------------------------------------------
 
     def _to_z(self, X):
-        return to_z(
+        X_z = to_z(
             X,
             self.continuous_mask_, self.categorical_mask_,
             self.scaler_, self.cat_scaler_, self.label_encoders_,
         )
+        if getattr(self, '_cat_projection_tree_', None) is not None:
+            n_cont = int(self.continuous_mask_.sum())
+            X_cat_z = X_z[:, n_cont:]
+            signal = self._cat_projection_tree_.predict(X_cat_z).reshape(-1, 1)
+            signal_z = (signal - self._cat_proj_mean_) / self._cat_proj_std_
+            X_z = np.hstack([X_z, signal_z])
+        return X_z
 
     def _from_z(self, X_z):
+        # Strip the projection column (if present) before inverse-transforming
+        n_orig_z = int(self.continuous_mask_.sum()) + int(self.categorical_mask_.sum())
         return from_z(
-            X_z,
+            X_z[:, :n_orig_z],
             self.continuous_mask_, self.categorical_mask_,
             self.scaler_, self.cat_scaler_, self.label_encoders_,
         )
@@ -329,6 +375,14 @@ class _HVRTBase:
         ) = self._preprocess_data(X, feature_types)
 
         y_arr = np.asarray(y, dtype=np.float64).ravel() if y is not None else None
+
+        # Categorical projection tree: append a continuous geometry signal
+        # derived from categorical features before computing the synthetic
+        # target and fitting the partitioning tree.
+        self._cat_projection_tree_ = None
+        if self.categorical_mask_.any() and y_arr is not None:
+            self._fit_cat_projection_tree(y_arr)
+
         self._last_target_ = self._compute_synthetic_target(self.X_z_, y_arr)
 
         self._kdes_ = None
