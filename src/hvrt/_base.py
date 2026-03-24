@@ -531,8 +531,7 @@ class _HVRTBase:
         bandwidth: Union[float, str, None] = None,
         adaptive_bandwidth: bool = False,
         generation_strategy: Union[
-            Literal['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise',
-                    'epanechnikov'],
+            Literal['epanechnikov'],
             Callable,
             None,
         ] = None,
@@ -1151,33 +1150,15 @@ class _HVRTBase:
         """
         Resolve ``bandwidth='auto'`` at expand-time.
 
-        Compares mean partition size against a feature-scaled threshold and
-        returns either narrow Gaussian KDE or Epanechnikov:
-
-        * mean partition size ≥ ``max(15, 2 × n_cont)``:
-          narrow Gaussian ``bandwidth=0.1``.  Partitions are large enough for
-          stable multivariate covariance estimation.
-
-        * mean partition size < ``max(15, 2 × n_cont)``:
-          Epanechnikov product kernel.  Covariance-free; robust to small
-          partitions where Gaussian KDE degenerates.
+        Always selects Epanechnikov product kernel (the only generation
+        strategy).
 
         Returns
         -------
         (bandwidth, generation_strategy) : exactly one is non-None.
         """
         from .generation_strategies import epanechnikov as _epan
-        from ._budgets import _partition_pos
-
-        pos = _partition_pos(self.partition_ids_, self.unique_partitions_)
-        sizes = np.bincount(pos, minlength=len(self.unique_partitions_))
-        mean_part_size = float(sizes.mean())
-        threshold = max(15, 2 * max(1, n_cont))
-
-        if mean_part_size >= threshold:
-            return 0.1, None   # narrow Gaussian: partitions are covariance-stable
-        else:
-            return None, _epan  # Epanechnikov: covariance-free product kernel
+        return None, _epan  # Epanechnikov: covariance-free product kernel
 
     def _adaptive_bandwidths(self, budgets, n_cont, partition_ids=None, unique_partitions=None):
         """Compute per-partition adaptive KDE bandwidth scaling with expansion ratio."""

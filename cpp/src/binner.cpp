@@ -1,9 +1,9 @@
 #include "hvrt/binner.h"
 #include <algorithm>
-#include <numeric>
-#include <set>
-#include <stdexcept>
 #include <cmath>
+#include <cstring>
+#include <numeric>
+#include <stdexcept>
 
 namespace hvrt {
 
@@ -16,33 +16,63 @@ std::vector<bool> Binner::fit(const Eigen::MatrixXd& X_z_cont, int n_bins) {
     edges_.resize(d);
     binary_mask_.assign(d, false);
 
+#ifdef _OPENMP
+    #pragma omp parallel for schedule(static)
+#endif
     for (int f = 0; f < d; ++f) {
-        // Count unique values
-        std::vector<double> col(n);
-        for (int i = 0; i < n; ++i) col[i] = X_z_cont(i, f);
-        std::sort(col.begin(), col.end());
-        int n_unique = static_cast<int>(
-            std::unique(col.begin(), col.end()) - col.begin());
+        // Column data pointer (Eigen::MatrixXd is column-major, so col is contiguous)
+        const double* col_ptr = X_z_cont.col(f).data();
 
-        if (n_unique <= 2) {
+        // Fast binary detection: early-exit once a 3rd distinct value is found.
+        // Avoids O(n log n) sort + O(n) unique for continuous columns, which
+        // almost always resolve in the first few rows.
+        double first = col_ptr[0];
+        double second = first;
+        int n_unique_fast = 1;
+        for (int i = 1; i < n; ++i) {
+            double v = col_ptr[i];
+            if (v != first && v != second) {
+                if (n_unique_fast == 1) { second = v; n_unique_fast = 2; }
+                else { n_unique_fast = 3; break; }
+            }
+        }
+
+        if (n_unique_fast <= 2) {
             binary_mask_[f] = true;
-            // Binary: edges are just min and max
-            edges_[f].resize(2);
-            edges_[f][0] = col[0];
-            edges_[f][1] = col[n_unique - 1];
+            double lo = first, hi = first;
+            if (n_unique_fast == 2) {
+                lo = std::min(first, second);
+                hi = std::max(first, second);
+            }
+            // Use 3 edges [lo, mid, hi] so the tree builder's prefix scan
+            // can evaluate the binary split (nb = 2 → 1 iteration).
+            // With only 2 edges, nb = 1, and the scan does 0 iterations,
+            // silently skipping the feature entirely.
+            edges_[f].resize(3);
+            edges_[f][0] = lo;
+            edges_[f][1] = (lo + hi) * 0.5;
+            edges_[f][2] = hi;
             continue;
         }
+
+        // Continuous column: single bulk copy for both unique-count and quantiles.
+        // memcpy from contiguous column data — compiler can vectorize this.
+        std::vector<double> work(n);
+        std::memcpy(work.data(), col_ptr, n * sizeof(double));
+
+        // Sort to count exact uniques (needed for b = min(n_bins, n_unique))
+        std::sort(work.begin(), work.end());
+        int n_unique = static_cast<int>(
+            std::unique(work.begin(), work.end()) - work.begin());
 
         int b = std::min(n_bins, n_unique);
         edges_[f].resize(b + 1);
 
-        // Compute b+1 quantile positions
-        // Use std::nth_element for O(n) per quantile
-        std::vector<double> work(X_z_cont.col(f).data(),
-                                 X_z_cont.col(f).data() + n);
+        // Refresh work from source for nth_element (sort destroyed order)
+        std::memcpy(work.data(), col_ptr, n * sizeof(double));
 
+        // Compute b+1 quantile positions via O(n) nth_element per quantile
         for (int q = 0; q <= b; ++q) {
-            // quantile position: q / b of [0, n-1]
             int pos = static_cast<int>(std::round(
                 static_cast<double>(q) / b * (n - 1)));
             pos = std::clamp(pos, 0, n - 1);
@@ -51,7 +81,6 @@ std::vector<bool> Binner::fit(const Eigen::MatrixXd& X_z_cont, int n_bins) {
         }
 
         // Ensure strict monotonicity (collapse duplicates)
-        // Keep first and last, deduplicate intermediate
         std::vector<double> uniq_edges;
         uniq_edges.push_back(edges_[f][0]);
         for (int q = 1; q <= b; ++q) {
@@ -59,9 +88,8 @@ std::vector<bool> Binner::fit(const Eigen::MatrixXd& X_z_cont, int n_bins) {
                 uniq_edges.push_back(edges_[f][q]);
             }
         }
-        // Always ensure at least 2 edges
         if (uniq_edges.size() < 2) {
-            uniq_edges = {col[0], col[n_unique - 1]};
+            uniq_edges = {work[0], work[n - 1]};
         }
         edges_[f] = Eigen::Map<Eigen::VectorXd>(
             uniq_edges.data(), static_cast<int>(uniq_edges.size()));
@@ -80,6 +108,9 @@ Binner::transform(const Eigen::MatrixXd& X_z_cont) const {
     using BinMat = Eigen::Matrix<uint8_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
     BinMat out(n, d);
 
+#ifdef _OPENMP
+    #pragma omp parallel for schedule(static)
+#endif
     for (int f = 0; f < d; ++f) {
         const Eigen::VectorXd& e = edges_[f];
         int nb = static_cast<int>(e.size()) - 1; // number of bins

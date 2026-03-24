@@ -24,6 +24,15 @@ public:
               std::optional<Eigen::VectorXd> y = std::nullopt,
               std::optional<std::vector<std::string>> feature_types = std::nullopt);
 
+    // ── Refit (fast path when X is unchanged) ────────────────────────────────
+    // Reuses the cached whitener output (X_z_), binner output (X_binned_cache_),
+    // and X-only geometry target from the previous fit().  Only re-runs the
+    // target computation (O(n·d) for y-terms), tree_.build(), and
+    // expander_.prepare() for the new partitions.
+    // Saves O(n·d·log n) whitening + binning + O(n·d²) X-pair cost per refit.
+    // Must call fit() at least once before refit().
+    HVRT& refit(std::optional<Eigen::VectorXd> y = std::nullopt);
+
     // ── Reduce ────────────────────────────────────────────────────────────────
     // Returns selected rows from original X (un-whitened).
     Eigen::MatrixXd reduce(
@@ -82,7 +91,22 @@ public:
     // _to_z: whiten new data (same as whitener_.transform)
     Eigen::MatrixXd to_z(const Eigen::MatrixXd& X) const;
 
+    // Geometry-only target cached from the last fit() call (before y-blend).
+    // Used by GeoXGB's adaptive y_weight scheduler to compute ρ(geom, residuals).
+    const Eigen::VectorXd& geom_target() const { return geom_target_cache_; }
+
+    // Override the cached geometry target before the next refit().
+    // Used by GeoXGB's Approach 1 (selective target): replaces the static
+    // full-pairwise target with a residual-guided selective version.
+    // The override persists until the next fit() call or another set_geom_target().
+    void set_geom_target(const Eigen::VectorXd& t) { geom_target_cache_ = t; }
+
     bool fitted() const { return fitted_; }
+
+    // Returns true if the last refit() produced identical partition assignments.
+    // When true, the KDE parameters (expander_) are unchanged; callers may reuse
+    // previously generated synthetic samples and skip predict_from_trees on them.
+    bool last_refit_stable() const { return last_refit_stable_; }
 
 private:
     HVRTConfig cfg_;
@@ -99,6 +123,33 @@ private:
     Eigen::VectorXi  partition_ids_;
     bool fitted_ = false;
 
+    // Refit cache — populated by fit(), reused by refit()
+    using BinMat = Eigen::Matrix<uint8_t, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+    BinMat              X_binned_cache_;      // binner output (same X → same bins)
+    std::vector<int>    hist_cont_cols_;      // continuous column indices
+    std::vector<int>    binary_cols_;         // binary column indices
+    Eigen::VectorXd     geom_target_cache_;   // geometry-only target (X without y)
+
+    // X-only unnormalized pairwise sum: Σ_{i<j} zscore(z_i * z_j)
+    // Cached at fit() for efficient refit — only the d y-terms need
+    // recomputing at O(n*d) instead of full O(n*d²).
+    // Only populated when partitioner_type == HVRT and d <= 50.
+    Eigen::VectorXd     geom_unnorm_cache_;
+
+    // Set by refit(): true when partition assignments are identical to the previous call.
+    bool last_refit_stable_ = false;
+
+    // Cumulative sub-component timings (ms) across all refit() calls.
+    double refit_target_ms_ = 0.0;   // cooperation target recomputation
+    double refit_tree_ms_   = 0.0;   // partition tree build
+    double refit_expand_ms_ = 0.0;   // expander prepare (KDE params)
+
+public:
+    double refit_target_ms() const { return refit_target_ms_; }
+    double refit_tree_ms()   const { return refit_tree_ms_; }
+    double refit_expand_ms() const { return refit_expand_ms_; }
+
+private:
     // Helpers
     static ReductionMethod    parse_reduction_method(const std::string& s);
     static GenerationStrategy parse_generation_strategy(const std::string& s);

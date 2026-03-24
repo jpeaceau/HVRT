@@ -25,7 +25,8 @@ public:
 
     int n_bins()      const { return n_bins_; }
     int n_features()  const { return static_cast<int>(edges_.size()); }
-    const std::vector<bool>& binary_mask() const { return binary_mask_; }
+    const std::vector<bool>&           binary_mask() const { return binary_mask_; }
+    const std::vector<Eigen::VectorXd>& edges()      const { return edges_; }
     bool fitted()     const { return fitted_; }
 
     // Number of actual bins for feature f

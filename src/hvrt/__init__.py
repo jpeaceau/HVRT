@@ -69,18 +69,9 @@ from .generation_strategies import (
     # Context dataclasses
     PartitionContext,
     EpanechnikovContext,
-    BootstrapNoiseContext,
-    MultivariateKDEContext,
-    UnivariateCopulaContext,
     # Strategy classes (accessible as singleton instances via module-level names)
     EpanechnikovStrategy,
-    BootstrapNoiseStrategy,
-    MultivariateKDEStrategy,
-    UnivariateCopulaStrategy,
-    # Module-level singletons (same names as old functions — drop-in compat)
-    multivariate_kde,
-    univariate_kde_copula,
-    bootstrap_noise,
+    # Module-level singletons
     epanechnikov,
     # Registry
     BUILTIN_GENERATION_STRATEGIES,
@@ -130,17 +121,8 @@ __all__ = [
     'StatefulGenerationStrategy',
     'PartitionContext',
     'EpanechnikovContext',
-    'BootstrapNoiseContext',
-    'MultivariateKDEContext',
-    'UnivariateCopulaContext',
     'EpanechnikovStrategy',
-    'BootstrapNoiseStrategy',
-    'MultivariateKDEStrategy',
-    'UnivariateCopulaStrategy',
     # Module-level singletons
-    'multivariate_kde',
-    'univariate_kde_copula',
-    'bootstrap_noise',
     'epanechnikov',
     'BUILTIN_GENERATION_STRATEGIES',
     'get_generation_strategy',

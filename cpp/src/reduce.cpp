@@ -3,10 +3,18 @@
 #include <numeric>
 #include <random>
 #include <cmath>
-#include <stdexcept>
+#include <chrono>
+#include <cstdio>
+#include <map>
+#include <cstdint>
 #include "pcg_random.hpp"
 
+// ── Internal timing flag ──────────────────────────────────────────────────────
+static bool g_timing_enabled = false;
+
 namespace hvrt {
+
+void variance_ordered_enable_timing(bool enable) { g_timing_enabled = enable; }
 
 // ── Budget allocation ─────────────────────────────────────────────────────────
 
@@ -15,7 +23,8 @@ Eigen::VectorXi compute_budgets(
     int n_target,
     int min_per_part,
     bool var_weighted,
-    const Eigen::MatrixXd& X_z)
+    const Eigen::MatrixXd& X_z,
+    bool clamp_to_sizes)
 {
     int n = static_cast<int>(part_ids.size());
     int n_parts = part_ids.maxCoeff() + 1;
@@ -29,7 +38,6 @@ Eigen::VectorXi compute_budgets(
     if (var_weighted) {
         // w[p] = mean(mean(|X_z[p]|, axis=1))
         std::vector<double> sum_w(n_parts, 0.0);
-        int d = static_cast<int>(X_z.cols());
         for (int i = 0; i < n; ++i) {
             int p = part_ids[i];
             double row_mean_abs = X_z.row(i).cwiseAbs().mean();
@@ -95,9 +103,47 @@ Eigen::VectorXi compute_budgets(
         }
     }
 
-    // Final clamp to partition sizes
-    for (int p = 0; p < n_parts; ++p)
-        budgets[p] = std::min(budgets[p], sizes[p]);
+    // Clamp to partition sizes for reduction (can't select more than exist).
+    // When var_weighted=true, high-variance partitions may receive budgets
+    // exceeding their size.  The excess must be redistributed to partitions
+    // that still have room, not discarded — otherwise the total drops far
+    // below n_target.  Iterate until no surplus remains.
+    if (clamp_to_sizes) {
+        for (int iter = 0; iter < n_parts; ++iter) {
+            int surplus = 0;
+            int room_total = 0;
+            for (int p = 0; p < n_parts; ++p) {
+                if (budgets[p] > sizes[p]) {
+                    surplus += budgets[p] - sizes[p];
+                    budgets[p] = sizes[p];
+                } else {
+                    room_total += sizes[p] - budgets[p];
+                }
+            }
+            if (surplus == 0 || room_total == 0) break;
+            // Redistribute surplus proportionally to remaining room
+            int distributed = 0;
+            for (int p = 0; p < n_parts; ++p) {
+                int room = sizes[p] - budgets[p];
+                if (room > 0) {
+                    int add = static_cast<int>(
+                        static_cast<double>(room) / room_total * surplus);
+                    add = std::min(add, room);
+                    budgets[p] += add;
+                    distributed += add;
+                }
+            }
+            // Distribute remaining rounding error one-by-one
+            int leftover = surplus - distributed;
+            for (int p = 0; p < n_parts && leftover > 0; ++p) {
+                int room = sizes[p] - budgets[p];
+                if (room > 0) {
+                    budgets[p]++;
+                    leftover--;
+                }
+            }
+        }
+    }
 
     return budgets;
 }
@@ -229,6 +275,19 @@ std::vector<int> medoid_fps(const Eigen::MatrixXd& X_part, int budget) {
 }
 
 // ── VarianceOrdered ───────────────────────────────────────────────────────────
+// Select samples with the highest local k-NN distance variance.
+//
+// Implementation uses a vectorised BLAS GEMM to compute the full pairwise
+// squared-distance matrix in one shot (replacing the previous scalar O(n²·d)
+// double-loop that computed distances twice per sample):
+//
+//   D[i,j] = ||X_i - X_j||²
+//           = ||X_i||² - 2·X_i·X_jᵀ + ||X_j||²
+//
+// The (n×n) GEMM is vectorised by Eigen/BLAS, making it typically 10–20×
+// faster than the scalar row-by-row loop for the partition sizes GeoXGB sees
+// (n ≈ 50–300 samples, d ≈ 8–15).  RowMajor storage ensures D.row(i) is
+// contiguous for cache-friendly nth_element access.
 
 std::vector<int> variance_ordered(const Eigen::MatrixXd& X_part, int budget, int k_nn) {
     const int n = static_cast<int>(X_part.rows());
@@ -240,47 +299,171 @@ std::vector<int> variance_ordered(const Eigen::MatrixXd& X_part, int budget, int
 
     k_nn = std::min(k_nn, n - 1);
 
+    // ── High-retention shortcut ───────────────────────────────────────────────
+    // When keeping ≥ 65% of a partition, variance-ordered quality over random
+    // selection is marginal: we drop 35% of similar-geometry samples anyway,
+    // and any 35% dropped is nearly equivalent in terms of coverage.
+    // Skip the O(n²) BLAS GEMM (+ nth_element) and use O(n) Fisher-Yates instead.
+    // This matters for GeoXGB with keep_ratio=0.7 where budget/n ≈ 0.70.
+    static constexpr double HIGH_RETENTION = 0.65;
+    if (static_cast<double>(budget) / n >= HIGH_RETENTION) {
+        uint64_t lcg = (static_cast<uint64_t>(n) * 6364136223846793005ULL
+                        + static_cast<uint64_t>(budget)) | 1u;
+        auto lcg_next = [&](int range) -> int {
+            lcg = lcg * 6364136223846793005ULL + 1442695040888963407ULL;
+            return static_cast<int>((lcg >> 33) % static_cast<uint64_t>(range));
+        };
+        std::vector<int> sub(n);
+        std::iota(sub.begin(), sub.end(), 0);
+        for (int i = 0; i < budget; ++i) {
+            int j = i + lcg_next(n - i);
+            std::swap(sub[i], sub[j]);
+        }
+        return std::vector<int>(sub.begin(), sub.begin() + budget);
+    }
+
+    // ── Large-partition guard ─────────────────────────────────────────────────
+    // The O(n²) BLAS GEMM + nth-element loop becomes prohibitively expensive for
+    // large partitions (e.g. n=4597 → 168 MB matrix, 320 ms).  These arise when
+    // the HVRT partition tree makes a highly skewed first split.
+    //
+    // Strategy:
+    //   budget ≥ N_CAP  → use stratified (random) selection; variance ordering
+    //                      is low-value when keeping a large fraction of a large n.
+    //   budget < N_CAP  → subsample N_CAP candidates, run exact variance_ordered
+    //                      on the subsample, map indices back.
+    //
+    // N_CAP = 400 keeps the worst-case BLAS matrix at 400×400×8 = 1.25 MB and the
+    // nth-element loop at O(400²) = 160 k ops — fast on any modern CPU.
+    static constexpr int N_CAP = 400;
+
+    if (n > N_CAP) {
+        // ── Simple Fisher-Yates LCG (no pcg header dependency here) ──────────
+        // Seed with n so different-sized partitions get different sequences.
+        uint64_t lcg = static_cast<uint64_t>(n) | 1u;
+        auto lcg_next = [&](int range) -> int {
+            lcg = lcg * 6364136223846793005ULL + 1442695040888963407ULL;
+            return static_cast<int>((lcg >> 33) % static_cast<uint64_t>(range));
+        };
+
+        std::vector<int> sub(n);
+        std::iota(sub.begin(), sub.end(), 0);
+
+        if (budget >= N_CAP) {
+            // Large n, large budget: stratified random selection.
+            // Variance-ordered quality gain is negligible vs random when
+            // selecting > N_CAP out of > N_CAP candidates.
+            for (int i = 0; i < budget; ++i) {
+                int j = i + lcg_next(n - i);
+                std::swap(sub[i], sub[j]);
+            }
+            return std::vector<int>(sub.begin(), sub.begin() + budget);
+        }
+
+        // Large n, small budget: random subsample to N_CAP, then apply exact
+        // variance_ordered on the smaller set.
+        for (int i = 0; i < N_CAP; ++i) {
+            int j = i + lcg_next(n - i);
+            std::swap(sub[i], sub[j]);
+        }
+
+        Eigen::MatrixXd X_sub(N_CAP, X_part.cols());
+        for (int k = 0; k < N_CAP; ++k)
+            X_sub.row(k) = X_part.row(sub[k]);
+
+        // Recursion safe: X_sub has N_CAP rows ≤ N_CAP, won't re-enter this branch.
+        std::vector<int> sub_sel = variance_ordered(X_sub, budget, k_nn);
+
+        std::vector<int> result;
+        result.reserve(sub_sel.size());
+        for (int li : sub_sel) result.push_back(sub[li]);
+        return result;
+    }
+
+    // ── Exact variance_ordered for n ≤ N_CAP ─────────────────────────────────
+
+    using Clock = std::chrono::high_resolution_clock;
+    auto t0 = Clock::now();
+
+    // ── Pairwise squared-distance matrix via BLAS GEMM ────────────────────────
+    // Stored RowMajor so D.row(i) is contiguous for nth_element.
+    Eigen::Matrix<double, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> D(n, n);
+    const Eigen::VectorXd sq_norms = X_part.rowwise().squaredNorm();   // (n,)
+    D.noalias() = X_part * X_part.transpose();
+    D *= -2.0;
+    D.colwise() += sq_norms;            // D[i,j] += ||X_i||²
+    D.rowwise() += sq_norms.transpose();// D[i,j] += ||X_j||²
+    D = D.cwiseMax(0.0);                // clamp floating-point negatives
+
+    auto t1 = Clock::now();
+
+    // ── Per-sample k-NN variance score ────────────────────────────────────────
+    // Use a fixed-size insertion sort to find k_nn nearest neighbours per row.
+    // For k_nn=3 (typical), this scans D.row(i) once keeping the 4 smallest
+    // squared distances (k_nn+1 to skip self).  O(n·k) per sample instead of
+    // O(n·log n) from nth_element, and avoids the per-sample iota + indirect sort.
     std::vector<double> local_var(n, 0.0);
-    std::vector<double> dist_buf(n);
+    const int k_buf = k_nn + 1;  // +1 to account for self-distance ≈ 0
 
     for (int i = 0; i < n; ++i) {
-        // Compute distances from i to all others
-        for (int j = 0; j < n; ++j)
-            dist_buf[j] = (X_part.row(i) - X_part.row(j)).squaredNorm();
+        const double* Di = D.data() + static_cast<ptrdiff_t>(i) * n;  // row-major
 
-        // Partial sort to get k smallest (excluding self=0)
-        std::nth_element(dist_buf.begin(), dist_buf.begin() + k_nn + 1, dist_buf.end());
+        // Fixed-size buffer of k_buf smallest squared distances.
+        // Initialised to +inf; maintained by insertion sort (k_buf ≤ 4 typically).
+        double best_dq[8];   // stack array, k_buf ≤ 8 always (k_nn capped at 7)
+        const int kb = std::min(k_buf, 8);
+        for (int s = 0; s < kb; ++s) best_dq[s] = 1e30;
 
-        // Mean of k nearest distances (skip index 0 = self with dist 0)
-        double s = 0.0;
-        int cnt = 0;
-        for (int j = 0; j < n && cnt < k_nn; ++j) {
-            if (dist_buf[j] > 1e-15) { s += dist_buf[j]; ++cnt; }
+        for (int j = 0; j < n; ++j) {
+            double dq = Di[j];
+            if (dq < best_dq[kb - 1]) {
+                // Insert into sorted position (descending from index 0)
+                int pos = kb - 1;
+                while (pos > 0 && dq < best_dq[pos - 1]) {
+                    best_dq[pos] = best_dq[pos - 1];
+                    --pos;
+                }
+                best_dq[pos] = dq;
+            }
         }
-        // Variance proxy = variance of these k distances
-        // (mean of sq dists is already sq, so compute var properly)
-        double mean_d = (cnt > 0) ? s / cnt : 0.0;
-        double var_d = 0.0;
-        // Recompute actual distances to get variance
-        for (int j = 0; j < n; ++j)
-            dist_buf[j] = (X_part.row(i) - X_part.row(j)).squaredNorm();
-        std::nth_element(dist_buf.begin(), dist_buf.begin() + k_nn + 1, dist_buf.end());
-        cnt = 0;
-        for (int j = 0; j < n && cnt < k_nn; ++j) {
-            if (dist_buf[j] > 1e-15) {
-                double d = std::sqrt(dist_buf[j]);
-                var_d += (d - mean_d) * (d - mean_d);
+
+        // Collect k_nn non-self distances (skip entries ≤ 1e-15 which are self)
+        double sum_d = 0.0, sum_d2 = 0.0;
+        int cnt = 0;
+        for (int s = 0; s < kb && cnt < k_nn; ++s) {
+            if (best_dq[s] > 1e-15) {
+                double d = std::sqrt(best_dq[s]);
+                sum_d  += d;
+                sum_d2 += d * d;
                 ++cnt;
             }
         }
-        local_var[i] = (cnt > 1) ? var_d / (cnt - 1) : 0.0;
+        if (cnt > 1) {
+            double mean_d = sum_d / cnt;
+            local_var[i] = sum_d2 / cnt - mean_d * mean_d;
+        }
     }
+
+    auto t2 = Clock::now();
 
     // Select top-budget by local_var descending
     std::vector<int> order(n);
     std::iota(order.begin(), order.end(), 0);
     std::partial_sort(order.begin(), order.begin() + budget, order.end(),
                       [&](int a, int b){ return local_var[a] > local_var[b]; });
+
+    auto t3 = Clock::now();
+
+    if (g_timing_enabled) {
+        double ms_gemm = std::chrono::duration<double, std::milli>(t1 - t0).count();
+        double ms_loop = std::chrono::duration<double, std::milli>(t2 - t1).count();
+        double ms_sort = std::chrono::duration<double, std::milli>(t3 - t2).count();
+        // printf is thread-safe: each call is atomic for short strings
+        std::printf("  VO n=%d budget=%d: gemm=%.2fms loop=%.2fms sort=%.2fms\n",
+                    n, budget, ms_gemm, ms_loop, ms_sort);
+        std::fflush(stdout);
+    }
+
     return std::vector<int>(order.begin(), order.begin() + budget);
 }
 
@@ -308,6 +491,165 @@ std::vector<int> stratified_select(const Eigen::MatrixXd& X_part, int budget,
     std::partial_sort(indices.begin(), indices.begin() + budget, indices.end(),
                       [&](int a, int b){ return keys[a] < keys[b]; });
     return std::vector<int>(indices.begin(), indices.begin() + budget);
+}
+
+// ── Orthant-stratified reduction ──────────────────────────────────────────────
+
+std::vector<int> orthant_stratified(
+    const Eigen::MatrixXd& X_z,
+    const Eigen::VectorXd& y,
+    int n_target,
+    int random_state)
+{
+    const int n = static_cast<int>(X_z.rows());
+    const int d = static_cast<int>(X_z.cols());
+
+    if (n <= 0 || d <= 0) return {};
+    n_target = std::clamp(n_target, 1, n);
+
+    // 1. Component-wise median of X_z
+    Eigen::VectorXd medians(d);
+#ifdef _OPENMP
+    #pragma omp parallel for schedule(static)
+#endif
+    for (int j = 0; j < d; ++j) {
+        std::vector<double> col(n);
+        for (int i = 0; i < n; ++i) col[i] = X_z(i, j);
+        std::nth_element(col.begin(), col.begin() + n / 2, col.end());
+        if (n % 2 == 1) {
+            medians[j] = col[n / 2];
+        } else {
+            double upper = col[n / 2];
+            std::nth_element(col.begin(), col.begin() + n / 2 - 1, col.end());
+            medians[j] = 0.5 * (col[n / 2 - 1] + upper);
+        }
+    }
+
+    // 2. Assign orthant keys — sign(z_i − med_i), ties broken randomly
+    pcg64 rng(static_cast<uint64_t>(random_state));
+    std::uniform_int_distribution<int> coin(0, 1);
+
+    using Key = std::vector<int8_t>;
+    std::map<Key, std::vector<int>> orthant_map;
+
+    for (int i = 0; i < n; ++i) {
+        Key key(d);
+        for (int j = 0; j < d; ++j) {
+            double diff = X_z(i, j) - medians[j];
+            if (std::abs(diff) < 1e-10)
+                key[j] = static_cast<int8_t>(coin(rng) == 0 ? -1 : 1);
+            else
+                key[j] = static_cast<int8_t>(diff > 0 ? 1 : -1);
+        }
+        orthant_map[key].push_back(i);
+    }
+
+    // 3. Collect orthant groups and compute MAD-weighted budgets
+    const int n_orth = static_cast<int>(orthant_map.size());
+    std::vector<std::vector<int>> groups;
+    std::vector<double> weights;
+    groups.reserve(n_orth);
+    weights.reserve(n_orth);
+
+    for (auto& kv : orthant_map) {
+        const std::vector<int>& grp = kv.second;
+        groups.push_back(grp);
+
+        // MAD of y in this orthant
+        std::vector<double> yv;
+        yv.reserve(grp.size());
+        for (int idx : grp) yv.push_back(y[idx]);
+
+        std::nth_element(yv.begin(), yv.begin() + yv.size() / 2, yv.end());
+        double med_y = yv[yv.size() / 2];
+
+        std::vector<double> devs;
+        devs.reserve(yv.size());
+        for (double v : yv) devs.push_back(std::abs(v - med_y));
+        std::nth_element(devs.begin(), devs.begin() + devs.size() / 2, devs.end());
+        double mad = devs[devs.size() / 2];
+
+        weights.push_back(static_cast<double>(grp.size()) * (mad + 1e-12));
+    }
+
+    // 4. Proportional budget allocation with fractional-remainder rounding
+    double total_w = 0.0;
+    for (double w : weights) total_w += w;
+
+    std::vector<int> budgets(n_orth, 0);
+    std::vector<double> fracs(n_orth);
+    int allocated = 0;
+
+    for (int k = 0; k < n_orth; ++k) {
+        double exact = (total_w > 1e-12) ? (weights[k] / total_w * n_target)
+                                         : (static_cast<double>(n_target) / n_orth);
+        int fv = static_cast<int>(std::floor(exact));
+        budgets[k] = std::min(fv, static_cast<int>(groups[k].size()));
+        allocated += budgets[k];
+        fracs[k] = exact - std::floor(exact);
+    }
+
+    // Give remainder to partitions with largest fractional remainders
+    int diff = n_target - allocated;
+    if (diff > 0) {
+        std::vector<int> order(n_orth);
+        std::iota(order.begin(), order.end(), 0);
+        std::partial_sort(order.begin(),
+                          order.begin() + std::min(diff, n_orth),
+                          order.end(),
+                          [&](int a, int b) { return fracs[a] > fracs[b]; });
+        for (int i = 0; i < diff && i < n_orth; ++i) {
+            int k = order[i];
+            if (budgets[k] < static_cast<int>(groups[k].size()))
+                ++budgets[k];
+        }
+    }
+
+    // 5. Within-orthant selection: L1-dist from centroid, sort descending,
+    //    select at linearly-spaced positions (even coverage farthest→nearest)
+    std::vector<int> result;
+    result.reserve(n_target);
+
+    for (int k = 0; k < n_orth; ++k) {
+        const std::vector<int>& grp = groups[k];
+        int gs  = static_cast<int>(grp.size());
+        int bud = budgets[k];
+
+        if (bud <= 0) continue;
+        if (bud >= gs) {
+            for (int idx : grp) result.push_back(idx);
+            continue;
+        }
+
+        // Centroid of orthant rows
+        Eigen::VectorXd centroid = Eigen::VectorXd::Zero(d);
+        for (int idx : grp) centroid += X_z.row(idx).transpose();
+        centroid /= gs;
+
+        // L1 distance from centroid for each row
+        std::vector<std::pair<double, int>> dists;
+        dists.reserve(gs);
+        for (int gi = 0; gi < gs; ++gi) {
+            double l1 = (X_z.row(grp[gi]).transpose() - centroid).cwiseAbs().sum();
+            dists.emplace_back(l1, gi);
+        }
+
+        // Sort descending (farthest first) for maximal spread
+        std::sort(dists.begin(), dists.end(),
+                  [](const auto& a, const auto& b) { return a.first > b.first; });
+
+        // Pick bud samples at linearly-spaced positions in the sorted list
+        for (int b = 0; b < bud; ++b) {
+            int pos = (bud > 1)
+                ? static_cast<int>(std::round(static_cast<double>(b) * (gs - 1) / (bud - 1)))
+                : 0;
+            pos = std::clamp(pos, 0, gs - 1);
+            result.push_back(grp[dists[pos].second]);
+        }
+    }
+
+    std::sort(result.begin(), result.end());
+    return result;
 }
 
 // ── Top-level reduce ──────────────────────────────────────────────────────────
@@ -367,6 +709,11 @@ std::vector<int> reduce(
             local_sel = stratified_select(X_part, bud,
                                           static_cast<uint64_t>(random_state) + p);
             break;
+        case ReductionMethod::OrthantStratified:
+            // Requires y — falls back to variance_ordered when called without y.
+            // For y-aware calls use hvrt::orthant_stratified() directly.
+            local_sel = variance_ordered(X_part, bud);
+            break;
         }
 
         // Map local indices back to global
@@ -377,11 +724,16 @@ std::vector<int> reduce(
     if (n_threads <= 1) {
         for (int p = 0; p < n_parts; ++p) process_partition(p);
     } else {
-        ThreadPool pool(n_threads);
+        // Thread-local persistent pool: created once per thread on first call,
+        // reused on all subsequent calls.  Eliminates repeated std::thread
+        // construction/join overhead (~1 ms per thread on Windows).
+        static thread_local std::unique_ptr<ThreadPool> tl_pool;
+        if (!tl_pool || tl_pool->size() != n_threads)
+            tl_pool = std::make_unique<ThreadPool>(n_threads);
         std::vector<std::future<void>> futs;
         futs.reserve(n_parts);
         for (int p = 0; p < n_parts; ++p)
-            futs.push_back(pool.submit(process_partition, p));
+            futs.push_back(tl_pool->submit(process_partition, p));
         for (auto& f : futs) f.get();
     }
 

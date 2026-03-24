@@ -1,6 +1,5 @@
 #include "hvrt/whitener.h"
 #include <stdexcept>
-#include <cmath>
 
 namespace hvrt {
 

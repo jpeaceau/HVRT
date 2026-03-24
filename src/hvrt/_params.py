@@ -86,7 +86,7 @@ class ExpandParams:
     bandwidth: Union[float, str, None] = None
     adaptive_bandwidth: bool = False
     generation_strategy: Union[
-        Literal['multivariate_kde', 'univariate_kde_copula', 'bootstrap_noise', 'epanechnikov'],
+        Literal['epanechnikov'],
         Callable,
         None,
     ] = None

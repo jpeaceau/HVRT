@@ -38,8 +38,6 @@ import numpy as np
 from hvrt import HVRT
 from hvrt.generation_strategies import (
     EpanechnikovStrategy,
-    BootstrapNoiseStrategy,
-    MultivariateKDEStrategy,
     StatefulGenerationStrategy,
 )
 from hvrt._budgets import _iter_partitions
@@ -167,8 +165,6 @@ CONFIGS = [
 
 STRATEGIES = [
     ("Epanechnikov", EpanechnikovStrategy(), _OldProtocolEpanechnikov(), "epanechnikov"),
-    ("Bootstrap   ", BootstrapNoiseStrategy(), _OldProtocolBootstrap(), "bootstrap_noise"),
-    ("Multivar.KDE", MultivariateKDEStrategy(), _OldProtocolKDE(), "multivariate_kde"),
 ]
 
 

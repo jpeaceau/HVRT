@@ -70,6 +70,7 @@ def fit_hvrt_tree(
     X, target, max_leaf_nodes, min_samples_leaf, max_depth, random_state,
     splitter="best",
     criterion="squared_error",
+    min_gain=None,
 ):
     """
     Fit and return the HVRT partitioning DecisionTreeRegressor.
@@ -91,16 +92,29 @@ def fit_hvrt_tree(
     criterion : str, default 'squared_error'
         Split quality criterion passed to DecisionTreeRegressor.
         Use 'absolute_error' for MAD-based models (HART/FastHART).
+    min_gain : float or None, default None
+        Minimum impurity decrease to accept a split. Prevents
+        overpartitioning by rejecting splits below the noise floor.
+        None = auto: 0.5 * 2 * log(d * n_bins) where n_bins = max_leaf_nodes.
+        0.0 = disabled (accept all splits).
 
     Returns
     -------
     tree : DecisionTreeRegressor (fitted)
     """
+    import math
+    if min_gain is None:
+        # Auto: noise floor from χ² analysis. Under H0, best gain over
+        # d features × B thresholds ≈ 2·log(d·B). Safety factor 0.5.
+        d = X.shape[1]
+        B = max_leaf_nodes if max_leaf_nodes else 32
+        min_gain = 0.5 * 2.0 * math.log(max(1, d * B))
+
     tree = DecisionTreeRegressor(
         max_leaf_nodes=max_leaf_nodes,
         min_samples_leaf=min_samples_leaf,
         max_depth=max_depth,
-        min_impurity_decrease=0.0,
+        min_impurity_decrease=min_gain,
         random_state=random_state,
         splitter=splitter,
         criterion=criterion,

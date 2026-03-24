@@ -149,7 +149,7 @@ PYBIND11_MODULE(_hvrt_cpp, m) {
             py::arg("n"),
             py::arg("variance_weighted")   = true,
             py::arg("bandwidth")           = py::none(),
-            py::arg("generation_strategy") = "auto",
+            py::arg("generation_strategy") = "epanechnikov",
             py::arg("adaptive_bandwidth")  = false,
             py::arg("n_parts")             = py::none())
 

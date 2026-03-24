@@ -16,6 +16,8 @@ struct PartitionKDEParams {
 
     // Continuous feature parameters
     std::vector<double> per_feature_std;  // std per continuous feature (Epanechnikov)
+    std::vector<double> per_feature_mad;  // 1.4826*MAD per feature (Laplace bandwidth)
+    Eigen::VectorXd     centroid_cont;    // colwise mean of X_cont (Laplace generation)
     Eigen::MatrixXd     cov_cholesky;     // Chol(h² * Sigma) for MultivariateKDE
     Eigen::MatrixXd     X_cont;           // training rows (n_p x d_cont)
 
@@ -56,11 +58,17 @@ public:
     int d_cont()  const { return d_cont_; }
     int d_full()  const { return d_full_; }
 
+    // Minimum novelty ratio: synthetics must be at least this fraction of the
+    // mean nearest-neighbour distance away from any training sample.
+    // 0.0 = disabled.  Default 0.3 = 30% of mean NN spacing.
+    void set_min_novelty_ratio(double r) { min_novelty_ratio_ = r; }
+    double min_novelty_ratio() const { return min_novelty_ratio_; }
+
     const std::vector<PartitionKDEParams>& params() const { return kde_params_; }
 
 private:
     // Auto-select strategy for a partition
-    GenerationStrategy auto_select_strategy(int n_p, int d_cont) const;
+    static GenerationStrategy auto_select_strategy(int n_p, int d_cont);
 
     // Fit one partition (defined in expand.cpp, not template)
     PartitionKDEParams fit_partition(
@@ -75,6 +83,12 @@ private:
     int d_full_  = 0;
     int d_cont_  = 0;
     bool fitted_ = false;
+    double min_novelty_ratio_ = 0.3;
+
+    // Persistent thread pool: created once on first multi-threaded prepare() and
+    // reused across all subsequent calls.  Eliminates the per-call std::thread
+    // construction/join overhead (~1 ms per thread on Windows × 201 resamples).
+    std::unique_ptr<ThreadPool> pool_;
 
     static constexpr int kCDFGridSize = 2000;
 };

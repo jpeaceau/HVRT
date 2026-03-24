@@ -33,57 +33,131 @@ static double probit(double p) {
 
 // ── Strategy auto-selection ───────────────────────────────────────────────────
 
-GenerationStrategy Expander::auto_select_strategy(int n_p, int d_cont) const {
+GenerationStrategy Expander::auto_select_strategy(int n_p, int d_cont) {
     int threshold = std::max(15, 2 * d_cont);
     return (n_p >= threshold) ? GenerationStrategy::MultivariateKDE
                               : GenerationStrategy::Epanechnikov;
 }
 
-// ── Static generation helpers (free functions, include pcg64 here) ────────────
+// ── Stratified sampling helpers ───────────────────────────────────────────────
+// All generators use deterministic stratified quantiles instead of RNG.
+// For n_gen samples, quantile positions are q_i = (i + 0.5) / n_gen,
+// giving uniform coverage of the [0,1] interval.  Base row selection
+// cycles through training samples: base = i % n_train.
+//
+// For multi-dimensional noise, dimension j uses a shifted stratification:
+//   q_{i,j} = frac((i + 0.5) / n_gen + j * phi)
+// where phi = (sqrt(5)-1)/2 (golden ratio).  This is a rank-1 lattice
+// sequence that fills the d-dimensional unit cube with low discrepancy,
+// cheaper than Halton and simpler than Sobol.
+
+static constexpr double GOLDEN_RATIO = 0.6180339887498949; // (sqrt(5)-1)/2
+
+// Stratified quantile with golden-ratio shift for dimension j
+static inline double strat_quantile(int i, int n, int j) {
+    double q = std::fmod(static_cast<double>(i + 0.5) / n + j * GOLDEN_RATIO, 1.0);
+    return std::clamp(q, 1e-12, 1.0 - 1e-12);
+}
+
+// Inverse CDF for Epanechnikov: CDF(x) = 0.5 + 0.75*x*(1 - x²/3) on [-1,1]
+// We approximate the inverse numerically with a few Newton iterations.
+static double epan_icdf(double u) {
+    // Start with linear approximation
+    double x = 2.0 * u - 1.0;
+    for (int iter = 0; iter < 5; ++iter) {
+        double cdf = 0.5 + 0.75 * x * (1.0 - x * x / 3.0);
+        double pdf = 0.75 * (1.0 - x * x);
+        if (pdf < 1e-12) break;
+        x -= (cdf - u) / pdf;
+        x = std::clamp(x, -1.0, 1.0);
+    }
+    return x;
+}
+
+// ── Static generation helpers (stratified, no RNG) ───────────────────────────
 
 static Eigen::MatrixXd gen_epanechnikov(
-    const PartitionKDEParams& p, int n_gen, pcg64& rng)
+    const PartitionKDEParams& p, int n_gen, pcg64& /*rng*/)
 {
     int n_train = p.n_samples;
     int d_cont  = static_cast<int>(p.per_feature_std.size());
     double h    = p.h_scott;
 
-    std::uniform_real_distribution<double> u01(0.0, 1.0);
-    std::uniform_int_distribution<int>     pick_row(0, n_train - 1);
+    // Golden-ratio stride for pair selection: maximises diversity of (a,b) pairs
+    // across the partition.  Each synthetic interpolates between two training
+    // samples and then adds Epanechnikov noise, placing the kernel centre
+    // IN the gaps between training points instead of on top of them.
+    int stride = std::max(1, static_cast<int>(n_train * GOLDEN_RATIO));
 
     Eigen::MatrixXd out(n_gen, d_cont);
     for (int i = 0; i < n_gen; ++i) {
-        int base = pick_row(rng);
+        int a = i % n_train;
+        int b = (a + stride) % n_train;
+        if (b == a) b = (a + 1) % n_train;  // safety for n_train=1
+
+        // Interpolation weight from an extra stratified dimension (d_cont)
+        double lam = strat_quantile(i, n_gen, d_cont);
+
         for (int j = 0; j < d_cont; ++j) {
+            double base_val = p.X_cont(a, j) + lam * (p.X_cont(b, j) - p.X_cont(a, j));
             double s  = h * p.per_feature_std[j];
-            double u1 = (2.0 * u01(rng) - 1.0) * s;
-            double u2 = (2.0 * u01(rng) - 1.0) * s;
-            double u3 = (2.0 * u01(rng) - 1.0) * s;
-            double noise;
-            if (std::abs(u3) >= std::abs(u2) && std::abs(u3) >= std::abs(u1))
-                noise = u2;
-            else
-                noise = u3;
-            out(i, j) = p.X_cont(base, j) + noise;
+            double q  = strat_quantile(i, n_gen, j);
+            double noise = epan_icdf(q) * s;
+            out(i, j) = base_val + noise;
+        }
+    }
+    return out;
+}
+
+static Eigen::MatrixXd gen_simplex_mixup(
+    const PartitionKDEParams& p, int n_gen, pcg64& /*rng*/)
+{
+    int n_train = p.n_samples;
+    int d_cont  = static_cast<int>(p.per_feature_std.size());
+
+    Eigen::MatrixXd out(n_gen, d_cont);
+    for (int i = 0; i < n_gen; ++i) {
+        int a = i % n_train;
+        int b = (i + n_train / 2 + 1) % n_train;  // maximally distant stride
+        double lam = static_cast<double>(i + 0.5) / n_gen;  // stratified [0,1]
+        lam = std::clamp(lam, 0.1, 0.9);  // prevent near-duplicates at boundaries
+        out.row(i) = p.X_cont.row(a) + lam * (p.X_cont.row(b) - p.X_cont.row(a));
+    }
+    return out;
+}
+
+static Eigen::MatrixXd gen_laplace(
+    const PartitionKDEParams& p, int n_gen, pcg64& /*rng*/)
+{
+    int d_cont = static_cast<int>(p.per_feature_std.size());
+    const Eigen::VectorXd& centroid = p.centroid_cont;
+
+    Eigen::MatrixXd out(n_gen, d_cont);
+    for (int i = 0; i < n_gen; ++i) {
+        for (int j = 0; j < d_cont; ++j) {
+            double b  = p.per_feature_mad[j];
+            double q  = strat_quantile(i, n_gen, j);
+            // Inverse CDF of Laplace(0, b): -b * sign(q-0.5) * ln(1 - 2|q-0.5|)
+            double su = (q > 0.5) ? 1.0 : -1.0;
+            double sample = -b * su * std::log(1.0 - 2.0 * std::abs(q - 0.5) + 1e-15);
+            out(i, j) = centroid[j] + sample;
         }
     }
     return out;
 }
 
 static Eigen::MatrixXd gen_bootstrap(
-    const PartitionKDEParams& p, int n_gen, pcg64& rng)
+    const PartitionKDEParams& p, int n_gen, pcg64& /*rng*/)
 {
     int n_train = p.n_samples;
     int d_cont  = static_cast<int>(p.per_feature_std.size());
 
-    std::uniform_int_distribution<int>  pick_row(0, n_train - 1);
-    std::normal_distribution<double>    norm(0.0, 1.0);
-
     Eigen::MatrixXd out(n_gen, d_cont);
     for (int i = 0; i < n_gen; ++i) {
-        int base = pick_row(rng);
+        int base = i % n_train;
         for (int j = 0; j < d_cont; ++j) {
-            double noise = norm(rng) * 0.1 * p.per_feature_std[j];
+            double q = strat_quantile(i, n_gen, j);
+            double noise = probit(q) * 0.1 * p.per_feature_std[j];
             out(i, j) = p.X_cont(base, j) + noise;
         }
     }
@@ -91,21 +165,20 @@ static Eigen::MatrixXd gen_bootstrap(
 }
 
 static Eigen::MatrixXd gen_multivariate_kde(
-    const PartitionKDEParams& p, int n_gen, pcg64& rng)
+    const PartitionKDEParams& p, int n_gen, pcg64& /*rng*/)
 {
     int n_train = p.n_samples;
     int d_cont  = static_cast<int>(p.per_feature_std.size());
-
-    std::uniform_int_distribution<int> pick_row(0, n_train - 1);
-    std::normal_distribution<double>   norm(0.0, 1.0);
-
     const Eigen::MatrixXd& L = p.cov_cholesky;
 
     Eigen::MatrixXd out(n_gen, d_cont);
     Eigen::VectorXd z(d_cont);
     for (int i = 0; i < n_gen; ++i) {
-        int base = pick_row(rng);
-        for (int j = 0; j < d_cont; ++j) z[j] = norm(rng);
+        int base = i % n_train;
+        for (int j = 0; j < d_cont; ++j) {
+            double q = strat_quantile(i, n_gen, j);
+            z[j] = probit(q);
+        }
         Eigen::VectorXd noise = L * z;
         out.row(i) = p.X_cont.row(base) + noise.transpose();
     }
@@ -113,17 +186,19 @@ static Eigen::MatrixXd gen_multivariate_kde(
 }
 
 static Eigen::MatrixXd gen_copula(
-    const PartitionKDEParams& p, int n_gen, pcg64& rng)
+    const PartitionKDEParams& p, int n_gen, pcg64& /*rng*/)
 {
     int d_cont = static_cast<int>(p.per_feature_std.size());
-    std::normal_distribution<double> norm(0.0, 1.0);
 
     const Eigen::MatrixXd& L = p.copula_cholesky;
 
     Eigen::MatrixXd out(n_gen, d_cont);
     Eigen::VectorXd z(d_cont);
     for (int i = 0; i < n_gen; ++i) {
-        for (int j = 0; j < d_cont; ++j) z[j] = norm(rng);
+        for (int j = 0; j < d_cont; ++j) {
+            double q = strat_quantile(i, n_gen, j);
+            z[j] = probit(q);
+        }
         Eigen::VectorXd corr = L * z;
         for (int j = 0; j < d_cont; ++j) {
             double u = 0.5 * (1.0 + std::erf(corr[j] / M_SQRT2));
@@ -173,6 +248,22 @@ PartitionKDEParams Expander::fit_partition(
         double mu  = X_cont_p.col(j).mean();
         double var = (X_cont_p.col(j).array() - mu).square().mean();
         par.per_feature_std[j] = std::sqrt(var + 1e-8);
+    }
+
+    // Per-feature MAD + centroid — Laplace strategy only (never read by other strategies)
+    if (strategy == GenerationStrategy::Laplace) {
+        par.centroid_cont = X_cont_p.colwise().mean();
+        par.per_feature_mad.resize(d_cont);
+        for (int j = 0; j < d_cont; ++j) {
+            std::vector<double> col(n_p);
+            for (int i = 0; i < n_p; ++i) col[i] = X_cont_p(i, j);
+            std::nth_element(col.begin(), col.begin() + n_p / 2, col.end());
+            double med_j = col[n_p / 2];
+            std::vector<double> devs(n_p);
+            for (int i = 0; i < n_p; ++i) devs[i] = std::abs(X_cont_p(i, j) - med_j);
+            std::nth_element(devs.begin(), devs.begin() + n_p / 2, devs.end());
+            par.per_feature_mad[j] = std::max(1.4826 * devs[n_p / 2], 1e-8);
+        }
     }
 
     par.X_cont = X_cont_p;
@@ -314,15 +405,83 @@ void Expander::prepare(
     if (n_threads <= 1) {
         for (int p = 0; p < n_parts; ++p) fit_one(p);
     } else {
-        ThreadPool pool(n_threads);
+        // Reuse the persistent pool (recreate only if thread count changes).
+        if (!pool_ || pool_->size() != n_threads)
+            pool_ = std::make_unique<ThreadPool>(n_threads);
         std::vector<std::future<void>> futs;
         futs.reserve(n_parts);
         for (int p = 0; p < n_parts; ++p)
-            futs.push_back(pool.submit(fit_one, p));
+            futs.push_back(pool_->submit(fit_one, p));
         for (auto& f : futs) f.get();
     }
 
     fitted_ = true;
+}
+
+// ── Post-generation novelty enforcement ──────────────────────────────────────
+// For each synthetic sample, compute its minimum distance to the partition's
+// training data.  If it falls below a threshold (fraction of the mean
+// nearest-neighbour distance), push it outward along the direction from its
+// nearest training point.  This guarantees synthetics fill gaps instead of
+// clustering on top of training data.
+
+static void enforce_novelty(
+    Eigen::MatrixXd& X_syn,                // (n_gen, d_cont) — modified in place
+    const Eigen::MatrixXd& X_train,        // (n_p, d_cont) — partition training data
+    double min_ratio)                       // minimum distance as fraction of mean NN
+{
+    const int n_gen = static_cast<int>(X_syn.rows());
+    const int n_p   = static_cast<int>(X_train.rows());
+    const int d     = static_cast<int>(X_syn.cols());
+
+    if (n_gen == 0 || n_p < 2 || min_ratio <= 0.0) return;
+
+    // Compute mean nearest-neighbour distance within training data
+    // Use squared distances to avoid sqrt until final step
+    double sum_min_d = 0.0;
+    for (int i = 0; i < n_p; ++i) {
+        double best_d2 = std::numeric_limits<double>::max();
+        for (int j = 0; j < n_p; ++j) {
+            if (i == j) continue;
+            double d2 = (X_train.row(i) - X_train.row(j)).squaredNorm();
+            if (d2 < best_d2) best_d2 = d2;
+        }
+        sum_min_d += std::sqrt(best_d2);
+    }
+    double mean_nn = sum_min_d / n_p;
+    double threshold = min_ratio * mean_nn;
+    double threshold_sq = threshold * threshold;
+
+    if (threshold < 1e-12) return;
+
+    // For each synthetic, find nearest training sample and enforce threshold
+    for (int i = 0; i < n_gen; ++i) {
+        double best_d2 = std::numeric_limits<double>::max();
+        int    best_j  = 0;
+        for (int j = 0; j < n_p; ++j) {
+            double d2 = (X_syn.row(i) - X_train.row(j)).squaredNorm();
+            if (d2 < best_d2) {
+                best_d2 = d2;
+                best_j = j;
+            }
+        }
+        if (best_d2 < threshold_sq) {
+            double dist = std::sqrt(best_d2);
+            if (dist < 1e-15) {
+                // Exact duplicate: push in a deterministic direction
+                // Use the strat_quantile-derived direction per feature
+                for (int k = 0; k < d; ++k) {
+                    double dir = (strat_quantile(i, n_gen, k) - 0.5) * 2.0;
+                    X_syn(i, k) = X_train(best_j, k) + threshold * dir / std::sqrt(d);
+                }
+            } else {
+                // Push outward from nearest training sample to threshold distance
+                double scale = threshold / dist;
+                Eigen::RowVectorXd direction = X_syn.row(i) - X_train.row(best_j);
+                X_syn.row(i) = X_train.row(best_j) + scale * direction;
+            }
+        }
+    }
 }
 
 // ── generate ──────────────────────────────────────────────────────────────────
@@ -372,23 +531,35 @@ Eigen::MatrixXd Expander::generate(
                 ? gen_copula(par, n_gen, rng)
                 : gen_epanechnikov(par, n_gen, rng);
             break;
+        case GenerationStrategy::SimplexMixup:
+            cont_samples = (par.n_samples >= 2)
+                ? gen_simplex_mixup(par, n_gen, rng)
+                : gen_epanechnikov(par, n_gen, rng);
+            break;
+        case GenerationStrategy::Laplace:
+            cont_samples = gen_laplace(par, n_gen, rng);
+            break;
         default:
             cont_samples = gen_epanechnikov(par, n_gen, rng);
+        }
+
+        // Enforce minimum novelty: push synthetics away from training data
+        if (par.X_cont.rows() >= 2 && cont_samples.rows() > 0) {
+            enforce_novelty(cont_samples, par.X_cont, min_novelty_ratio_);
         }
 
         for (int k = 0; k < n_gen; ++k)
             for (int fi = 0; fi < d_cont_; ++fi)
                 result(out_row + k, cont_cols_[fi]) = cont_samples(k, fi);
 
-        // Generate categorical columns
-        std::uniform_real_distribution<double> u01(0.0, 1.0);
+        // Generate categorical columns (stratified)
         int n_cat = static_cast<int>(cat_cols_.size());
         for (int ci = 0; ci < n_cat; ++ci) {
             if (ci >= static_cast<int>(par.cat_freq_tables.size())) break;
             const auto& freq = par.cat_freq_tables[ci];
             if (freq.empty()) continue;
             for (int k = 0; k < n_gen; ++k) {
-                double u = u01(rng);
+                double u = strat_quantile(k, n_gen, d_cont_ + ci);
                 double cum = 0.0, chosen = freq.back().first;
                 for (auto& [val, prob] : freq) {
                     cum += prob;
