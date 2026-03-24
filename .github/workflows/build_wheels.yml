@@ -1,10 +1,9 @@
 # Build binary wheels for all supported platforms and publish to PyPI.
 #
-# Triggered automatically when you push a version tag (e.g. v2.8.0).
+# Triggered automatically when you push a version tag (e.g. v2.12.1).
 # Can also be triggered manually from the Actions tab (workflow_dispatch).
 #
 # Publishing uses PyPI Trusted Publishing (OIDC) — no API token required.
-# One-time setup on PyPI: see README or the comment at the bottom of this file.
 
 name: Build and publish
 
@@ -14,27 +13,33 @@ on:
       - 'v*.*.*'
   workflow_dispatch:
 
+# Force Node.js 24 for all JavaScript-based actions (checkout, upload, etc.)
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # ── 1. Build wheels (C++ compiled) ─────────────────────────────────────────
   build_wheels:
     name: Wheels · ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false   # don't cancel other platforms if one fails
+      fail-fast: false
       matrix:
         include:
-          - os: ubuntu-latest   # Linux x86_64 (manylinux)
-          - os: windows-latest  # Windows x86_64
-          - os: macos-14        # macOS Apple Silicon arm64
+          - os: ubuntu-latest
+          - os: windows-latest
+          - os: macos-14
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.21
-        # cibuildwheel reads [tool.cibuildwheel] from pyproject.toml.
-        # cmake and ninja are installed automatically from the build-system
-        # requires list before cibuildwheel runs each build.
+        uses: pypa/cibuildwheel@v2.23
+        env:
+          CIBW_ARCHS_MACOS: "arm64 x86_64"
+          MACOSX_DEPLOYMENT_TARGET: "14.0"
+          CIBW_SKIP: "pp* cp38-* cp39-*"
+          CIBW_BUILD_VERBOSITY: 1
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
@@ -65,7 +70,6 @@ jobs:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
 
-    # Only publish when triggered by a version tag, not workflow_dispatch
     if: startsWith(github.ref, 'refs/tags/v')
 
     environment:
@@ -73,7 +77,7 @@ jobs:
       url: https://pypi.org/project/hvrt/
 
     permissions:
-      id-token: write   # required for OIDC trusted publishing
+      id-token: write
 
     steps:
       - name: Download all artifacts
@@ -85,28 +89,3 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
-
-# ── PyPI Trusted Publisher setup (one-time, done on the PyPI website) ─────────
-#
-# Trusted Publishing lets GitHub Actions publish without an API token.
-# You set it up once on PyPI and never touch it again.
-#
-# Steps:
-#   1. Log in to pypi.org → go to your project → Publishing → Add publisher
-#      (If the project doesn't exist yet, go to pypi.org/manage/account/publishing/
-#       and use "Add a new pending publisher" instead.)
-#
-#   2. Fill in the form:
-#        Owner (GitHub username/org):  hotprotato
-#        Repository name:              hvrt
-#        Workflow filename:            build_wheels.yml
-#        Environment name:             pypi
-#
-#   3. Click "Add". That's it — no tokens, no secrets.
-#
-# To publish a new release:
-#   git tag v2.8.0
-#   git push origin v2.8.0
-#
-# The workflow starts automatically, builds ~15 wheels across 3 platforms,
-# and uploads everything to PyPI when done (~10–15 minutes total).

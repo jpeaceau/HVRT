@@ -38,17 +38,11 @@ include(FetchContent)
 
 FetchContent_Declare(
     Eigen
-    GIT_REPOSITORY https://gitlab.com/libeigen/eigen.git
-    GIT_TAG        3.4.0
-    GIT_SHALLOW    TRUE
+    URL      https://gitlab.com/libeigen/eigen/-/archive/3.4.0/eigen-3.4.0.tar.bz2
+    URL_HASH SHA256=b4c198460eba6f28d34894e3a5710998818515104d6e74e5cc331ce31e46e626
+    EXCLUDE_FROM_ALL
 )
-# Populate Eigen with EXCLUDE_FROM_ALL so its own install() rules don't run —
-# without this, Eigen's 500+ headers end up inside the Python wheel.
-FetchContent_GetProperties(Eigen)
-if(NOT eigen_POPULATED)
-    FetchContent_Populate(Eigen)
-    add_subdirectory(${eigen_SOURCE_DIR} ${eigen_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
+FetchContent_MakeAvailable(Eigen)
 
 # pybind11 — prefer find_package (scikit-build-core injects the path
 # automatically; for local CMake builds: pip install pybind11).
@@ -58,9 +52,8 @@ if(NOT pybind11_FOUND)
     message(STATUS "pybind11 not found via find_package; fetching v3.0.0 from GitHub")
     FetchContent_Declare(
         pybind11
-        GIT_REPOSITORY https://github.com/pybind/pybind11.git
-        GIT_TAG        v3.0.0
-        GIT_SHALLOW    TRUE
+        URL      https://github.com/pybind/pybind11/archive/refs/tags/v3.0.0.tar.gz
+        URL_HASH SHA256=bb4c986c4c6d579486deba42d0e512ab4385ba03e3bb2feabc0ddfc1f8b7b5e4
     )
     FetchContent_MakeAvailable(pybind11)
 endif()
