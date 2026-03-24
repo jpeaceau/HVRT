@@ -110,6 +110,10 @@ def fit_hvrt_tree(
         B = max_leaf_nodes if max_leaf_nodes else 32
         min_gain = 0.5 * 2.0 * math.log(max(1, d * B))
 
+    # sklearn requires max_leaf_nodes >= 2 or None
+    if max_leaf_nodes is not None and max_leaf_nodes < 2:
+        max_leaf_nodes = 2
+
     tree = DecisionTreeRegressor(
         max_leaf_nodes=max_leaf_nodes,
         min_samples_leaf=min_samples_leaf,
